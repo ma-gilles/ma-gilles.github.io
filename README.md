@@ -1,5 +1,7 @@
 In construction
 
-[MAT 321 course webpage](mat321/mat321.md)
+I am a postdoctoral research associate in the [Program in Applied and Computational Mathematics](https://www.pacm.princeton.edu/) at Princeton University, working with [Amit Singer](http://web.math.princeton.edu/~amits/).
 
-MAT321 
+[Here](https://scholar.google.com/citations?user=yAeZSxQAAAAJ&hl=en) is my google scholar page, [here](https://github.com/ma-gilles/) is my Github.
+
+In the Spring of 2023, I taught the Numerical Methods course at Princeton, the course material can be found [here](mat321/mat321.md).
