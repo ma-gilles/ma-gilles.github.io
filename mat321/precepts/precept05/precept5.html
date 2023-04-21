@@ -14263,11 +14263,10 @@ a.anchor-link {
 Recall the versions of LU factorization discussed in class:</p>
 <p><img src="lu_algs.png" height="600"></p>
 <h2 id="Task-1">Task 1<a class="anchor-link" href="#Task-1">&#182;</a></h2><p>Implement LU factorization without pivoting. In particular,
-write a function
+write a function</p>
 $$
  L, U = \text{lu\_nopivot}(A)
-$$
-that takes an $n \times n$ matrix $A$ and outputs $n \times n$ matrices $L$ and
+$$<p>that takes an $n \times n$ matrix $A$ and outputs $n \times n$ matrices $L$ and
 $U$. To save time, only implement LU factorization without pivoting. You can
 use scipy's $P, L, U = \text{scipy.linalg.lu}(A)$ for the version with partial pivoting in
 the following. Scipy factorizes $A = PLU$ instead of the more traditional form $ PA = LU \Rightarrow A = P^{-1} LU$</p>
@@ -14370,10 +14369,10 @@ using imxhow if they are too big to print on the screen (say bigger than $6
 \times 6$).</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -14398,43 +14397,6 @@ using imxhow if they are too big to print on the screen (say bigger than $6
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">/var/folders/dg/zzj57d7d1gs1k9l8sdfh043m0000gn/T/ipykernel_7476/1430052691.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">     10</span>     <span class="ansi-green-fg">return</span> A
-<span class="ansi-green-intense-fg ansi-bold">     11</span> n <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">25</span>
-<span class="ansi-green-fg">---&gt; 12</span><span class="ansi-red-fg"> </span>A <span class="ansi-blue-fg">=</span> make_pathological_A<span class="ansi-blue-fg">(</span>n<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     13</span> <span class="ansi-red-fg"># Plot A.</span>
-<span class="ansi-green-intense-fg ansi-bold">     14</span> plt<span class="ansi-blue-fg">.</span>imshow<span class="ansi-blue-fg">(</span>A<span class="ansi-blue-fg">,</span> interpolation<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;none&#39;</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">/var/folders/dg/zzj57d7d1gs1k9l8sdfh043m0000gn/T/ipykernel_7476/1430052691.py</span> in <span class="ansi-cyan-fg">make_pathological_A</span><span class="ansi-blue-fg">(n)</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-fg">import</span> matplotlib<span class="ansi-blue-fg">.</span>pyplot <span class="ansi-green-fg">as</span> plt
-<span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-green-fg">def</span> make_pathological_A<span class="ansi-blue-fg">(</span>n<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">----&gt; 3</span><span class="ansi-red-fg">     </span>A <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">-</span>np<span class="ansi-blue-fg">.</span>ones<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">(</span>n<span class="ansi-blue-fg">,</span>n<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span>     <span class="ansi-red-fg"># Get the lower triangular part of A (zero are 0s)</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span>     A <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>tril<span class="ansi-blue-fg">(</span>A<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">NameError</span>: name &#39;np&#39; is not defined</pre>
-</div>
-</div>
-
-</div>
-
 </div>
 
 </div>

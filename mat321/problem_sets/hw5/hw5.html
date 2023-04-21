@@ -14269,12 +14269,11 @@ a.anchor-link {
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Q1.-The-Fast-Fourier-Transform">Q1. The Fast Fourier Transform<a class="anchor-link" href="#Q1.-The-Fast-Fourier-Transform">&#182;</a></h1><p>In this exercise, we derive the "most important numerical algorithm of our lifetime" (G. Strang): the Fast Fourier Transform (FFT).  The FFT is a fast algorithm to compute the Discrete Fourier Transform (DFT). The DFT of a vector $x \in \mathbb{C}^n$ is the vector $y\in \mathbb{C}^n$ defined by:
+<h1 id="Q1.-The-Fast-Fourier-Transform">Q1. The Fast Fourier Transform<a class="anchor-link" href="#Q1.-The-Fast-Fourier-Transform">&#182;</a></h1><p>In this exercise, we derive the "most important numerical algorithm of our lifetime" (G. Strang): the Fast Fourier Transform (FFT).  The FFT is a fast algorithm to compute the Discrete Fourier Transform (DFT). The DFT of a vector $x \in \mathbb{C}^n$ is the vector $y\in \mathbb{C}^n$ defined by:</p>
 $$
 y_k = \sum_{j=0}^{n-1} x_j \exp(-i2\pi k j / n ) \ .
-$$
-(Here, vectors are 0-indexed). We restrict our attention to the case where the size $n$ is a power of $2$, although the ideas extend to the general case.
-The DFT is the result of the matrix-vector multiply $Fx$ with the matrix 
+$$<p>(Here, vectors are 0-indexed). We restrict our attention to the case where the size $n$ is a power of $2$, although the ideas extend to the general case.
+The DFT is the result of the matrix-vector multiply $Fx$ with the matrix</p>
 $$
 F =  \begin{bmatrix}
 1 &amp; 1 &amp; 1 &amp; 1 &amp; \cdots &amp; 1    \\
@@ -14284,9 +14283,8 @@ F =  \begin{bmatrix}
 \vdots &amp; \vdots &amp; \vdots &amp; \vdots  &amp; \ddots &amp; \ddots   \\
 1 &amp; \omega^{n-1} &amp; \omega^{2(n-1)} &amp; \omega^{3(n-1)}  &amp; \cdots &amp; \omega^{(n-1)(n-1)}    \\
 \end{bmatrix}
-$$
-where $\omega = \exp(-i 2 \pi /n) $ (note that $\omega$ is a function of n).</p>
-<p>To illustrate the FFT, we take $n = 8$.
+$$<p>where $\omega = \exp(-i 2 \pi /n) $ (note that $\omega$ is a function of n).</p>
+<p>To illustrate the FFT, we take $n = 8$.</p>
 $$
 F_8 =  \begin{bmatrix}
 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1  \\
@@ -14298,9 +14296,8 @@ F_8 =  \begin{bmatrix}
 1 &amp; \omega^6 &amp; \omega^4 &amp;  \omega^2 &amp; 1 &amp; \omega^6 &amp;  \omega^4  &amp;  \omega^2     \\
 1 &amp; \omega^7 &amp; \omega^6 &amp;  \omega^5 &amp; \omega^4 &amp; \omega^3 &amp;  \omega^2  &amp;  \omega     \\
 \end{bmatrix}
-$$
-where we have used the fact that $$\omega^{n+k} = \omega^{n}\omega^{k} = \exp(-i 2 \pi /  n)^{n} \omega^k =  \exp(-i 2 \pi n/n)\omega^k = 1 \omega^k  $$</p>
-<p>Next, we reorder the columns so that the odd-indexed columns come first (they are now ordered as [1,3,5,7,2,4,6,8]), which is equivalent to multiplying $F_8$ by the permutation matrix on the right:
+$$<p>where we have used the fact that $$\omega^{n+k} = \omega^{n}\omega^{k} = \exp(-i 2 \pi /  n)^{n} \omega^k =  \exp(-i 2 \pi n/n)\omega^k = 1 \omega^k  $$</p>
+<p>Next, we reorder the columns so that the odd-indexed columns come first (they are now ordered as [1,3,5,7,2,4,6,8]), which is equivalent to multiplying $F_8$ by the permutation matrix on the right:</p>
 $$
 P_8 = \begin{bmatrix}
 1 &amp;  &amp;  &amp;  &amp;  &amp;  &amp;  &amp; \\
@@ -14312,8 +14309,7 @@ P_8 = \begin{bmatrix}
   &amp;  &amp;  &amp;1 &amp;  &amp;  &amp;  &amp; \\
   &amp;  &amp;  &amp;  &amp;  &amp;  &amp;  &amp;1 \\
 \end{bmatrix}
-$$</p>
-<p>Thus, the matrix  $F_8P_8$ is:</p>
+$$<p>Thus, the matrix  $F_8P_8$ is:</p>
 $$F_8P_8 = 
 \left[
 \begin{array}{cccc|cccc}
@@ -14462,14 +14458,12 @@ After $\log_2(n) = d$  rounds of divide and conquer, we hit the base case of $n 
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Q2.-Chebyshev-polynomials">Q2. Chebyshev polynomials<a class="anchor-link" href="#Q2.-Chebyshev-polynomials">&#182;</a></h1><p>The Chebyshev polynomials are defined from the three-term recurrence relation: 
-$$T_0(x) =1, \quad T_1(x) = x, \quad T_{n+1}(x) = 2xT_n(x) - T_{n-1}(x) $$</p>
-<p>The Chebyshev polynomials are the numerical analyst's favorite polynomials because of all of their wonderful properties. For example, it can be shown that they have an astonishing closed form: $T_n(x)= \cos(n\arccos(x))$.
-Using this property, it is straight-forward to see that the roots of the Chebyshev polynomial $T_n(x)$ are:
+<h1 id="Q2.-Chebyshev-polynomials">Q2. Chebyshev polynomials<a class="anchor-link" href="#Q2.-Chebyshev-polynomials">&#182;</a></h1><p>The Chebyshev polynomials are defined from the three-term recurrence relation:</p>
+$$T_0(x) =1, \quad T_1(x) = x, \quad T_{n+1}(x) = 2xT_n(x) - T_{n-1}(x) $$<p>The Chebyshev polynomials are the numerical analyst's favorite polynomials because of all of their wonderful properties. For example, it can be shown that they have an astonishing closed form: $T_n(x)= \cos(n\arccos(x))$.
+Using this property, it is straight-forward to see that the roots of the Chebyshev polynomial $T_n(x)$ are:</p>
 $$
 x_i =  \cos \left( \frac{2i -1 }{2n}\pi \right), \quad i = 1, \dots n
-$$
-These points are known as the Chebyshev nodes (of the first kind).</p>
+$$<p>These points are known as the Chebyshev nodes (of the first kind).</p>
 <h2 id="2.1-Clenshaw's-algorithm">2.1 Clenshaw's algorithm<a class="anchor-link" href="#2.1-Clenshaw's-algorithm">&#182;</a></h2><p>Using the three-term recurence, implement an algorithm to evaluate the sum $p_n(x) = \sum_{k=0}^{n} c_k T_k(x) $ in $\mathcal{O}(n)$ operations. This method is called Clenshaw's algorithm and is applicable to any polynomials with a three-term recurrence.</p>
 
 </div>
@@ -14553,20 +14547,18 @@ with $b_i = f(x_i)$ where $x_i = \cos(\frac{2i -1 }{2(n+1)}\pi)$ for $i = 1, \do
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Q2.3.-Clenshaw-Curtis-quadrature">Q2.3. Clenshaw-Curtis quadrature<a class="anchor-link" href="#Q2.3.-Clenshaw-Curtis-quadrature">&#182;</a></h2><p>In class, we defined the Newton-cotes quadrature as the integral of the equispaced interpolant. Similarly, Clenshaw-curtis quadrature is the integral of the Chebyshev interpolant.</p>
 $$
-\int_{a}^b f(x) dx \approx \int_{a}^b p_n(x) dx  = \sum_{i=0}^n w_j f(x_i)
-$$<p>Using part 2, and the following identity:
+\int_{-1}^1 f(x) dx \approx \int_{-1}^1 p_n(x) dx  = \sum_{i=0}^n w_i f(x_i)
+$$<p>Using part 2, and the following identity:</p>
 $$
 \int_{-1}^1 T_n(x)\, \mathrm{d}x =
 \begin{cases}
 \frac{(-1)^n + 1}{1 - n^2} &amp; \text{ if }~ n \ne 1 \\
 0                          &amp; \text{ if }~ n = 1.
 \end{cases}
+$$<p>write a function that computes the Quadrature weights. That is, find a vector $w\in \mathbb{R}^{n+1}$ so that</p>
 $$
-write a function that computes the Quadrature weights. That is, find a vector $w\in \mathbb{R}^{n+1}$ so that
-$$
-\int_{a}^b p_n(x) dx  = \sum_{i=0}^n w_j f(x_i) = w^T b
-$$
-where $x_i$ are the Chebyshev nodes of degree $(n+1)$.</p>
+\int_{-1}^1 p_n(x) dx  = \sum_{i=0}^n w_i f(x_i) = w^T b
+$$<p>where $x_i$ are the Chebyshev nodes of degree $(n+1)$.</p>
 
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
@@ -14779,18 +14771,16 @@ Preconditioning is the idea of replacing a linear system $Ax=b$ with a different
 <p>There is one more detail we have ignored so far: while $M^{-1}A$ may be well conditioned, it is not SPD even if $A$ and $M$ are SPD, thus it does not make sense to apply CG directly to $M^{-1}A$ since CG only applies to SPD matrices. Instead, one could run CG on $L^{-1}A(L^{-1})^T$ where $M = LL^T$ a Cholesky decomposition of $M$ (assuming it is SPD). Luckily, the entire CG iteration applied to $L^{-1}A(L^{-1})^T$ may be rewritten as an iteration that only involves $M^{-1} = (L^{-1})^{T}L^{-1} $ and $A$, thus the Cholesky decomposition is unnecessary. If you are interested, you may read the details in <a href="https://www.cs.cornell.edu/courses/cs6210/2019fa/lec/2019-11-25.pdf">these notes</a>. For this exercise, it is sufficient to know that having two black boxes is sufficient to run the CG iteration: one to compute $Ax$ and one to compute $M^{-1}x$. Furthermore, there exist a similarity transformation: $M^{-1} A =  (L^{-1})^T \left(  L^{-1}A(L^{-1})^T \right) L^T $ between $L^{-1}A(L^{-1})^T$ and $M^{-1}A$, they have the same eigenvalues.</p>
 <p>Often, the trick to finding a good preconditioner is to find a "nearby" but easier problem.
 In our case, we can pick $M$ to be the discretization of Poisson's equation: $M = T \otimes I + I \otimes T$. In this case, we have that $A = M + D$, where $D=\text{diag}(\text{vec}(C))$, and one can show that $L^{-1}A(L^{-1})^T$ is well conditioned.</p>
-<h2 id="Q2.2">Q2.2<a class="anchor-link" href="#Q2.2">&#182;</a></h2><p>Proving this fact is your next task.
-Since we know the exact eigenvalue decomposition of $T$ (see previous HW) it is easy to bound eigenvalues of $M = T \otimes I + I \otimes T$.
+<h2 id="Q3.2">Q3.2<a class="anchor-link" href="#Q3.2">&#182;</a></h2><p>Proving this fact is your next task.
+Since we know the exact eigenvalue decomposition of $T$ (see previous HW) it is easy to bound eigenvalues of $M = T \otimes I + I \otimes T$.</p>
 $$
 \lambda_{\text{min}}(M) \approx \frac{2 \pi^2}{(n+1)^2}, \quad \lambda_{\text{max}}(M) = 8
-$$
-Using these estimates show that $L^{-1}A(L^{-1})^T$ is well conditioned, specifically, show that:
-$$ K_2( L^{-1}A(L^{-1})^T ) \leq 1 + \frac{1}{2\pi^2}\max_{x,y}{c(x,y)} \ .$$ 
-(You may use the $\approx$ in $\lambda_{\text{min}}(M)$ as equality). Note that the bound is independent of $n$ and small if $c(x,y)$ doesn't get too large, so we expect CG to converge very quickly.</p>
-<p>Hint: You may want to use the following characterization of the eigenvalues of symmetric matrices based on the Rayleigh quotient:
-$$ \lambda_{max}(B) = \max_{x \in \mathbb{R}^n} \frac{x^TBx}{x^Tx} \ , $$
-$$ \lambda_{min}(B) = \min_{x \in \mathbb{R}^n} \frac{x^TBx}{x^Tx} \, $$
-also recall that $c(x,y) \geq 0$, $C_{i,j} = h^2 c(x_i,y_j) $, and that the eigenvalues of the shifted matrix $A + I$ are $1 + $ the eigenvalues of the matrix $A$.</p>
+$$<p>Using these estimates show that $L^{-1}A(L^{-1})^T$ is well conditioned, specifically, show that:</p>
+$$ K_2( L^{-1}A(L^{-1})^T ) \leq 1 + \frac{1}{2\pi^2}\max_{x,y}{c(x,y)} \ .$$<p></p>
+<p>(You may use the $\approx$ in $\lambda_{\text{min}}(M)$ as equality). Note that the bound is independent of $n$ and small if $c(x,y)$ doesn't get too large, so we expect CG to converge very quickly.</p>
+<p>Hint: You may want to use the following characterization of the eigenvalues of symmetric matrices based on the Rayleigh quotient:</p>
+$$ \lambda_{max}(B) = \max_{x \in \mathbb{R}^n} \frac{x^TBx}{x^Tx} \ , \\
+ \lambda_{min}(B) = \min_{x \in \mathbb{R}^n} \frac{x^TBx}{x^Tx} \ , $$<p>also recall that $c(x,y) \geq 0$, $C_{i,j} = h^2 c(x_i,y_j) $, and that the eigenvalues of the shifted matrix $A + I$ are $1 + $ the eigenvalues of the matrix $A$.</p>
 
 </div>
 </div>
@@ -14854,7 +14844,7 @@ also recall that $c(x,y) \geq 0$, $C_{i,j} = h^2 c(x_i,y_j) $, and that the eige
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Much better convergence! Note that our first approximate solution looks visually nothing like our correct one.</p>
-<p>There is a lot more to be said about numerical solvers for PDEs such as handling more complicated domains, handling coupled PDEs and dealing with nonlinearities, but we have now seen the entire lifespan a of linear PDE solver:</p>
+<p>There is a lot more to be said about numerical solvers for PDEs such as handling more complicated domains, handling coupled PDEs and dealing with nonlinearities, but we have now seen the entire lifespan of a typical linear PDE solver:</p>
 <ul>
 <li>A discretization scheme is used to turn a continuous problem into a linear system.</li>
 <li>An iterative method is chosen, often CG or GMRES, to solve the linear system.</li>
@@ -14866,11 +14856,10 @@ also recall that $c(x,y) \geq 0$, $C_{i,j} = h^2 c(x_i,y_j) $, and that the eige
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="Q4-Alternating-direction-implicit">Q4 Alternating direction implicit<a class="anchor-link" href="#Q4-Alternating-direction-implicit">&#182;</a></h1><p>In class, we proved the convergence of Krylov subspace methods through a connection with a polynomial approximation problem. This link between numerical linear algebra and approximation theory is pervasive, and we see another example here with a different iterative solver: the Alternating Direction Implicit (ADI) method.
-ADI is an iterative solver for Sylvester equations:
+ADI is an iterative solver for Sylvester equations:</p>
 $$
 AX - XB = F
-$$</p>
-<p>It is defined as the following iteration:</p>
+$$<p>It is defined as the following iteration:</p>
 <blockquote><p>$X^{(0)} = 0$</p>
 <p>for $j=0,1,2,3,\dots$</p>
 <blockquote><p>Solve for $X^{(j + 1/2)}$, where $\left( A - \beta_{j +1} I\right) X^{(j+1/2)} = X^{(j)}\left( B - \beta_{j + 1} I \right) + F$</p>
@@ -14885,34 +14874,31 @@ $${\displaystyle X-X^{(K)}=\left(\prod _{j=1}^{K}{ {(A-\alpha _{j}I)(A-\beta _{j
 <p>Hint:
 Note that $F  =  AX - XB + (- \beta_{j+1} X + \beta_{j+1} X) = (A - \beta_{j +1} I)X - X\left( B - \beta_{j + 1} I \right) $.</p>
 <p>Let $E^{(j)} = X - X^{(j)}$. 
-First show that 
-$$E^{(j + 1/2)} = \left( A - \beta_{j +1} I\right)^{-1} E^{(j)}\left( B - \beta_{j + 1} I \right) \ ,  $$
- then derive a similar relation between $E^{(j + 1)}$ and $E^{(j + 1/2)}$ and combine them to show the identity.</p>
+First show that</p>
+$$E^{(j + 1/2)} = \left( A - \beta_{j +1} I\right)^{-1} E^{(j)}\left( B - \beta_{j + 1} I \right) \ ,  $$<p>then derive a similar relation between $E^{(j + 1)}$ and $E^{(j + 1/2)}$ and combine them to show the identity.</p>
 <ol>
-<li>Use 1 to show:
+<li>Use 1 to show:</li>
+</ol>
 $$
 \frac{\| \displaystyle X-X^{(K)}\|_2}{ \|X\|_2 } \leq \|r_K(A)\|_2 \| r_K(B)^{-1}\|_2
-$$
-where $r_K(x)$ is the rational function (a rational function is a ratio of polynomials): 
+$$<p>where $r_K(x)$ is the rational function (a rational function is a ratio of polynomials): 
 $$r_K(x) = \prod_{j=1}^K \frac{x -  \alpha _{j}}{x -  \beta _{j}} \ . $$
 The function applied to the matrix is defined as:
-$r_K(M) = \prod_{j=1}^{K}{ {(M-\alpha _{j}I)(M-\beta _{j}I)^{-1}} }$  </li>
-</ol>
+$r_K(M) = \prod_{j=1}^{K}{ {(M-\alpha _{j}I)(M-\beta _{j}I)^{-1}} }$</p>
 <ol>
-<li><p>Assume that $A$ and $-B$ are SPD. Show that:
-$$
-\frac{\| \displaystyle X-X^{(K)}\|_2}{ \|X\|_2 } \leq  \frac{ \max_{\lambda \in [ a ,b ]}  |r_K(\lambda )|}{ \min_{\lambda \in [ -d, -c]}  |r_K(\lambda )| } $$ 
-where $a = \lambda_{\text{min}}(A) $, $b = \lambda_{\text{max}}(A) $, $c = \lambda_{\text{min}}(-B) $, $d = \lambda_{\text{max}}(-B) $</p>
-</li>
-<li></li>
+<li>Assume that $A$ and $-B$ are SPD. Show that:</li>
 </ol>
-<p>Thus, one should pick the shifts $ \alpha_j$ and $\beta_j$ such that the
-right-hand side is as small as possible. In other words, $r_K(x)$ must solve the following rational function approximation problem:
-$$ \gamma(K, a, b,c,d) = \inf_{\lambda_j, \alpha_j}  \frac{ \max_{\lambda \in [ a ,b ]}  |r_K(\lambda )|}{ \min_{\lambda \in [ -d, -c]}  |r_K(\lambda )| } $$
-The approximation problem is known as <em>Zolotarev's third problem</em>.
-A solution is known in the case that $a = d$, and $c = b$, which corresponds to the case when $B = -A$. The optimal $\alpha_j,\beta_j$ are not easy to write down, but for our purposes, it is sufficient to know they exist, and that 
-$$\gamma(K, a, b,a,b) =4 \left[\exp\left( \frac{\pi^2}{2 \log (4b/a)} \right) \right]^{-2K} \ .$$</p>
-<p>Use this result to prove that ADI converges linearly when $B = -A$, $A$ is SPD, and the optimal shifts are used.</p>
+$$
+\frac{\| \displaystyle X-X^{(K)}\|_2}{ \|X\|_2 } \leq  \frac{ \max_{\lambda \in [ a ,b ]}  |r_K(\lambda )|}{ \min_{\lambda \in [ -d, -c]}  |r_K(\lambda )| } $$<p></p>
+<p>where $a = \lambda_{\text{min}}(A) $, $b = \lambda_{\text{max}}(A) $, $c = \lambda_{\text{min}}(-B) $, $d = \lambda_{\text{max}}(-B) $</p>
+<ol>
+<li><p>Thus, one should pick the shifts $ \alpha_j$ and $\beta_j$ such that the
+right-hand side is as small as possible. In other words, $r_K(x)$ must solve the following rational function approximation problem:</p>
+</li>
+</ol>
+$$ \gamma(K, a, b,c,d) = \inf_{\lambda_j, \alpha_j}  \frac{ \max_{\lambda \in [ a ,b ]}  |r_K(\lambda )|}{ \min_{\lambda \in [ -d, -c]}  |r_K(\lambda )| } $$<p>The approximation problem is known as <em>Zolotarev's third problem</em>.
+A solution is known in the case that $a = d$, and $c = b$, which corresponds to the case when $B = -A$. The optimal $\alpha_j,\beta_j$ are not easy to write down, but for our purposes, it is sufficient to know they exist, and that</p>
+$$\gamma(K, a, b,a,b) =4 \left[\exp\left( \frac{\pi^2}{2 \log (4b/a)} \right) \right]^{-2K} \ .$$<p>Use this result to prove that ADI converges linearly when $B = -A$, $A$ is SPD, and the optimal shifts are used.</p>
 
 </div>
 </div>

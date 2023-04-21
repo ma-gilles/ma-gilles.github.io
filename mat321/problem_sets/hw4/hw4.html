@@ -14275,10 +14275,9 @@ a.anchor-link {
 <li>derive fast solvers for circulant and perturbed circulant systems</li>
 <li>deblur large datasets of images</li>
 </ul>
-<p>That is, we used the fact that:
-$$C = F^{-1} \Lambda F $$
-where $F$ is the DFT matrix, and $\text{diag}(\Lambda) = Fc$. The goal of is this exercise is to prove this identity.</p>
-<p>Note that this is an eigendecomposition of $C$, where $V = F^{-1}$ is the matrix of eigenvectors. Recall that the DFT matrix is 
+<p>That is, we used the fact that:</p>
+$$C = F^{-1} \Lambda F $$<p>where $F$ is the DFT matrix, and $\text{diag}(\Lambda) = Fc$. The goal of is this exercise is to prove this identity.</p>
+<p>Note that this is an eigendecomposition of $C$, where $V = F^{-1}$ is the matrix of eigenvectors. Recall that the DFT matrix is</p>
 $$
 F = \frac{1}{\sqrt{n}} \begin{bmatrix}
 1 &amp; 1 &amp; 1 &amp; 1 &amp; \cdots &amp; 1    \\
@@ -14288,23 +14287,22 @@ F = \frac{1}{\sqrt{n}} \begin{bmatrix}
 \vdots &amp; \vdots &amp; \vdots &amp; \vdots  &amp; \ddots &amp; \ddots   \\
 1 &amp; \omega^{n-1} &amp; \omega^{2(n-1)} &amp; \omega^{3(n-1)}  &amp; \cdots &amp; \omega^{(n-1)(n-1)}    \\
 \end{bmatrix}
-$$
-where $\omega = \exp(- \imath 2 \pi / n) $, $\imath^2 = -1$ (note that $\omega$ depends on $n$).
+$$<p>where $\omega = \exp(- \imath 2 \pi / n) $, $\imath^2 = -1$ (note that $\omega$ depends on $n$).
 Also recall that $F$ (with this normalization) is unitary, that is $F^{-1} = F^* = \bar{F}^T$, and $F$ is symmetric, so  $F^{-1} = \bar{F}$.</p>
 <p>We prove this identity in 3 steps:</p>
 <ol>
-<li>Let $D_n \in \mathbb{R}^{n \times n}$ be the circulant downward shift matrix. For $n = 5$, this matrix is:
+<li>Let $D_n \in \mathbb{R}^{n \times n}$ be the circulant downward shift matrix. For $n = 5$, this matrix is:</li>
+</ol>
 $$
 D_5 = \begin{bmatrix}
-&amp; &amp; &amp; &amp; 1 \\
+ &amp; &amp; &amp; &amp; 1 \\
 1 &amp; &amp; &amp; &amp; \\
-&amp; 1&amp; &amp; &amp; \\
-&amp; &amp; 1&amp; &amp; \\
-&amp; &amp; &amp; 1&amp; \\
+ &amp; 1&amp; &amp; &amp; \\
+ &amp; &amp; 1&amp; &amp; \\
+ &amp; &amp; &amp; 1&amp; \\
 \end{bmatrix}
-$$. </li>
-</ol>
-<p>Show that $D_n {F}_{i+1} = \gamma_{i+1} {F}_{i+1} $ where ${F}_{i+1}$ is the $i+1$ column of ${F}$:
+$$<p>.</p>
+<p>Show that $D_n {F}_{i+1} = \gamma_{i+1} {F}_{i+1} $ where ${F}_{i+1}$ is the $i+1$ column of ${F}$:</p>
 $$
 F_{i+1} = \frac{1}{\sqrt{n}}  \begin{bmatrix}
 1    \\
@@ -14314,14 +14312,12 @@ F_{i+1} = \frac{1}{\sqrt{n}}  \begin{bmatrix}
 \vdots \\
 {\omega}^{(n-1)i}\\
 \end{bmatrix}
-$$
-and $\gamma_{i+1} = \bar{\omega}^i$. Conclude that $D_n F = F \bar{\Gamma} $.
+$$<p>and $\gamma_{i+1} = \bar{\omega}^i$. Conclude that $D_n F = F \bar{\Gamma} $.
 where $\bar{\Gamma}$ is a diagonal matrix with diagonal entries $\gamma_i$. This last equation implies $D_n = F  \bar{\Gamma} F^{-1}$, and taking the complex conjugate of this equation, we get the desired: $D_n = F^{-1} \Gamma F$.</p>
 <ol>
-<li>Write any circulant matrix as $(n-1)$ degree polynomial in $D_n$. That is, find the coefficients $\alpha_k$ so that:
-$$C = \sum_{k=0}^{n-1} \alpha_k D_n^k $$</li>
+<li>Write any circulant matrix as $(n-1)$ degree polynomial in $D_n$. That is, find the coefficients $\alpha_k$ so that:</li>
 </ol>
-<p>Recall that $D_n^0$ is defined as the identity.</p>
+$$C = \sum_{k=0}^{n-1} \alpha_k D_n^k $$<p>Recall that $D_n^0$ is defined as the identity.</p>
 <ol>
 <li>Use the previous two parts to show $C = F^{-1} \Lambda F $ for some diagonal matrix $\Lambda$. Some inspection reveals that $\text{diag}(\Lambda) = Fc$, but you do not need to prove this.</li>
 </ol>
@@ -14350,18 +14346,17 @@ x_{i,j} = \frac{f_{i,j}}{d_i - p_j} \ .
 $$
 From this equation, it is clear that there is a unique solution if and only if $d_i - p_j \neq 0 \leftrightarrow d_i \neq p_j$ for all $i,j$.</p>
 <p>To solve a general Sylvester equation, Bartels-Stewart reduces a general Sylvester equation to the diagonal case using an eigenvalue decomposition.</p>
-<h2 id="2.1">2.1<a class="anchor-link" href="#2.1">&#182;</a></h2><p>Assume $A$ and $B$ are diagonalizable, and their eigenvalues decompositions are
+<h2 id="2.1">2.1<a class="anchor-link" href="#2.1">&#182;</a></h2><p>Assume $A$ and $B$ are diagonalizable, and their eigenvalues decompositions are</p>
 $$ 
 A = U \Lambda U^{-1} \qquad B = V\Sigma V^{-1} 
-$$
-Show that the matrices $\hat{X} = U^{-1} X V $, $\hat{F} =U^{-1} F V $  satisfy the following transformed Sylvester equation:</p>
+$$<p>Show that the matrices $\hat{X} = U^{-1} X V $, $\hat{F} =U^{-1} F V $  satisfy the following transformed Sylvester equation:</p>
 $$   \Lambda  \hat{X}- \hat{X} \Sigma  = \hat{F} $$<!-- # 1.2 
 Assume A and B are diagonalizable as above. Using your answer above, and using the Kronecker formalism, write conditions under which a Sylvester equation has a unique solution. -->
 
 <h2 id="2.2">2.2<a class="anchor-link" href="#2.2">&#182;</a></h2><p>Use the previous part to show that if $A$ and $(-B)$ are symmetric positive definite matrices, then the Sylvester equation has a unique solution.</p>
 <h2 id="2.3">2.3<a class="anchor-link" href="#2.3">&#182;</a></h2><p>Use 1.1 to design and implement an $\mathcal{O}(n^3)$ solver for a general Sylvester equation. You may assume that the matrices are diagonalizable but not SPD.</p>
 <p>You may use <code>np.linalg.eig()</code> which computes an eigenvalue decomposition of $A$ in $\mathcal{O}(n^3)$.</p>
-<p>Reminder: the number one sin of Numerical Linear Algebra is to form the inverse of a matrix (<a href="https://nhigham.com/2022/10/11/seven-sins-of-numerical-linear-algebra/">https://nhigham.com/2022/10/11/seven-sins-of-numerical-linear-algebra/</a>). In particular, these two commands should be avoided like the plague: <code>np.linalg.inv(A)</code> or <code>np.linalg.solve(A,I)</code> (they do the same computation). Instead, you should use:
+<p>Reminder: the <a href="https://nhigham.com/2022/10/11/seven-sins-of-numerical-linear-algebra/">number one sin of Numerical Linear Algebra</a> is to form the inverse of a matrix. In particular, these two commands should be avoided like the plague: <code>np.linalg.inv(A)</code> or <code>np.linalg.solve(A,I)</code> (they do the same computation). Instead, you should use:
 <code>np.linalg.solve(A,F)</code> to compute $X = A^{-1} F$ and <code>np.linalg.solve(A.T,F.T).T</code>  to compute $X = F A^{-1} = ({A^{-1}}^T {F}^T)^T$</p>
 
 </div>
@@ -14373,7 +14368,7 @@ Assume A and B are diagonalizable as above. Using your answer above, and using t
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -14431,11 +14426,10 @@ Assume A and B are diagonalizable as above. Using your answer above, and using t
 <h2 id="Q3-Fast-PDE-solver:-Poisson's-equation">Q3 Fast PDE solver: Poisson's equation<a class="anchor-link" href="#Q3-Fast-PDE-solver:-Poisson's-equation">&#182;</a></h2><p>In HW2 we derived a numerical scheme to solve Poisson's equation in 1D:</p>
 $$
 - \frac{d^2}{dx^2} u(x) = f(x) \qquad u(0) = u(1) = 0 
-$$<p>The discretized system was of the form:
+$$<p>The discretized system was of the form:</p>
 $$
 T u  =  h^2 f
-$$
-where:
+$$<p>where:</p>
 $$
 T = \begin{bmatrix}
 2 &amp; -1 &amp; &amp; &amp; &amp;  \\
@@ -14451,19 +14445,15 @@ f(2h) \\
 \vdots \\
 f(n h)
 \end{bmatrix}
-$$</p>
-<p>T is tridiagonal, so we now know how to solve this system in $O(n)$ operations. All variations of the 1D problem are equally easy to solve.</p>
-<p>The 2D case is much more interesting. Poisson's equation on the square with homogeneous Dirichlet conditions is:
-$$</p>
-<ul>
-<li>\frac{d^2}{dx^2} u(x,y) - \frac{d^2}{dy^2}u(x,y)   = f(x,y)\
-\qquad u(x,0) = u(x,1) =0\
-\qquad u(0,y) =  u(1,y) = 0
+$$<p>T is tridiagonal, so we now know how to solve this system in $O(n)$ operations. All variations of the 1D problem are equally easy to solve.</p>
+<p>The 2D case is much more interesting. Poisson's equation on the square with homogeneous Dirichlet conditions is:</p>
 $$
-Suppose we discretize the equation above on a $n \times n$ uniform grid $(x_i, y_j)$, with  $x_i = i h $,  $y<em>j = jh$,  with $h = \frac{1}{n+1}$.
-We write $F</em>{i,j} = h^2 f(x_i, y_j)$, that is entry $(i,j)$ of the matrix $F \in \mathbb{R}^{n \times n}$ is the function $f(x,y)$ evaluated at $(x_i, y<em>j)$ times $h^2$.
-We seek approximate value $U</em>{i,j} \approx u(x_i, y_j)$ through finite differences once again.</li>
-</ul>
+- \frac{d^2}{dx^2} u(x,y) - \frac{d^2}{dy^2}u(x,y)   = f(x,y)\\
+\qquad u(x,0) = u(x,1) =0\\
+\qquad u(0,y) =  u(1,y) = 0
+$$<p>Suppose we discretize the equation above on a $n \times n$ uniform grid $(x_i, y_j)$, with  $x_i = i h $,  $y_j = jh$,  with $h = \frac{1}{n+1}$.
+We write $F_{i,j} = h^2 f(x_i, y_j)$, that is entry $(i,j)$ of the matrix $F \in \mathbb{R}^{n \times n}$ is the function $f(x,y)$ evaluated at $(x_i, y_j)$ times $h^2$.
+We seek approximate value $U_{i,j} \approx u(x_i, y_j)$ through finite differences once again.</p>
 <p>We can think of the operator $ u \rightarrow - \frac{d^2}{dx^2}u$  and boundary conditions $ u(x,0) = u(x,1) = 0 $ as being applied independently to the columns of $U$, thus they are discretized by the matrix $ U \rightarrow TU$.
 Similarly, we can think of the operator $ u \rightarrow - \frac{d^2}{dy^2}u$  and boundary conditions $ u(0,y) = u(1,y) = 0 $ as being applied independently to the rows of $U$, thus they are discretized by the matrix $ U \rightarrow U T^T = UT$.</p>
 <p>Hence, the operator
@@ -14480,7 +14470,7 @@ where $S$ is the Discrete Sine Transform (DST) matrix defined componentwise by $
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -14554,13 +14544,13 @@ Fast poisson solver 1.0
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[13]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[2]:</div>
 
 
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&lt;matplotlib.image.AxesImage at 0x7fc55ea5c940&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x7fa26ad6e860&gt;</pre>
 </div>
 
 </div>
@@ -14608,16 +14598,16 @@ Add $A_{1,1}^{(k)}$ to list of eigenvalues</p>
 <p>end while</p>
 </blockquote>
 <p>Step (1) was implemented in precept 7,</p>
-<p>Step (2) - (3), could be done we could do it in O(m), but we will ignore this specific problem for now, and you can use <code>np.linalg.qr</code> instead, which performs that operation in $\mathcal{O}(m^3)$.</p>
+<p>Step (2) - (3), could be done in $\mathcal{O}(m)$, but we will ignore this specific problem for now, and you can use <code>np.linalg.qr</code> instead, which performs that operation in $\mathcal{O}(m^3)$.</p>
 <p>Step (4) is the deflation step. We check if we have converged to an eigenvalue.</p>
-<p>As a result of the shifting we recover the $O(\epsilon^3)$ converge of the Rayleigh quotient. Thus, we expect to need only a handful of iterations per eigenvalues (3-4).</p>
+<p>As a result of the shifting we recover the $O(\epsilon^3)$ converge of the Rayleigh quotient iteration. Thus, we expect to need only a handful of iterations per eigenvalues (3-4).</p>
 <p>Your task is to implement the shifted-QR algorithm above and keep track of how many QR iterations you are doing. Make sure that you only need $&lt; 4 n$ QR iterations to compute all eigenvalues.</p>
 
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">shifted_QR_iteration</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">tol</span> <span class="o">=</span><span class="mf">1e-13</span><span class="p">):</span>
@@ -14670,7 +14660,7 @@ Add $A_{1,1}^{(k)}$ to list of eigenvalues</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>eigenvalue error: 27.343877642919818
+<pre>eigenvalue error: 27.94872617755975
 number of QR iterations per eigenvalues: 0.0
 </pre>
 </div>
@@ -14690,11 +14680,6 @@ number of QR iterations per eigenvalues: 0.0
 <li><p>Write an $O(m)$ QR decomposition for tridiagonal matrices.</p>
 </li>
 </ul>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 
 </div>
 </div>
