@@ -14284,7 +14284,7 @@ F =  \begin{bmatrix}
 1 &amp; \omega^{n-1} &amp; \omega^{2(n-1)} &amp; \omega^{3(n-1)}  &amp; \cdots &amp; \omega^{(n-1)(n-1)}    \\
 \end{bmatrix}
 $$<p>where $\omega = \exp(-i 2 \pi /n) $ (note that $\omega$ is a function of n).</p>
-<p>To illustrate the FFT, we take $n = 8$.</p>
+<p>To illustrate the FFT, we take $n = 8$ (this is the presentation in Golub &amp; Van Loan).</p>
 $$
 F_8 =  \begin{bmatrix}
 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1  \\
@@ -14548,7 +14548,7 @@ with $b_i = f(x_i)$ where $x_i = \cos(\frac{2i -1 }{2(n+1)}\pi)$ for $i = 1, \do
 <h2 id="Q2.3.-Clenshaw-Curtis-quadrature">Q2.3. Clenshaw-Curtis quadrature<a class="anchor-link" href="#Q2.3.-Clenshaw-Curtis-quadrature">&#182;</a></h2><p>In class, we defined the Newton-cotes quadrature as the integral of the equispaced interpolant. Similarly, Clenshaw-curtis quadrature is the integral of the Chebyshev interpolant.</p>
 $$
 \int_{-1}^1 f(x) dx \approx \int_{-1}^1 p_n(x) dx  = \sum_{i=0}^n w_i f(x_i)
-$$<p>Using part 2, and the following identity:</p>
+$$<p>Using a similar idea as 2, and the following identity:</p>
 $$
 \int_{-1}^1 T_n(x)\, \mathrm{d}x =
 \begin{cases}
@@ -14559,6 +14559,7 @@ $$<p>write a function that computes the Quadrature weights. That is, find a vect
 $$
 \int_{-1}^1 p_n(x) dx  = \sum_{i=0}^n w_i f(x_i) = w^T b
 $$<p>where $x_i$ are the Chebyshev nodes of degree $(n+1)$.</p>
+<p>Hint: first write $\int_{-1}^1 p_n(x) dx = c^T v$ where $c_i$ are the expansion coefficients for some fixed vector $v$,then relate $c$ to $b$ to infer $w$ such that $c^T v = w^T b$.</p>
 
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
@@ -14667,6 +14668,7 @@ Compute the residual of <code>xk</code>. What do you observe? How close is it to
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">scipy</span>
 <span class="kn">import</span> <span class="nn">scipy.sparse</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">scipy.sparse.linalg</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -14674,10 +14676,10 @@ Compute the residual of <code>xk</code>. What do you observe? How close is it to
     <span class="c1"># Implement the Ax in O(n^2) where x in an n^2 vector and </span>
     <span class="c1"># A is the matricized version of the operator</span>
     <span class="c1"># X -&gt; TX + XT + C dot X</span>
-
+    <span class="n">n</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="c1"># ADD YOUR CODE HERE</span>
-
-    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">0</span>
+    
+    <span class="k">return</span> <span class="mi">0</span><span class="o">*</span><span class="n">C</span>
 
 <span class="c1"># THERE IS CODE TO ADD BELOW! </span>
 
@@ -14731,8 +14733,6 @@ Compute the residual of <code>xk</code>. What do you observe? How close is it to
 <span class="n">A_op</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinearOperator</span><span class="p">((</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="n">A_matvec</span><span class="p">)</span>
 
 <span class="c1"># Then A_op is passed to CG</span>
-<span class="c1"># Call CG here/</span>
-
 
 <span class="c1">## ADD YOUR CODE HERE - </span>
 <span class="c1">## CALL CG AND COMPUTE THE RESIDUAL OF APPROXIMATE SOLUTION</span>
@@ -14740,7 +14740,7 @@ Compute the residual of <code>xk</code>. What do you observe? How close is it to
 
 <span class="c1"># Compute the relative residual |A*x - b| / |b|</span>
 <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
-<span class="c1"># Should be pretty bad! (but &lt; 0.1)</span>
+<span class="c1"># Should be pretty bad! (about ~= 6)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;residual of linear system: &#39;</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
 
 
@@ -14889,16 +14889,16 @@ $r_K(M) = \prod_{j=1}^{K}{ {(M-\alpha _{j}I)(M-\beta _{j}I)^{-1}} }$</p>
 <li>Assume that $A$ and $-B$ are SPD. Show that:</li>
 </ol>
 $$
-\frac{\| \displaystyle X-X^{(K)}\|_2}{ \|X\|_2 } \leq  \frac{ \max_{\lambda \in [ a ,b ]}  |r_K(\lambda )|}{ \min_{\lambda \in [ -d, -c]}  |r_K(\lambda )| } $$<p></p>
+\frac{\| \displaystyle X-X^{(K)}\|_2}{ \|X\|_2 } \leq  \frac{ \sup_{\lambda \in [ a ,b ]}  |r_K(\lambda )|}{ \inf_{\lambda \in [ -d, -c]}  |r_K(\lambda )| } $$<p></p>
 <p>where $a = \lambda_{\text{min}}(A) $, $b = \lambda_{\text{max}}(A) $, $c = \lambda_{\text{min}}(-B) $, $d = \lambda_{\text{max}}(-B) $</p>
 <ol>
 <li><p>Thus, one should pick the shifts $ \alpha_j$ and $\beta_j$ such that the
 right-hand side is as small as possible. In other words, $r_K(x)$ must solve the following rational function approximation problem:</p>
 </li>
 </ol>
-$$ \gamma(K, a, b,c,d) = \inf_{\lambda_j, \alpha_j}  \frac{ \max_{\lambda \in [ a ,b ]}  |r_K(\lambda )|}{ \min_{\lambda \in [ -d, -c]}  |r_K(\lambda )| } $$<p>The approximation problem is known as <em>Zolotarev's third problem</em>.
+$$ \gamma(K, a, b,c,d) = \inf_{\lambda_j, \alpha_j}  \frac{ \sup_{\lambda \in [ a ,b ]}  |r_K(\lambda )|}{ \inf_{\lambda \in [ -d, -c]}  |r_K(\lambda )| } $$<p>The approximation problem is known as <em>Zolotarev's third problem</em>.
 A solution is known in the case that $a = d$, and $c = b$, which corresponds to the case when $B = -A$. The optimal $\alpha_j,\beta_j$ are not easy to write down, but for our purposes, it is sufficient to know they exist, and that</p>
-$$\gamma(K, a, b,a,b) =4 \left[\exp\left( \frac{\pi^2}{2 \log (4b/a)} \right) \right]^{-2K} \ .$$<p>Use this result to prove that ADI converges linearly when $B = -A$, $A$ is SPD, and the optimal shifts are used.</p>
+$$\gamma(K, a, b,a,b) =4 \left[\exp\left( \frac{\pi^2}{2 \log (4b/a)} \right) \right]^{-2K} \ .$$<p>Use this result to prove that the error in ADI satisfies $\|E^{(K)}\| = \mathcal{O}(\rho^K)$ for some $\rho &lt;1$ (that is, it converges at least linearly in K) when $B = -A$, $A$ is SPD, and the optimal shifts are used.</p>
 
 </div>
 </div>
