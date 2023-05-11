@@ -14493,7 +14493,7 @@ Z_n = \begin{bmatrix}
     &amp;  &amp;  &amp;  &amp;  &amp; 1 &amp; 0 \\
 \end{bmatrix}
 $$<p>Note that $Z_n$ is not a permutation matrix (its first row is only 0's). We say an SPD matrix $A$ is <em>quasi-Toeplitz</em> if it satisfies the following condition:</p>
-$$A - Z_n A Z_n^T = G J G^T $$<p>where $G \in \mathbb{R}^{n \times 2}$, and $J =  \begin{bmatrix} 1 &amp;  0 \\ 0 &amp; -1 \end{bmatrix}$. Such an equation is called a <em>displacement rank equation</em>, and we say quasi-Toeplitz matrices have <em>displacement rank 2</em>. The intuition is that displacing the rows just slightly creates a rank $2$ matrix $G J G^T$. The matrix $G$ is called a <em>generator</em> of the quasi-Toeplitz matrix A.</p>
+$$A - Z_n A Z_n^T = G J G^T $$<p>where $G \in \mathbb{R}^{n \times 2}$, and $J =  \begin{bmatrix} 1 &amp;  0 \\ 0 &amp; -1 \end{bmatrix}$. Such an equation is called a <em>displacement rank equation</em>, and we say quasi-Toeplitz matrices have <em>displacement rank 2</em>. The intuition is that displacing the rows and columns just slightly creates a rank $2$ matrix $G J G^T$. The matrix $G$ is called a <em>generator</em> of the quasi-Toeplitz matrix A.</p>
 <p>Generators are not unique, but we identify a special one: we say $\hat{G}$ is a <em>proper generator</em> if it is a generator, and it has a 0 on the (1,2) entry:</p>
 $$
 \hat{G} = \begin{bmatrix} 
@@ -14685,7 +14685,7 @@ $$<p>where $F_{2}$ is the 2d Discrete Fourier Transform and $D_i$ is a diagonal 
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Given a set of noisy images $y_i$, statistical models of the noise and signal, one can describe statistically the optimal estimate of $x$, it is known as the <em>maximum likelihood estimate</em> (MLE). In our case, the MLE is the solution of the following least-squares problem:</p>
 $$
-\hat{x} = \argmin_{x} \left\lbrace \left(  \sum_{i=1}^{m} \|y_i - C_i x \|_2^2 \right) + \lambda^2 \|x\|_2^2  \right\rbrace
+\hat{x} =  \underset{x}{\text{argmin}} \left\lbrace \left(  \sum_{i=1}^{m} \|y_i - C_i x \|_2^2 \right) + \lambda^2 \|x\|_2^2  \right\rbrace
 $$<p>where the images $y_i$ and the operators $C_i$ are known, and $\lambda^2 = \frac{\sigma^2}{\tau^2} $, the variance of the noise $\sigma^2 $ and the variance of the signal $\tau^2$, which are both known quantities.</p>
 
 </div>
@@ -14693,7 +14693,7 @@ $$<p>where the images $y_i$ and the operators $C_i$ are known, and $\lambda^2 = 
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Q3.1">Q3.1<a class="anchor-link" href="#Q3.1">&#182;</a></h3><p>Write the MLE as a standard least-squares problem, that is, find $A$ and $b$ such that</p>
-$$\hat{x} = \argmin_{x} \|A x - b\|_2^2$$<p>Suppose we solve the above system in a standard way: perform an economy QR on $A$. What would be the complexity of this solution in terms of $n$ and $m$ ? (Recall, images are of size $n \times n$ and $m$ is the number of images).</p>
+$$\hat{x} = \underset{x}{\text{argmin}} \|A x - b\|_2^2$$<p>Suppose we solve the above system in a standard way: perform an economy QR on $A$. What would be the complexity of this solution in terms of $n$ and $m$ ? (Recall, images are of size $n \times n$ and $m$ is the number of images).</p>
 
 </div>
 </div>

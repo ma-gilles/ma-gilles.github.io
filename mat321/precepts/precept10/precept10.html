@@ -14266,11 +14266,11 @@ w_k = \frac{1}{\prod_{i=0 \dots n, i\neq k} (x_k - x_i)}
 $$$$
 p_n(x) = \frac{\sum_{k=0}^n \frac{w_k y_k}{(x-x_k)}}{\sum_{k=0}^{n} \frac{w_k}{(x - x_k)}} 
 $$<p>for $x \neq x_i$.</p>
-<p>The uniform and Chebysev points on $[-1, 1]$ are defined as :</p>
+<p>The uniform and Chebysev points (of the second kind) on $[-1, 1]$ are defined as :</p>
 $$
 x_i = -1 + 2 \frac{i}{n}
 $$$$
-x_i = \cos(\frac{i\pi}{n})
+x_i = \cos \left( \frac{i\pi}{n} \right)
 $$<p>for $i = 0, \dots n$</p>
 <p>Implement a polynomial interpolant of the following functions using Barycentric interpolation.  Check that the point to evaluate is not of of the nodes, up to $10^{-15}$. If it is, return the corresponding value $y_i$.</p>
 <ul>
@@ -14344,7 +14344,7 @@ $$<p>for $i = 0, \dots n$</p>
 <li>$ f_1(x) = \cos( 10  \pi x) $</li>
 <li>Runge's function $ f_2(x) = \frac{1}{ 1 + 25 x^2 } $</li>
 </ul>
-<p>At uniform, Chebyshev and random point. You can get random points on $[-1,1]$ by running <code>np.random.rand(n)*2 -1</code>.</p>
+<p>At uniform, Chebyshev and random point. You can get random points on $[-1,1]$ by running <code>pts = np.random.rand(n)*2 -1</code>.</p>
 <p>Visualize the functions are their interpolant for n =  5, 10, 30.</p>
 <p>Then, make a convergence plot of the max error as n increases from n = 1 to n = 50.
 To do this, approximate and plot the error between the interpolant and the function $\max_x |f(x) - p_n(x)| $. You can approximate the max by taking the max over a fine uniform grid with $n = 10^4$ points (see code above).</p>
@@ -14400,8 +14400,8 @@ To do this, approximate and plot the error between the interpolant and the funct
 <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span>  <span class="n">x</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">ns</span><span class="p">:</span>
     <span class="c1"># Make convergence plot</span>
-
-
+    <span class="n">errors</span>
+    
 <span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span><span class="n">errors</span><span class="p">)</span>
 </pre></div>
 
@@ -14415,7 +14415,7 @@ To do this, approximate and plot the error between the interpolant and the funct
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Test it on:</p>
 <ul>
-<li>$ f_3(x) = \begin{cases} 1 &amp; \text{ if }x &lt; 1 \\ 1 &amp; \text{ else} \end{cases} $</li>
+<li>$ f_3(x) = \begin{cases} -1 &amp; \text{ if }x &lt; 0 \\ 1 &amp; \text{ else} \end{cases} $</li>
 </ul>
 <p>Plot the the Chebyshev interpolant of $f_3$ for different values of n.
 How does the oscillation near $0$ change with $n$?
@@ -14430,7 +14430,7 @@ Make a convergence plot for n = 5 to 500 in increment of 10.</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">20</span>
-<span class="c1"># TODO: Change the function, , see how result changes</span>
+<span class="c1"># TODO: Change n, see how result changes</span>
 <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 
@@ -14448,6 +14448,9 @@ Make a convergence plot for n = 5 to 500 in increment of 10.</p>
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># scaling plot</span>
 <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">ns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">500</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">ns</span><span class="p">:</span>
+    <span class="c1"># Make convergence plot</span>
+    <span class="n">errors</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span><span class="n">errors</span><span class="p">)</span>
 </pre></div>

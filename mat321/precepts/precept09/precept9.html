@@ -14432,7 +14432,7 @@ Although step n of GMRES can be computed in O(n^2), you can use a O(n^3) solver 
 <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="nd">@A</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e3</span> <span class="c1"># A well conditioned matrix</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
-<span class="c1"># Should be exact after m steps</span>
+<span class="c1"># Should not be exact after 50 steps</span>
 <span class="n">n_iter</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="n">xm</span><span class="p">,</span><span class="n">r</span> <span class="o">=</span> <span class="n">GMRES</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span> <span class="n">n_iter</span><span class="p">)</span>
 <span class="n">x_sol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
