@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>hw5</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>hw1</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7516,10 +7516,14 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="MAT-321---PS5">MAT 321 - PS5<a class="anchor-link" href="#MAT-321---PS5">¶</a></h2><ul>
-<li>You can (and probably should) discuss assignments with each other and the course staff, but you must write and understand any solutions/code that you submit. You can consult any resource you want for this homework, but you should cite sources you used.</li>
-<li>You must upload the assignment to Gradescope before the deadline in <em>.ipynb</em> format (and optionally pdf if you choose, but a .ipynb is mandatory).</li>
+<h1 id="HW1-:-MAT-321---Numerical-Analysis-and-Scientific-Computing---Fall-2025">HW1 : MAT 321 - Numerical Analysis and Scientific Computing - Fall 2025<a class="anchor-link" href="#HW1-:-MAT-321---Numerical-Analysis-and-Scientific-Computing---Fall-2025">¶</a></h1><p>Due: September 18th at 11:59pm</p>
+<ul>
+<li>You can (and probably should) discuss assignments with other students and the course staff but you must write and understand any solutions/code that you submit. This rule should be followed in good faith and with adherence to the Honor Code.</li>
+<li>You must upload the assignment to Canvas before the deadline.</li>
+<li>All the code you hand in should be contained in this notebook, and submitted in the .ipynb format (not the PDF format). The written solutions can be either typed up in the notebook (preferred) or hand written and handed in through gradescope as well (if you choose this option, you should also submit a PDF but the code should still be in .ipynb format).</li>
 </ul>
+<p>There is also a lot of code, but most of it is provided for you. Each function you have to complete is indicated by</p>
+<h3 id="TODO:-Add-your-code-here"><code>TODO: Add your code here</code><a class="anchor-link" href="#TODO:-Add-your-code-here">¶</a></h3><p>You should try to understand what the rest of the code does, but you should not modify it. Each programming question has tests so that you can check you answer. Feel free to add more tests.</p>
 </div>
 </div>
 </div>
@@ -7530,170 +7534,18 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Q1.-The-Fast-Fourier-Transform"><strong>Q1. The Fast Fourier Transform</strong><a class="anchor-link" href="#Q1.-The-Fast-Fourier-Transform">¶</a></h1><p>In this exercise, we derive the "most important numerical algorithm of our lifetime" (G. Strang): the Fast Fourier Transform (FFT).  The FFT is a fast algorithm to compute the Discrete Fourier Transform (DFT). The DFT of a vector $x \in \mathbb{C}^n$ is the vector $y\in \mathbb{C}^n$ defined by:</p>
+<h2 id="Problem-1:-Back-to-precalc">Problem 1: Back to precalc<a class="anchor-link" href="#Problem-1:-Back-to-precalc">¶</a></h2><p>(You should work on this problem after the 3rd lecture, which will be on numerical stability. The other problems can be done after the 2nd lecture).</p>
+<p>Implement a <strong>numerically stable</strong> quadratic formula. Write a function with that takes as inputs $a,b,c$, that are coefficients of a quadratic polynomial, and outputs $x1,x2$ are the roots
+which are solutions to
 $$
-y_k = \sum_{j=0}^{n-1} x_j \exp(-i2\pi k j / n ) \ .
-$$<p>(Here, vectors are 0-indexed). We restrict our attention to the case where the size $n$ is a power of $2$, although the ideas extend to the general case.
-The DFT is the result of the matrix-vector multiply $Fx$ with the matrix</p>
+a x^2 + bx + c = 0.
 $$
-F =  \begin{bmatrix}
-1 &amp; 1 &amp; 1 &amp; 1 &amp; \cdots &amp; 1    \\
-1 &amp; \omega &amp; \omega^2 &amp;  \omega^3 &amp; \cdots &amp; \omega^{n-1}    \\
-1 &amp; \omega^2 &amp; \omega^4 &amp;  \omega^6 &amp; \cdots &amp; \omega^{2(n-1)}    \\
-1 &amp; \omega^3 &amp; \omega^6 &amp;  \omega^9 &amp; \cdots &amp; \omega^{2(n-1)}    \\
-\vdots &amp; \vdots &amp; \vdots &amp; \vdots  &amp; \ddots &amp; \ddots   \\
-1 &amp; \omega^{n-1} &amp; \omega^{2(n-1)} &amp; \omega^{3(n-1)}  &amp; \cdots &amp; \omega^{(n-1)(n-1)}    \\
-\end{bmatrix}
-$$<p>where $\omega = \exp(-i 2 \pi /n) $ (note that $\omega$ is a function of n).</p>
-<p>To illustrate the FFT, we take $n = 8$.</p>
-$$
-F_8 =  \begin{bmatrix}
-1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1  \\
-1 &amp; \omega &amp; \omega^2 &amp;  \omega^3 &amp; \omega^4 &amp; \omega^5 &amp;  \omega^6  &amp;  \omega^7     \\
-1 &amp; \omega^2 &amp; \omega^4 &amp;  \omega^6 &amp; \omega^1 &amp; \omega^2 &amp;  \omega^4  &amp;  \omega^6     \\
-1 &amp; \omega^3 &amp; \omega^6 &amp;  \omega &amp; \omega^4 &amp; \omega^7 &amp;  \omega^2  &amp;  \omega^5     \\
-1 &amp; \omega^4 &amp; 1 &amp;  \omega^4 &amp; 1 &amp; \omega^4 &amp;  1  &amp;  \omega^4     \\
-1 &amp; \omega^5 &amp; \omega^2 &amp;  \omega^7 &amp; \omega^4 &amp; \omega &amp;  \omega^6  &amp;  \omega^3     \\
-1 &amp; \omega^6 &amp; \omega^4 &amp;  \omega^2 &amp; 1 &amp; \omega^6 &amp;  \omega^4  &amp;  \omega^2     \\
-1 &amp; \omega^7 &amp; \omega^6 &amp;  \omega^5 &amp; \omega^4 &amp; \omega^3 &amp;  \omega^2  &amp;  \omega     \\
-\end{bmatrix}
-$$<p>where we have used the fact that $$\omega^{n+k} = \omega^{n}\omega^{k} = \exp(-i 2 \pi /  n)^{n} \omega^k =  \exp(-i 2 \pi n/n)\omega^k = 1 \omega^k  $$</p>
-<p>Next, we reorder the columns so that the odd-indexed columns come first (they are now ordered as [1,3,5,7,2,4,6,8]), which is equivalent to multiplying $F_8$ by the permutation matrix on the right:</p>
-$$
-P_8 = \begin{bmatrix}
-1 &amp;  &amp;  &amp;  &amp;  &amp;  &amp;  &amp; \\
-  &amp;  &amp;  &amp;  &amp;1 &amp;  &amp;  &amp; \\
-  &amp; 1&amp;  &amp;  &amp;  &amp;  &amp;  &amp; \\
-  &amp;  &amp;  &amp;  &amp;  &amp;1  &amp;  &amp; \\
-  &amp;  &amp;1 &amp;  &amp;  &amp;  &amp;  &amp; \\
-  &amp;  &amp;  &amp;  &amp;  &amp;  &amp; 1 &amp; \\
-  &amp;  &amp;  &amp;1 &amp;  &amp;  &amp;  &amp; \\
-  &amp;  &amp;  &amp;  &amp;  &amp;  &amp;  &amp;1 \\
-\end{bmatrix}
-$$<p>Thus, the matrix  $F_8P_8$ is:</p>
-$$F_8P_8 = 
-\left[
-\begin{array}{cccc|cccc}
-1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1  \\
-1 &amp; \omega^2 &amp; \omega^4 &amp;  \omega^6 &amp; \omega &amp; \omega^3 &amp;  \omega^5  &amp;  \omega^7     \\
-1 &amp; \omega^4 &amp; 1 &amp;  \omega^4 &amp; \omega^2 &amp; \omega^6 &amp;  \omega^2  &amp;  \omega^6     \\
-1 &amp; \omega^6 &amp; \omega^4 &amp;  \omega^2 &amp; \omega^4 &amp; \omega^7 &amp;  \omega^2  &amp;  \omega^5     \\
-  \hline
-1 &amp; 1 &amp; 1 &amp; 1 &amp; -1 &amp; -1 &amp; -1 &amp; -1  \\
-1 &amp; \omega^2 &amp; \omega^4 &amp;  \omega^6 &amp; -\omega &amp; -\omega^3 &amp;  -\omega^5  &amp;  -\omega^7     \\
-1 &amp; \omega^4 &amp; 1 &amp;  \omega^4 &amp; \omega^2 &amp; -\omega^6 &amp;  -\omega^2  &amp;  -\omega^6     \\
-1 &amp; \omega^6 &amp; \omega^4 &amp;  \omega^2 &amp; -\omega^4 &amp; -\omega^7 &amp;  -\omega^2  &amp;  -\omega^5     \\
-\end{array} 
-\right] 
- = 
- \left[
-\begin{array}{c|c}
-F_4 &amp; D_4 F_4 \\
-\hline
-F_4 &amp; - D_4 F_4 \\
-\end{array}
-\right] 
-$$<p>where $D_4$ is a diagonal matrix with entries $\text{diag}(D_4) = [1, \omega_8, \omega_8^2, \omega_8^3] $ (the subscript on $\omega_8$ is to emphasize that it is $\omega_8 =  \exp(-i 2 \pi /8) $) and $F_4$ is the DFT matrix with $n= 4$:</p>
-$$
-F_{4} = 
-\left[
-\begin{array}{cccc}
-1 &amp; 1 &amp; 1 &amp; 1  \\
-1 &amp; \omega^2 &amp; \omega^4 &amp;  \omega^6 \\
-1 &amp; \omega^4 &amp; 1 &amp;  \omega^4    \\
-1 &amp; \omega^6 &amp; \omega^4 &amp;  \omega^2    \\
-\end{array}
-\right]
-$$<p>That is, up to a re-ordering of columns and a scaling matrix $D_4$, $F_8$ is made out of four copies of $F_4$. 
- The matrix can be further factorized as:</p>
-<p>$$ F_8P_8 = 
- \left[
-\begin{array}{c|c}
-F_4 &amp; D_4 F_4 \\
-\hline
-F_4 &amp; - D_4 F_4 \\
-\end{array}
-\right] = 
-  \left[ \begin{array}{c|c}
-I &amp; D_4  \\
-\hline
-I &amp; - D_4 \\
-\end{array}
- \right]
- \begin{bmatrix}
-F_4 &amp; 0 \\
-0 &amp; F_4
- \end{bmatrix}
- $$</p>
-<p>It follows that:</p>
-$$F_8 x = F_8P_8 P_8^{-1} x =
- \left[
-\begin{array}{c|c}
-F_4 &amp; D_4 F_4 \\
-\hline
-F_4 &amp; - D_4 F_4 \\
-\end{array}
-\right]
-P_8^{T}
-x  = 
- \left[ \begin{array}{c|c}
-F_4 &amp; D_4 F_4 \\
-\hline
-F_4 &amp; - D_4 F_4 \\
-\end{array}
- \right]
-\begin{bmatrix}
-x_{0:2:7} \\
-x_{1:2:7}
-\end{bmatrix}
-$$<p>where $x_{0:2:7} = [x_0, x_2, x_4, x_6]^T$, $ x_{1:2:7} = [x_1, x_3, x_5, x_7]^T$. Thus</p>
-$$
-F_8 x=
- \left[ \begin{array}{c|c}
-F_4 &amp; D_4 F_4 \\
-\hline
-F_4 &amp; - D_4 F_4 \\
-\end{array}
- \right]
-\begin{bmatrix}
-x_{1:2:8} \\
-x_{2:2:8}
-\end{bmatrix}
- = 
-\left[ \begin{array}{c}
-(F_4 x_{0:2:7})  +  D_4 ( F_4   x_{1:2:7} ) \\
-(F_4 x_{0:2:7})  -  D_4 ( F_4  x_{1:2:7} ) 
-\end{array}
- \right]
-$$<p>The argument generalizes to any n (divisible by 2), and thus we have:</p>
-$$
-F_n P_n = 
-  \left[ \begin{array}{c|c}
-I &amp; D_{n/2}  \\
-\hline
-I &amp; - D_{n/2} \\
-\end{array}
- \right]
- \begin{bmatrix}
-F_{n/2} &amp; 0 \\
-0 &amp; F_{n/2}
- \end{bmatrix}
-$$<p>where the diagonal entries of $D_n$ are : $[ 1, \omega_n, \omega_n^2, \omega_n^3 \dots \omega_n^{n/2-1}]$.
-The idea of the FFT is to use this formula recursively to divide-and-conquer the computation.</p>
-<p>At the top of the tree, we seek a DFT of size $n$ which we "divide-and-conquer" into two DFTs of size $n/2$, we then scale and add those vectors which takes $8n$ operations.
-At next level, where we compute two $F_{n/2}$, we do $8(n/2)$ work to scale/add vectors,  thus $8 (n/2) \times 2 = 8n$ total work. Recursively, we see that we do $8n$ work at each level of the tree.
-After $\log_2(n) = d$  rounds of divide and conquer, we hit the base case of $n =1$, for which $F_1x = x$. Summing up the work of each level, we thus do $ ~ 8n d = 8n \log_2 n$ work.</p>
-<figure>
-<p align="center">
-<img alt="No description has been provided for this image" height="280" src="fft_tree.png"/>
-<figcaption> Figure: Illustration of computational complexity of the FFT</figcaption>
-<p>
-</p></p></figure>
-<p>Write a recursive algorithm for the DFT assuming $n = 2^d$.</p>
+The roots should be sorted such that  $x1 \leq x2$. 
+You may assume that $a \not = 0$, and $ b^2 &gt; 4ac$. To be more specific, your implementation should avoid cancellation error of the kind discussed in class. If you pass the test provided here (and don't hardcode the solutions!) you can assume you answered the question correctly.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7702,304 +7554,91 @@ After $\log_2(n) = d$  rounds of divide and conquer, we hit the base case of $n 
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="k">def</span> <span class="nf">my_fft</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> 
-    <span class="n">n</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span>
-    <span class="c1">## ADD YOUR CODE HERE</span>
-    <span class="k">return</span> <span class="n">x</span><span class="o">*</span><span class="mi">0</span>
-
-<span class="c1">## Code below is provided for you. No need to change it.</span>
-<span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">10</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="c1"># Should be close to machine epsilon. ~1e14 is fine</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"error: "</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">my_fft</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Q2.-Chebyshev-polynomials"><strong>Q2. Chebyshev polynomials</strong><a class="anchor-link" href="#Q2.-Chebyshev-polynomials">¶</a></h1><p>The Chebyshev polynomials are defined from the three-term recurrence relation:</p>
-$$T_0(x) =1, \quad T_1(x) = x, \quad T_{n+1}(x) = 2xT_n(x) - T_{n-1}(x) $$<p>The Chebyshev polynomials are the numerical analyst's favorite polynomials because of all of their wonderful properties. For example, we showed in class they have astonishing closed form: $T_n(x)= \cos(n\arccos(x))$.
-Using this property, it is straight-forward to see that the roots of the Chebyshev polynomial $T_n(x)$ are:</p>
-$$
-x_i =  \cos \left( \frac{2i -1 }{2n}\pi \right), \quad i = 1, \dots n
-$$<p>These points are known as the Chebyshev nodes (of the first kind).</p>
-<h2 id="2.1-Clenshaw's-algorithm">2.1 Clenshaw's algorithm<a class="anchor-link" href="#2.1-Clenshaw's-algorithm">¶</a></h2><p>Using the three-term recurence, implement an algorithm to evaluate the sum $p_n(x) = \sum_{k=0}^{n} c_k T_k(x) $ in $\mathcal{O}(n)$ operations. This method is called Clenshaw's algorithm and is applicable to any polynomials with a three-term recurrence.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
-
-<span class="k">def</span> <span class="nf">clenshaw</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-    <span class="c1"># Computes \sum_{i=0}_{n} c_i T_i(x)</span>
-    <span class="c1"># where c is a (n+1) sized vector and T_i(x) is the i-th Chebyshev polynomial</span>
-    <span class="c1"># x is a scalar</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span>
-    <span class="nb">sum</span> <span class="o">=</span><span class="mi">0</span>
-    <span class="c1">## ADD YOUR CODE HERE</span>
-    <span class="k">return</span> <span class="nb">sum</span>
-
-<span class="c1">## Code below is provided for you. No need to change it.</span>
-
-<span class="c1"># Test</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="c1"># Compare to built in method. Should be close to machine epsilon ~1e-15</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'error :'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">chebyshev</span><span class="o">.</span><span class="n">chebval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="n">clenshaw</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">)))</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Q2.2:-Interpolant">Q2.2: Interpolant<a class="anchor-link" href="#Q2.2:-Interpolant">¶</a></h2><p>Write a function that computes the chebyshev expansion of the Chebyshev interpolant of a function $f(x)$. That is, given an input vector $b\in \mathbb{R}^{n+1}$
-with $b_i = f(x_i)$ where $x_i = \cos(\frac{2i -1 }{2(n+1)}\pi)$ for $i = 1, \dots (n+1)$ , compute the output vector $c \in \mathbb{R}^{n+1} $ so that the polynomial $p_n(x) = \sum_{i=0}^n c_i T_i(x) $ satisfies $p_n(x_i) = f(x_i)$.</p>
-<p>Write this problem as the solution of a linear system, similar to the Vandermonde matrix approach discussed in class. Use the three term recurrence to fill the entries of the matrix (not the cosine formula!).</p>
-<p>(Optional) This implementation is  $\mathcal{O}(n^3)$, but there is an $\mathcal{O}(n \log n)$ algorithm to perform this computation using the FFT through the Discrete Cosine Transform (DCT), you can read about it here <a href="https://en.wikipedia.org/wiki/Discrete_Chebyshev_transform">https://en.wikipedia.org/wiki/Discrete_Chebyshev_transform</a> and implement it using <code>scipy.fftpack.dct</code>.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">fit_chebyshev_pol</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-    <span class="c1"># f is a vector of size (n+1)</span>
-    <span class="c1"># returns the (n+1) coefficients of the n degree interpolant in the chebyshev basis </span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">size</span><span class="o">-</span><span class="mi">1</span>
-
-    <span class="c1">## ADD YOUR CODE HERE</span>
-
-    <span class="k">return</span> <span class="n">f</span><span class="o">*</span><span class="mi">0</span>
-
-<span class="c1">## Code below is provided for you. No need to change it.</span>
-
-<span class="c1"># A Helper function to get n roots of the T_n(x)</span>
-<span class="k">def</span> <span class="nf">get_cheb_nodes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span> <span class="mi">2</span><span class="o">*</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="p">)</span>
-
-<span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">f_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">get_cheb_nodes</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">f_fn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">fit_chebyshev_pol</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-
-<span class="c1"># Evaluate the interpolant. Should get the values back! Up to ~ 1e-14 is fine</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">chebyshev</span><span class="o">.</span><span class="n">chebval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">)</span> <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Q2.3.-Clenshaw-Curtis-quadrature">Q2.3. Clenshaw-Curtis quadrature<a class="anchor-link" href="#Q2.3.-Clenshaw-Curtis-quadrature">¶</a></h2><p>In class, we defined the Newton-cotes quadrature as the integral of the equispaced interpolant. Similarly, Clenshaw-curtis quadrature is the integral of the Chebyshev interpolant.</p>
-$$
-\int_{-1}^1 f(x) dx \approx \int_{-1}^1 p_n(x) dx  = \sum_{i=0}^n w_i f(x_i)
-$$<p>Using a similar idea as 2, and the following identity:</p>
-$$
-\int_{-1}^1 T_n(x)\, \mathrm{d}x =
-\begin{cases}
-\frac{(-1)^n + 1}{1 - n^2} &amp; \text{ if }~ n \ne 1 \\
-0                          &amp; \text{ if }~ n = 1.
-\end{cases}
-$$<p>write a function that computes the Quadrature weights. That is, find a vector $w\in \mathbb{R}^{n+1}$ so that</p>
-$$
-\int_{-1}^1 p_n(x) dx  = \sum_{i=0}^n w_i f(x_i) = w^T b
-$$<p>where $x_i$ are the Chebyshev nodes of degree $(n+1)$. Note that these weights, like the Newton-Cotes weights, do not depend on the function $f$.</p>
-<p>Optional: compute the weights in $\mathcal{O}(n \log n) $.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_Clenshaw_Curtis_weights</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="c1"># returns a vector of (n+1) weights of the n-th order Clenshaw-curtis quadrature:</span>
-
-    <span class="c1"># ADD YOUR CODE HERE</span>
-
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1">## Code below is provided for you. No need to change it.</span>
-
-<span class="n">n</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">w</span> <span class="o">=</span> <span class="n">get_Clenshaw_Curtis_weights</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-<span class="n">cc_w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.16778123</span><span class="p">,</span> <span class="mf">0.5255521</span> <span class="p">,</span> <span class="mf">0.61333333</span><span class="p">,</span> <span class="mf">0.5255521</span> <span class="p">,</span> <span class="mf">0.16778123</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'error (should be ~1e-8):'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span> <span class="n">w</span> <span class="o">-</span> <span class="n">cc_w</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Q2.4.-Spectral-convergence-of-Clenshaw-curtis">Q2.4. Spectral convergence of Clenshaw-curtis<a class="anchor-link" href="#Q2.4.-Spectral-convergence-of-Clenshaw-curtis">¶</a></h2><p>Use your quadrature rule to estimate the integral of the smooth function:</p>
-$$ \int_{-1}^1 \cos(3  \pi x) \exp(x) dx $$<p>Make a plot displaying the spectral convergence of the method. The analytical value of the integral is given below so that you may compute the error.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">f_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-<span class="c1"># The analytical value of the integral </span>
-<span class="n">analytical_integral</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span><span class="o">/</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">9</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="n">nns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nns</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">n_idx</span><span class="p">,</span><span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nns</span><span class="p">):</span>
-    <span class="c1"># ADD YOUR CODE HERE</span>
-    <span class="n">errors</span><span class="p">[</span><span class="n">n_idx</span><span class="p">]</span> 
-
-<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">nns</span><span class="p">,</span><span class="n">errors</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Q3.-Solving-PDEs:-beyond-Poisson's-equation"><strong>Q3. Solving PDEs: beyond Poisson's equation</strong><a class="anchor-link" href="#Q3.-Solving-PDEs:-beyond-Poisson's-equation">¶</a></h1><p>In this exercise, we approximate solutions to elliptic PDEs of the form:</p>
-$$
-- \frac{d^2}{dx^2} u(x,y) - \frac{d^2}{dy^2}u(x,y)  + c(x,y)u(x,y)  = f(x,y)\\
-\qquad u(x,0) = u(x,1) =0\\
-\qquad u(0,y) =  u(1,y) = 0
-$$<p>where $c(x,y) \geq 0$. Last HW, we solved Poisson's equation on the square with homogeneous Dirichlet conditions:</p>
-$$
-- \frac{d^2}{dx^2} u(x,y) - \frac{d^2}{dy^2}u(x,y)   = f(x,y)\\
-\qquad u(x,0) = u(x,1) =0\\
-\qquad u(0,y) =  u(1,y) = 0
-$$<p>This is equivalent to the above equation with $c(x,y) = 0$.  We saw that using finite differences, the Poisson PDE may be discretized as:</p>
-$$
-TU + UT = F
-$$<p>where $T$ is the tridiagonal second-order finite difference matrix, and $F_{i,j} = h^2 f(x_i, y_j)$ with $x_i = i h $,  $y_j = jh$,  and $h = \frac{1}{n+1}$.
-To discretize the modified equation, we only need to account for the additional operator $u \to c u$. Since both $c(x,y)$ and $u(x,y)$ are discretized on a grid and $(cu)(x_i, y_j) = c(x_i, y_j)u(x_i, y_j)$, this operator is represented as:</p>
-$$
-C \cdot U
-$$<p>where $\cdot$ is a pointwise multiplication between the two matrices (also called the Hadamard product), and C is the matrix $C_{i,j} = h^2 c(x_i, y_j)$.</p>
-<p>Thus, the discretized system becomes:</p>
-$$
-TU + UT + C\cdot U = F
-$$<p>In the previous homework, we solved Poisson's equation in only $\mathcal{O}(n^2 \log n)$ time by recognizing it as a Sylvester equation and using the Bartels-Stewart algorithm, leveraging the diagonalization of $T$. However, this new equation is not a Sylvester equation, so those methods no longer apply.</p>
-<p>We turn instead to the Kronecker product formalism introduced in Homework 3. The pointwise multiplication $C \cdot U$ can be equivalently expressed in vectorized form as $\text{vec}(C) \cdot \text{vec}(U)$, or equivalently as $D \text{vec}(U)$, where $D = \text{diag}(\text{vec}(C))$ is the diagonal matrix of size $\mathbb{R}^{n^2 \times n^2}$ with $\text{vec}(C)$ on its diagonal.</p>
-<p>This reformulation gives:</p>
-$$
-TU + UT + C \cdot U = F  \Leftrightarrow \left( (I \otimes T) + (T \otimes I ) + D \right) \text{vec}(U) = \text{vec}(F)
-$$<p>One way to solve this system is by explicitly forming the matrix $A = \left((I \otimes T) + (T \otimes I) + D\right)$ and performing a dense linear solve. However, this approach requires $\mathcal{O}(n^6)$ operations, which is computationally prohibitive. Instead, we leverage fast matrix-vector products with $A$, making this system ideal for Krylov subspace methods. Since $T$ is symmetric positive definite (SPD), $A$ is also SPD, allowing us to use the conjugate gradient (CG) method.</p>
-<h2 id="Q3.1">Q3.1<a class="anchor-link" href="#Q3.1">¶</a></h2><p>Implement a function that computes the matrix-vector product with a vectorized version of $Ax$ in $\mathcal{O(n^2)}$ operations. Note that A is of size $n^2 \times n^2$, so this is a linear-time matvec in the size of a vector.
-Then, using the built-in CG iteration, run CG for 20 iterations, asking to stop if tolerance <code>tol</code> drops below $10^{-8}$. You can run CG using the following command
-<code>xk,info = scipy.sparse.linalg.cg(A_op, b, maxiter=maxiter, tol = tol, callback=callback)</code>, the callback functions will allow you to store the residual at each step (which CG does not do by default).</p>
-<p>Note that we take $n = 1000$, so A has <strong>one million rows and columns</strong>: no way we could do a dense solve (a back of the envelope calculation estimates it would take <strong>two years</strong> of compute time!).</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">scipy</span>
-<span class="kn">import</span> <span class="nn">scipy.sparse</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">scipy.sparse.linalg</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="k">def</span> <span class="nf">diff_eq_mat_vec</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-    <span class="c1"># Implement the Ax in O(n^2) where x in an n^2 vector and </span>
-    <span class="c1"># A is the matricized version of the operator</span>
-    <span class="c1"># X -&gt; TX + XT + C dot X</span>
+<span class="k">def</span> <span class="nf">myquad</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">):</span>
+    <span class="c1">### TODO: ADD YOUR CODE HERE</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span>    
 
-    <span class="c1"># ADD YOUR CODE HERE</span>
-
-    <span class="k">return</span> <span class="mi">0</span><span class="o">*</span><span class="n">x</span>
-
-<span class="c1"># Helper functions for you to use - READ THEM!</span>
-
-<span class="c1"># returns the T matrix in sparse format.</span>
-<span class="c1"># T@x where x is a vector is an O(nnz) operations where nnz is the number of non zeros in T </span>
-<span class="c1"># Since T has ~3n non zeros, T@x is an O(n) operation </span>
-<span class="k">def</span> <span class="nf">get_sparse_T</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="n">T</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">diags</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">],</span> <span class="n">offsets</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">T</span>
-
-<span class="c1"># Vectorization of matrix</span>
-<span class="k">def</span> <span class="nf">vec</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1">## Inverse of vec function.</span>
-<span class="k">def</span> <span class="nf">unvec</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">return</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span>
 
 
-<span class="c1">### A test for the MATVEC.</span>
-<span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
-<span class="n">T</span> <span class="o">=</span> <span class="n">get_sparse_T</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">A</span>
-<span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-<span class="c1"># Write down the big kron matrix</span>
-<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">vec</span><span class="p">(</span><span class="n">C</span><span class="p">))</span>
+<span class="c1">## The tests below are provided for you. Make sure they pass! Do not modify the code below. </span>
 
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">diff_eq_mat_vec</span><span class="p">(</span><span class="n">C</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'error in mat_vec (n=10): (should be ~1e-14)'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">A</span><span class="nd">@x</span><span class="p">))</span>
+<span class="c1"># Test a</span>
+<span class="c1"># Check that it works for any easy polynomial </span>
+<span class="k">def</span> <span class="nf">error_check</span><span class="p">(</span><span class="n">coeffs</span><span class="p">,</span> <span class="n">roots</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
+    <span class="n">x1</span><span class="p">,</span><span class="n">x2</span> <span class="o">=</span> <span class="n">myquad</span><span class="p">(</span><span class="n">coeffs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">coeffs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">coeffs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">err1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x1</span><span class="o">-</span><span class="n">roots</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">roots</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">err2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x2</span><span class="o">-</span><span class="n">roots</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">roots</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">tol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">1e-14</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">err1</span> <span class="o">&lt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">err2</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Passed test </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s1">!'</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Failed test </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s1">!!!'</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Error in root 1 is= </span><span class="si">{</span><span class="n">err1</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1">, Error in root 2 = </span><span class="si">{</span><span class="n">err2</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+
+
+<span class="c1"># Test 0</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">error_check</span><span class="p">([</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span> <span class="p">],</span>  <span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Test 1</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">1e-8</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">s2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="o">-</span><span class="mf">2.0000000400000016000000800000044800</span><span class="p">)</span>
+<span class="n">s1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="o">-</span><span class="mf">9.9999997999999959999998399999920000e7</span><span class="p">)</span>
+<span class="n">error_check</span><span class="p">([</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span> <span class="p">],</span>  <span class="p">[</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+
+
+<span class="c1"># Test c</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="o">-</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">0.002</span><span class="p">)</span>
+
+<span class="n">s1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="o">-</span><span class="mf">1.620745542885895880515774e-6</span><span class="p">)</span>
+<span class="n">s2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">41133.33333495407887621923</span><span class="p">)</span>
+<span class="n">error_check</span><span class="p">([</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span> <span class="p">],</span>  <span class="p">[</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span>
+
+
+<span class="c1"># Test d</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mf">1e-16</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">s1</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="p">[</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">]</span> <span class="o">=</span> <span class="n">myquad</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
+<span class="n">err1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x2</span><span class="o">-</span><span class="n">s1</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span>
+<span class="n">tol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">1e-14</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">err1</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Passed test </span><span class="si">{</span><span class="mi">4</span><span class="si">}</span><span class="s1">!'</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Failed test </span><span class="si">{</span><span class="mi">4</span><span class="si">}</span><span class="s1">!!!'</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Error in root 2 = </span><span class="si">{</span><span class="n">err1</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Failed test 1!!!
+Error in root 1 is= 1.00e+00, Error in root 2 = 1.00e+00
+Failed test 2!!!
+Error in root 1 is= 1.00e+00, Error in root 2 = 1.00e+00
+Failed test 3!!!
+Error in root 1 is= 1.00e+00, Error in root 2 = 1.00e+00
+Failed test 4!!!
+Error in root 2 = 1.00e+00
+</pre>
 </div>
 </div>
 </div>
@@ -8011,7 +7650,13 @@ Then, using the built-in CG iteration, run CG for 20 iterations, asking to stop 
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>We define the coefficients below. Use your fast-matvec to attempt solving the linear system by calling CG below. What do you observe about the convergence of CG? How big is the residual after 20 iterations?</p>
+<h2 id="Problem-2:-Friction">Problem 2: Friction<a class="anchor-link" href="#Problem-2:-Friction">¶</a></h2><p>The <a href="https://en.wikipedia.org/wiki/Darcy_friction_factor_formulae">Darcy friction coefficient</a> $f$ for turbulent flow in a pipe is defined
+in terms of the Colebrook-White equation for large Reynolds number
+$Re$ (greater than 4000 or so)<a name="cite_ref-1"></a><a href="#cite_note-1"><sup>[1]</sup></a>:</p>
+$$\frac{1}{\sqrt{f}} = -2 \log_{10} \left( \frac{\epsilon/D_h}{3.7} + \frac{2.51}{\mathrm{Re}\sqrt{f}} \right)$$<p>Here $\epsilon$ is the height of the surface roughness and $D_h$ is the diameter
+of the pipe; we refer to $\epsilon/D_h$ as the roughness.  If we let $u = 1/\sqrt{f}$, we can rewrite this as a fixed point equation</p>
+$$u_* = -\alpha \log(\beta + \gamma u_*)$$<p>where $\alpha = 2/\log(10)$, $\beta=(\epsilon/D_h)/3.7$, and $\gamma = 2.51/\mathrm{Re}$. These quantities are implemented below for a given $Re$ and $\epsilon$.</p>
+<p><a name="cite_note-1"></a>1. <a href="#cite_ref-1">^</a> Solving this problem requires no knowledge of turbulent flows.</p>
 </div>
 </div>
 </div>
@@ -8020,55 +7665,15 @@ Then, using the built-in CG iteration, run CG for 20 iterations, asking to stop 
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Defining the coefficients of a PDE</span>
-<span class="n">c_fun</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span>  <span class="o">*</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">y</span>
-<span class="n">f_fun</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span> <span class="o">-</span><span class="p">(</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>  <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span>  <span class="o">+</span>  <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="c1"># Discretization size</span>
-<span class="n">n</span> <span class="o">=</span> <span class="mi">1000</span> <span class="c1"># If your computer struggles with n = 300, if not, try n =3000!</span>
-
-<span class="c1"># Generate the grid</span>
-<span class="n">xgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">xgrid</span><span class="p">)</span>
-<span class="c1">#Evaluate c_fun and f_fun on grid.</span>
-<span class="n">C</span> <span class="o">=</span> <span class="n">c_fun</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">F</span> <span class="o">=</span>  <span class="n">f_fun</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="n">F</span><span class="p">)</span>
-
-<span class="c1"># To run CG, we need to pass to scipy a blackbox A_mv(x) that implements A @ x fast</span>
-<span class="c1"># Below the required syntax. You can look up the documentation,</span>
-<span class="c1"># but it isn't important, nothing very interesting is happening</span>
-<span class="n">A_matvec</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">diff_eq_mat_vec</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-<span class="c1"># Wraps the matvec into a format expected by scipy</span>
-<span class="n">A_op</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinearOperator</span><span class="p">((</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="n">A_matvec</span><span class="p">)</span>
-
-<span class="c1"># To record residuals at each iteration, we need to give this callback function as an input</span>
-<span class="n">residuals</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="c1"># Define callback function to store residual at each iteration</span>
-<span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">xk</span><span class="p">):</span>
-    <span class="n">residual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A_op</span> <span class="o">@</span> <span class="n">xk</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-    <span class="n">residuals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">residual</span><span class="p">)</span>
-
-
-<span class="c1">### ADD YOUR CODE HERE !!! CALL CG</span>
-<span class="c1">## add callback=callback as an argument to compute and store the residual at each iteration</span>
-<span class="n">xk</span><span class="p">,</span><span class="n">info</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cg</span><span class="p">(</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">residuals</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">'log'</span><span class="p">)</span>  <span class="c1"># Log scale for better visualization of convergence</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Iteration'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Relative Residual'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Convergence of CG Solver'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="c1"># Plots approximate solution</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">unvec</span><span class="p">(</span><span class="n">xk</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'computed approximate solution of PDE'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">## This functions is implemented for you - Nothing to do here.</span>
+<span class="k">def</span> <span class="nf">darcy_params</span><span class="p">(</span><span class="n">roughness</span><span class="p">,</span> <span class="n">Re</span><span class="p">):</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mi">2</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">roughness</span><span class="o">/</span><span class="mf">3.7</span>
+    <span class="n">gamma</span> <span class="o">=</span> <span class="mf">2.51</span><span class="o">/</span> <span class="n">Re</span>
+    <span class="k">return</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span>
 </pre></div>
 </div>
 </div>
@@ -8081,51 +7686,8 @@ Then, using the built-in CG iteration, run CG for 20 iterations, asking to stop 
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The slow convergence behavior above is typical when solving linear systems obtained by discretizing differential equations. Recall the CG convergence bounds that</p>
-$$ \frac{\|e_k\|_A}{\|e_0\|_A} \leq 2 \left( \frac{ \sqrt{\kappa(\mathbf{A})}-1 }{ \sqrt{\kappa(\mathbf{A})}+1 } \right)^k  \approx 2 \left( 1 - \frac{2}{\sqrt{\kappa(\mathbf{A})}} \right)^k \, $$<p>where $K_2(A)$ is the condition number of A, thus when $K_2(A)$ is large, the convergence may be very slow. Also recall that when A is SPD: $$K_2(A) = \|A\|_2 \|A^{-1}\|_2  = \frac{ \sigma_{max}(A)}{\sigma_{min}(A)} = \frac{ \lambda_{max}(A)}{\lambda_{min}(A)} $$</p>
-<p>The discretization by finite difference of second-order differential operator (such as the ones here) have condition number that grows proportionally to $n^2$: $K_2(A) = \mathcal{O}(n^2)$ so we expect very poor convergence for even moderately large $n$.</p>
-<p>We are missing one last ingredient in our PDE solver: a <em>preconditioner</em>. 
-Preconditioning is the idea of replacing a linear system $Ax=b$ with a different, but equivalent linear system $M^{-1}Ax = M^{-1}b$. The matrix $M$ is called the preconditioner. A good preconditioner should have two properties:</p>
-<ul>
-<li>$K_2(M^{-1}A)&lt;&lt; K_2(A)$, so the iterative method applied to this new system converges fast.</li>
-<li>$M^{-1}$ is easy to compute so that each iteration is fast.</li>
-</ul>
-<p>Running preconditioned CG on the matrix $A$ with preconditioner $M$ is mathematically equivalent to running the original CG on $L^{-1}A(L^{-1})^T$ where $LL^T = M$, so to bound the condition number of $L^{-1}A(L^{-1})^T$, it is sufficient to bound the eigenvalues of $M^{-1}A$ or $L^{-1}A(L^{-1})^T$ as these are similar matrices. See notes for lecture 18 if this is unclear!</p>
-<p>Preconditioners are highly problem specific. They are often the special sauce that, together with a Krylov method, makes a modern numerical method blazingly fast. As such, they are the basis for much research interest.
-Often, the trick to finding a good preconditioner is to find a "nearby" but easier problem.
-In our case, we can pick $M$ to be the discretization of Poisson's equation: $M = T \otimes I + I \otimes T$. In this case, we have that $A = M + D$, where $D=\text{diag}(\text{vec}(C))$, and one can show that $L^{-1}A(L^{-1})^T$ is well conditioned.</p>
-<h2 id="Q3.2">Q3.2<a class="anchor-link" href="#Q3.2">¶</a></h2><p>Proving that the preconditioned system is well conditioned is your next ask.
-Since we know the exact eigenvalue decomposition of $T$ (see previous HW) it is easy to bound eigenvalues of $M = T \otimes I + I \otimes T$.</p>
-$$
-\lambda_{\text{min}}(M) \approx \frac{2 \pi^2}{(n+1)^2}, \quad \lambda_{\text{max}}(M) = 8
-$$<p>Using these estimates show that $L^{-1}A(L^{-1})^T$ is well conditioned, specifically, show that:</p>
-$$ K_2( L^{-1}A(L^{-1})^T ) \leq 1 + \frac{1}{2\pi^2}\max_{x,y}{c(x,y)} \ .$$<p>(You may use the $\approx$ in $\lambda_{\text{min}}(M)$ as equality). Note that the bound is independent of $n$ and small if $c(x,y)$ doesn't get too large, so we expect CG to converge very quickly. In our case, $c(x,y) \leq 1 $ so we expect very fast convergence.</p>
-<p>Hint: You can (but do not have to) use the following characterization of the eigenvalues of <strong>symmetric</strong> matrices based on the Rayleigh quotient:</p>
-$$ \lambda_{max}(B) = \max_{x \in \mathbb{R}^n} \frac{x^TBx}{x^Tx} \ , \\
- \lambda_{min}(B) = \min_{x \in \mathbb{R}^n} \frac{x^TBx}{x^Tx} \ , $$<p>also recall that $c(x,y) \geq 0$, $C_{i,j} = h^2 c(x_i,y_j) $.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Q3.2-ADD-YOUR-ANSWER-HERE">Q3.2 ADD YOUR ANSWER HERE<a class="anchor-link" href="#Q3.2-ADD-YOUR-ANSWER-HERE">¶</a></h2>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Q3.3">Q3.3<a class="anchor-link" href="#Q3.3">¶</a></h2><p>Implement your preconditioner in <code>my_poisson_preconditioner</code> (based on HW4). Then pass it as an input to CG using the <code>M</code> option:
-<code>scipy.sparse.linalg.cg(A_op, b, M= M_op, maxiter =20, tol = 1e-8, callback=callback )</code> . Compute the residual once more. What do you observe?</p>
+<p>Alternately, we can write this as the problem of finding a zero of</p>
+$$g(u) = u + \alpha \log(\beta + \gamma u).$$<p>$g(u)$ is implemented for you below:</p>
 </div>
 </div>
 </div>
@@ -8134,50 +7696,14 @@ $$ \lambda_{max}(B) = \max_{x \in \mathbb{R}^n} \frac{x^TBx}{x^Tx} \ , \\
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">my_poisson_preconditioner</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
-    <span class="c1">## Should compute M^{-1} b</span>
-
-    <span class="c1">## ADD YOUR CODE HERE. NOTE YOU SHOULD ALSO ADD YOUR CODE BELOW!</span>
-    <span class="k">return</span> <span class="n">b</span><span class="o">*</span><span class="mi">0</span>
-
-<span class="c1"># A helper function you can use if you want</span>
-<span class="k">def</span> <span class="nf">dst</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">axis</span> <span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">scipy</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">dst</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="nb">type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">norm</span> <span class="o">=</span> <span class="s2">"ortho"</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span><span class="n">axis</span><span class="p">)</span>
-
-<span class="c1"># Computes eigenvalues of the Tridiagonal matrix from known analytical formula</span>
-<span class="k">def</span> <span class="nf">get_eigenvalues_of_T</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="k">return</span> <span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="c1"># Wraps M_op(x) =  M^{-1} @ x in a format scipy expects</span>
-<span class="n">M_op</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinearOperator</span><span class="p">((</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="n">my_poisson_preconditioner</span><span class="p">)</span>
-
-<span class="c1"># To record residuals at each iteration</span>
-<span class="n">residuals</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="c1"># Define callback function to store residual at each iteration</span>
-<span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">xk</span><span class="p">):</span>
-    <span class="n">residual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A_op</span> <span class="o">@</span> <span class="n">xk</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-    <span class="n">residuals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">residual</span><span class="p">)</span>
-
-<span class="c1">## ADD YOUR CODE HERE!!</span>
-<span class="c1">## ADD YOUR CODE HERE!!</span>
-<span class="c1">## ADD YOUR CODE HERE!!</span>
-
-<span class="c1"># Call CG to solve the system A * x = b with callback</span>
-<span class="c1">## add callback=callback as an argument to compute the residual at each iteration</span>
-<span class="n">xk</span><span class="p">,</span><span class="n">info</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cg</span><span class="p">(</span><span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="c1"># Should converge very fast ! only 4-5 iterations and we are done</span>
-<span class="c1"># Plot convergence of the residual</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">residuals</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">'log'</span><span class="p">)</span>  <span class="c1"># Log scale for better visualization of convergence</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Iteration'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Relative Residual'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Convergence of CG Solver'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">## This functions is implemented for you - Nothing to do here.</span>
+<span class="k">def</span> <span class="nf">darcy_resid</span><span class="p">(</span><span class="n">roughness</span><span class="p">,</span> <span class="n">Re</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+    <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">darcy_params</span><span class="p">(</span><span class="n">roughness</span><span class="p">,</span> <span class="n">Re</span><span class="p">)</span>
+    <span class="n">gu</span> <span class="o">=</span> <span class="n">u</span> <span class="o">+</span> <span class="n">alpha</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">beta</span> <span class="o">+</span> <span class="n">gamma</span><span class="o">*</span><span class="n">u</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">gu</span>
 </pre></div>
 </div>
 </div>
@@ -8190,137 +7716,607 @@ $$ \lambda_{max}(B) = \max_{x \in \mathbb{R}^n} \frac{x^TBx}{x^Tx} \ , \\
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Much better convergence! Note that our first approximate solution looks visually nothing like our correct one.</p>
-<p>There is a lot more to be said about numerical solvers for PDEs such as handling more complicated domains, handling coupled PDEs and dealing with nonlinearities, but we have now seen the entire lifespan of a typical linear PDE solver:</p>
+<p>In this problem, we consider the computation of $u_* &gt; 0$ (and hence $f$) for different values of the Reynolds number.  We note that $\alpha$, $\beta$, and $\gamma$, are all positive numbers that are less than one in this problem, and $u_*=1/\sqrt{f}$ must also be positive.</p>
+<p>As a test case, we consider flow through a 10 cm pipe with roughness height of 0.1 mm (so the roughness factor is $10^{-3}$), and Reynolds numbers of $10^4$, $10^5$, and $10^6$.</p>
+<h3 id="2.1">2.1<a class="anchor-link" href="#2.1">¶</a></h3><p>Note that $0 &lt; \log(1+z) &lt; z$ for $z &gt; 0$.  Using properties of logs, show that for $u &gt; 0$, $g(u) = u + \alpha \log(\beta + \gamma u)$ satisfies
+$$u + \alpha \log(\beta) &lt; g(u) &lt; (1+\alpha \gamma/\beta) u + \alpha \log(\beta)$$</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<font color="green">
+<h3 id="Write-your-answer-here">Write your answer here<a class="anchor-link" href="#Write-your-answer-here">¶</a></h3><font>
+</font></font></div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="2.2">2.2<a class="anchor-link" href="#2.2">¶</a></h3><p>Using the previous result, give an interval where $g$ changes sign (so $g(u) = 0$ is guaranteed to have a solution in this interval).  Verify the sign change for our test setting with Reynolds number of $10^4$. Complete the function in <code>darcy_bounds</code> that computes these bounds for a given Reynolds number and roughness.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">darcy_bounds</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
+    <span class="n">l</span> <span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1">### TODO: ADD YOUR CODE HERE</span>
+    <span class="k">return</span> <span class="n">l</span><span class="p">,</span> <span class="n">h</span>
+
+
+<span class="c1">### The code below is written for you. No need to change it</span>
+<span class="n">roughness</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">Re</span> <span class="o">=</span> <span class="mf">1e4</span>
+<span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">darcy_params</span><span class="p">(</span><span class="n">roughness</span><span class="p">,</span> <span class="n">Re</span><span class="p">)</span>
+
+<span class="c1"># This function needs to be implemented in darcy_functions.py</span>
+<span class="n">l</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span> <span class="n">darcy_bounds</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
+
+<span class="n">gl</span> <span class="o">=</span> <span class="n">darcy_resid</span><span class="p">(</span><span class="n">roughness</span><span class="p">,</span> <span class="n">Re</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
+<span class="n">gh</span> <span class="o">=</span> <span class="n">darcy_resid</span><span class="p">(</span><span class="n">roughness</span><span class="p">,</span> <span class="n">Re</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+
+<span class="c1">#  Test 1: make sure that gh and gl have opposite signs:</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">gl</span><span class="o">*</span><span class="n">gh</span> <span class="o">&gt;=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'g(l) and g(h) have the same sign!'</span><span class="p">)</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">l</span> <span class="o">&gt;</span> <span class="n">h</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'lower bound &gt; upper bound! swap them'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>g(l) and g(h) have the same sign!
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="2.3">2.3<a class="anchor-link" href="#2.3">¶</a></h3><p>Using the lower bound in the previous step as a starting guess, run the fixed point iteration $u_{k+1} = -\alpha \log(\beta + \gamma u_k)$ for 100 steps. Complete the code in <code>darcy_fp</code>. Plot $|g(u_k)|$ vs $k$ on a semilog scale for Reynolds numbers $10^4$, $10^5$, and $10^6$.  What do you observe about the convergence?</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [33]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">darcy_fp</span><span class="p">(</span><span class="n">roughness</span><span class="p">,</span> <span class="n">Re</span><span class="p">):</span>
+    <span class="c1"># Start from the lower bound and run 100 iterations of fixed point,</span>
+    <span class="c1"># returning all iterations. Do not return the initial guess</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">us</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="c1"># TODO: Implement your fixed point iteration here</span>
+
+    <span class="k">return</span> <span class="n">us</span>
+
+<span class="c1"># Test 2: Checking convergence of the fixed point iteration with the residual</span>
+<span class="n">Re</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span> <span class="c1">##  # TODO: Vary the your fixed point iteration here</span>
+<span class="n">us</span> <span class="o">=</span> <span class="n">darcy_fp</span><span class="p">(</span><span class="n">roughness</span><span class="p">,</span> <span class="n">Re</span><span class="p">)</span>
+
+<span class="c1"># A "Semilog" plot is one where one of axis is in log scale. Here, the y-axis.</span>
+<span class="c1"># Generating a semilogy plot of the residual </span>
+<span class="n">residual</span> <span class="o">=</span> <span class="n">darcy_resid</span><span class="p">(</span><span class="n">roughness</span><span class="p">,</span> <span class="n">Re</span><span class="p">,</span> <span class="n">us</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">residual</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'residual |g(u_k)|'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'iteration k'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Residuals: '</span><span class="p">,</span>  <span class="n">residual</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Residuals:  [-3.13640345 -3.13640345 -3.13640345 -3.13640345 -3.13640345 -3.13640345
+ -3.13640345 -3.13640345 -3.13640345 -3.13640345]
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">
+<img alt="No description has been provided for this image" class="jp-needs-light-background" src="data:image/png;base64,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"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<font color="green">
+<h3 id="What-do-you-observe?-Write-your-answer-here">What do you observe? Write your answer here<a class="anchor-link" href="#What-do-you-observe?-Write-your-answer-here">¶</a></h3><font>
+</font></font></div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="2.4">2.4<a class="anchor-link" href="#2.4">¶</a></h3><p>Subtract the fixed point equation from the fixed point iteration equation and use a Taylor expansion to get an error iteration of the form
+$$e_{k+1} = -\frac{\alpha \gamma}{\beta+\gamma u_*} e_k + O(e_k^2).$$</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<font color="green">
+<h3 id="Write-your-answer-here">Write your answer here<a class="anchor-link" href="#Write-your-answer-here">¶</a></h3><font>
+</font></font></div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="2.5">2.5<a class="anchor-link" href="#2.5">¶</a></h3><p>Numerically verify that the rate of convergence from part 4 agrees with the rates of convergence seen in the part 3.  To do this, we will approximate the true solution as the final iteration of our fixed point iteration  $u^* \approx u_{100}$ (after having convinced ourselves that $g(u_{100}) = \mathcal{O}(\epsilon_{\text{mach}})$), and plot the error estimate</p>
+$$
+\text{est}_k =  \rho^k | u^* - x_0|
+$$<p>for $\rho = (\frac{\alpha \gamma}{\beta+\gamma u_*})$. This is implemented below you only need run the iteration, and observe that the two match.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [41]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">##  Checking convergence of the fixed point iteration with the error</span>
+<span class="c1"># Nothing to do here but watch - assuming darcy_fp was correctly implemented!</span>
+
+<span class="n">Re</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">4</span> 
+<span class="n">us</span> <span class="o">=</span> <span class="n">darcy_fp</span><span class="p">(</span><span class="n">roughness</span><span class="p">,</span> <span class="n">Re</span><span class="p">)</span>
+
+<span class="c1"># Generating a semilogy plot of the error and error estimate </span>
+<span class="n">u_star</span> <span class="o">=</span> <span class="n">us</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#% Approximate solution with last iterate</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"residual at iter 100 = </span><span class="si">{</span><span class="n">darcy_resid</span><span class="p">(</span><span class="n">roughness</span><span class="p">,</span><span class="w"> </span><span class="n">Re</span><span class="p">,</span><span class="w"> </span><span class="n">us</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">us</span> <span class="o">-</span> <span class="n">u_star</span><span class="p">)</span>
+
+<span class="c1"># Estimated contraction factor</span>
+<span class="n">rho</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">gamma</span> <span class="o">/</span> <span class="p">(</span> <span class="n">beta</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">u_star</span><span class="p">)</span> 
+<span class="c1"># Error estimate</span>
+<span class="c1"># Get initial estimate</span>
+<span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">darcy_params</span><span class="p">(</span><span class="n">roughness</span><span class="p">,</span> <span class="n">Re</span><span class="p">)</span>
+<span class="n">l</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span> <span class="n">darcy_bounds</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
+<span class="n">error_est</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span> <span class="n">l</span> <span class="o">-</span> <span class="n">u_star</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">rho</span><span class="o">**</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">7</span><span class="p">)))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">error</span><span class="p">),</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">'error'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">error_est</span><span class="p">),</span> <span class="s1">'--'</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">'error estimate'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'error $|u_k - u^*|$'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'iteration k'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>residual at iter 100 = -3.1364034481339895
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[41]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>(0.0, 10.0)</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">
+<img alt="No description has been provided for this image" class="jp-needs-light-background" src="data:image/png;base64,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"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="2.6">2.6<a class="anchor-link" href="#2.6">¶</a></h3><p>Write a Newton iteration for finding a zero of $g$ (with the lower bound from part 2 as an initial guess, and run 10 steps). Plot the residuals on a semilog scale for Reynolds number $10^4$ to illustrate quadratic convergence.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [35]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">darcy_resid_derivative</span><span class="p">(</span><span class="n">roughness</span><span class="p">,</span> <span class="n">Re</span><span class="p">,</span><span class="n">u</span><span class="p">):</span>
+    <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">darcy_params</span><span class="p">(</span><span class="n">roughness</span><span class="p">,</span> <span class="n">Re</span><span class="p">)</span>
+    <span class="n">dgu</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">gamma</span> <span class="o">/</span> <span class="p">(</span> <span class="n">beta</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">u</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dgu</span>
+
+<span class="k">def</span> <span class="nf">darcy_newton</span><span class="p">(</span><span class="n">roughness</span><span class="p">,</span> <span class="n">Re</span><span class="p">):</span>
+    <span class="c1"># Start from the lower bound and run 10 iterations of the fixed point iteration,</span>
+    <span class="c1"># returning all iterations. Do not return the initial guess.</span>
+    <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">darcy_params</span><span class="p">(</span><span class="n">roughness</span><span class="p">,</span> <span class="n">Re</span><span class="p">)</span>
+    <span class="n">l</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="n">darcy_bounds</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span><span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">us</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="c1"># TODO: Implement your Newton's iteration here</span>
+
+    <span class="k">return</span> <span class="n">us</span>
+
+<span class="n">Re</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">4</span>
+<span class="n">us</span> <span class="o">=</span> <span class="n">darcy_newton</span><span class="p">(</span><span class="n">roughness</span><span class="p">,</span> <span class="n">Re</span><span class="p">)</span>
+
+<span class="c1"># include initial guess</span>
+<span class="n">us</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">l</span><span class="p">]),</span> <span class="n">us</span><span class="p">])</span>
+
+
+<span class="c1">##</span>
+<span class="n">error_newton</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">us</span> <span class="o">-</span> <span class="n">u_star</span><span class="p">)</span> <span class="c1"># Approximate solution with last iterate</span>
+<span class="n">residual_newton</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">darcy_resid</span><span class="p">(</span><span class="n">roughness</span><span class="p">,</span> <span class="n">Re</span><span class="p">,</span> <span class="n">us</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">11</span><span class="p">),</span> <span class="n">residual_newton</span> <span class="o">+</span> <span class="mf">1e-16</span> <span class="p">,</span> <span class="s1">'*'</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">'residual'</span><span class="p">)</span> <span class="c1">#% Add eps = machine epsilon to avoid getting a 0</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">11</span><span class="p">),</span> <span class="n">error_newton</span> <span class="o">+</span> <span class="mf">1e-16</span> <span class="p">,</span> <span class="s1">'x'</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">'error'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'iteration k'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Convergence of Newton iterates'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[35]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>Text(0.5, 1.0, 'Convergence of Newton iterates')</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">
+<img alt="No description has been provided for this image" class="jp-needs-light-background" src="data:image/png;base64,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"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Problem-3:-Sometimes,-it's-slow">Problem 3: Sometimes, it's slow<a class="anchor-link" href="#Problem-3:-Sometimes,-it's-slow">¶</a></h2><p>Solve exercise 1.6 from Suli and Mayers:</p>
+<h3 id="3.1">3.1<a class="anchor-link" href="#3.1">¶</a></h3><p>Suppose that $f(\xi) = f'(\xi) = 0$, $f''(\xi) \not= 0$ so that $f$ has a
+double root at $\xi$, and that $f''$ is defined and continuous in a neighborhood
+of $\xi$. If $(x_k)$ is a sequence obtain by Newton's method, show that
+$$
+\xi - x_{k+1} = -\frac{1}{2} \frac{(\xi - x_k)^2 f''(\eta_k)}{f'(x_k)} =
+\frac{1}{2} (\xi - x_k) \frac{f''(\eta_k)}{f''(\chi_k)}
+$$
+where $\eta_k$ and $\chi_k$ both lie between $\xi$ and $x_k$.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<font color="green">
+<h3 id="Write-your-answer-here">Write your answer here<a class="anchor-link" href="#Write-your-answer-here">¶</a></h3><font>
+</font></font></div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="3.2">3.2<a class="anchor-link" href="#3.2">¶</a></h3><p>Suppose, further,
+that $0 &lt; m &lt; |f''(x)| &lt; M$ for all $x$ in the interval
+$[\xi-\delta,\xi+\delta]$ for some $\delta &gt; 0$, where $M &lt; 2m$; show that if
+$x_0$ lies in this interval the iteration converges to $\xi$, and that
+convergence is linear, with rate $\log_{10} 2$ (i.e. $\mu=1/2$ in the definition below).</p>
+<hr/>
+<p>Note:
+For this problem, you should work with the limit definition of linear convergence:</p>
+<p>Here is the definition in Suli and Mayers (Definition 1.4):
+We say that a sequence ${x_k}$ converges linearly to $x^*$ linearly if</p>
+$$  \lim_{k \rightarrow \infty } \frac{ |x_{k+1} - \xi | }{ |x_k - \xi | } = \mu$$<p>for $ \mu &lt; 1$.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<font color="green">
+<h3 id="Write-your-answer-here">Write your answer here<a class="anchor-link" href="#Write-your-answer-here">¶</a></h3><font>
+</font></font></div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="3.3">3.3<a class="anchor-link" href="#3.3">¶</a></h3><p>Verify the conclusion of the exercise by making a plot of
+$\log_{10}$ of the absolute error versus the iteration number when preforming
+Newton's method to find the a solution of $e^x=1+x$, starting at $x_0$ = 1, for $30$ iterations.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [36]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">### Run a Newton iteration and make a plot of absolute error vs iteration number</span>
+
+<span class="n">xk</span> <span class="o">=</span><span class="mi">1</span>
+<span class="n">errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
+    <span class="c1">## TODO: Replace this with your code</span>
+    <span class="n">xkp1</span> <span class="o">=</span> <span class="n">xk</span> 
+    <span class="n">errors</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[36]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>[&lt;matplotlib.lines.Line2D at 0x7fcf082b1438&gt;]</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>/Users/marcaurele/opt/anaconda3/envs/wilson2/lib/python3.6/site-packages/ipykernel/pylab/backend_inline.py:231: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+  for label in axis.get_ticklabels()])
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">
+<img alt="No description has been provided for this image" class="jp-needs-light-background" src="data:image/png;base64,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"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Problem-4:-Welcome-to-the-race!">Problem 4: Welcome to the race!<a class="anchor-link" href="#Problem-4:-Welcome-to-the-race!">¶</a></h2><p>The Legendre polynomials are a sequence of polynomials that satisfy the recursion formula:
+$P_0(x) = 1$,  $P_1(x) = x$, and for $n \ge 1$
+$$
+(n+1)P_{n+1}(x)=(2n+1)x P_n(x) - n P_{n-1}(x).
+$$
+The $n$-th Legendre polynomial is of degree $n$, and has $n$ real distinct roots.</p>
+<p>Implement a function that finds the $n$ roots of the $n$-th Legendre polynomial $P_n(x)$.<a name="cite_ref-1"></a><a href="#cite_note-1"><sup>[1]</sup></a>. Write a function with calling sequence
+$$
+rts = \text{legroots}(n),
+$$
+where $n$ (integer) is the degree of the Legendre polynomial, and $rts$ is a vector of size $n$ (double) of the roots of $P_n(x)$ sorted in ascending order
+$rts(1)  \le \cdots \le rts(n)$.</p>
+<p>Hint: 
+All the roots of $P_n(x)$ are contained in $[-1,1]$ and the roots are
+separated by at least distance $1/(10 n^2)$ (in particular, there are no double roots, which implies that there is a sign change around every root).</p>
 <ul>
-<li>A discretization scheme is used to turn a continuous problem into a linear system.</li>
-<li>An iterative method is chosen, often CG or GMRES, to solve the linear system.</li>
-<li>A preconditioner is devised to speed up convergence.</li>
+<li>First implement a function computing $P_n(x)$ using the recursion formula</li>
+<li>Find $n$ disjoint intervals</li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Q4-Alternating-direction-implicit"><strong>Q4 Alternating direction implicit</strong><a class="anchor-link" href="#Q4-Alternating-direction-implicit">¶</a></h1><p>In class, we proved the convergence of Krylov subspace methods through a connection with a polynomial approximation problem. This link between numerical linear algebra and approximation theory is pervasive, and we see another example here with a different iterative solver: the Alternating Direction Implicit (ADI) method.
-ADI is an iterative solver for Sylvester equations:</p>
-$$
-AX - XB = F
-$$<p>It is defined as the following iteration:</p>
-<blockquote>
-<p>$X^{(0)} = 0$</p>
-<p>for $j=0,1,2,3,\dots$</p>
-<blockquote>
-<p>Solve for $X^{(j + 1/2)}$, where $\left( A - \beta_{j +1} I\right) X^{(j+1/2)} = X^{(j)}\left( B - \beta_{j + 1} I \right) + F$</p>
-<p>Solve for $  X^{(j + 1)}$,  where  $ X^{(j+1)}\left( B - \alpha_{j + 1} I \right) = \left( A - \alpha_{j+1} I\right) X^{(j+1/2)} - F$</p>
-</blockquote>
-</blockquote>
-<p>The scalars $\alpha_j$ and $\beta_j$ are hyperparameters that must be chosen a priori.</p>
-<ol>
-<li>Show the following identity:</li>
-</ol>
-$${\displaystyle X-X^{(K)}=\left(\prod _{j=1}^{K}{ {(A-\alpha _{j}I)(A-\beta _{j}I)^{-1}} } \right) \left(X-X^{(0)}\right) \left( \prod _{j=1}^{K}{ {(B-\beta _{j}I)(B-\alpha _{j}I)^{-1} }} \right) }$$<p>where $X$ is the solution to the Sylvester equation.</p>
-<p>Hint:
-Note that $F  =  AX - XB + (- \beta_{j+1} X + \beta_{j+1} X) = (A - \beta_{j +1} I)X - X\left( B - \beta_{j + 1} I \right) $.</p>
-<p>Let $E^{(j)} = X - X^{(j)}$. 
-First show that</p>
-$$E^{(j + 1/2)} = \left( A - \beta_{j +1} I\right)^{-1} E^{(j)}\left( B - \beta_{j + 1} I \right) \ ,  $$<p>then derive a similar relation between $E^{(j + 1)}$ and $E^{(j + 1/2)}$ and combine them to show the identity.</p>
-<ol start="2">
-<li></li>
-</ol>
-<p>Use 1 to show:</p>
-$$
-\frac{\| \displaystyle X-X^{(K)}\|_2}{ \|X\|_2 } \leq \|r_K(A)\|_2 \| r_K(B)^{-1}\|_2
-$$<p>where $r_K(x)$ is the rational function: 
-$$r_K(x) = \prod_{j=1}^K \frac{x -  \alpha _{j}}{x -  \beta _{j}} \ . $$
-The function applied to the matrix is defined as:
-$r_K(M) = \prod_{j=1}^{K}{ {(M-\alpha _{j}I)(M-\beta _{j}I)^{-1}} }$.</p>
-<p>Hint: you may use the fact that all matrices of the form $(M - \alpha I)$ for any $\alpha \in \mathbb{C}$ (and their inverses) commute with each other, for example: $(M-\alpha I)(M-\beta I)^{-1} =(M-\beta I)^{-1}(M-\alpha I)$ (you should convince yourself this is true!).</p>
-<ol start="3">
-<li></li>
-</ol>
-<p>Assume that $A$ and $-B$ are SPD. Show that:</p>
-$$
-\frac{\| \displaystyle X-X^{(K)}\|_2}{ \|X\|_2 } \leq  \frac{ \sup_{\lambda \in [ a ,b ]}  |r_K(\lambda )|}{ \inf_{\lambda \in [ -d, -c]}  |r_K(\lambda )| } $$<p>where $a = \lambda_{\text{min}}(A) $, $b = \lambda_{\text{max}}(A) $, $c = \lambda_{\text{min}}(-B) $, $d = \lambda_{\text{max}}(-B) $</p>
-<ol start="4">
-<li></li>
-</ol>
-<p>Thus, one should pick the shifts $ \alpha_j$ and $\beta_j$ such that the
-right-hand side is as small as possible. In other words, $r_K(x)$ must solve the following rational function approximation problem:</p>
-$$ \gamma(K, a, b,c,d) = \inf_{\lambda_j, \alpha_j}  \frac{ \sup_{\lambda \in [ a ,b ]}  |r_K(\lambda )|}{ \inf_{\lambda \in [ -d, -c]}  |r_K(\lambda )| } $$<p>The approximation problem is known as <em>Zolotarev's third problem</em>.
-A solution is known in the case that $a = d$, and $c = b$, which corresponds to the case when $B = -A$. The optimal $\alpha_j,\beta_j$ are not easy to write down, but for our purposes, it is sufficient to know they exist, and that</p>
-$$\gamma(K, a, b,a,b) =4 \left[\exp\left( \frac{\pi^2}{2 \log (4b/a)} \right) \right]^{-2K} \ .$$<p>Use this result to prove that the error in ADI satisfies $\|E^{(K)}\| = \mathcal{O}(\rho^K)$ for some $\rho &lt;1$ (that is, it converges at least linearly in $K$) when $B = -A$, $A$ is SPD, and the optimal shifts are used.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="ADD-YOUR-ANSWER-TO-QUESTION-4-HERE">ADD YOUR ANSWER TO QUESTION 4 HERE<a class="anchor-link" href="#ADD-YOUR-ANSWER-TO-QUESTION-4-HERE">¶</a></h2>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Q5:-Gauss-Legendre-Quadrature"><strong>Q5: Gauss-Legendre Quadrature</strong><a class="anchor-link" href="#Q5:-Gauss-Legendre-Quadrature">¶</a></h1><p>In class, we showed that, given a fixed set of distinct quadrature nodes $\{x_k\}_{k=1}^n$, we can always find quadrature weights so that the quadrature rule integrates all polynomials of degree $n-1$ exactly, that is:</p>
-$$
-\int_a^b p(x)\,dx = \sum_{k=1}^n w_k p(x_k)
-$$<p>for all polynomials $p(x)$ of degree at most $n-1$.</p>
-<p>In this question, we show that by choosing the nodes $\{x_k\}_{k=1}^{n}$ as the roots of the $n$-th Legendre polynomial $P_n(x)$ (with weights chosen as above), we can integrate polynomials of degree $2n-1$. This is called Gauss-Legendre quadrature and is the default choice for integrating smooth functions.</p>
-<p>The key step uses polynomial division (see <a href="https://en.wikipedia.org/wiki/Polynomial_long_division">polynomial long division</a> if needed). For any polynomial $p(x)$ with $\deg p \le 2n-1$, the decomposition
-$$
-p(x) = q(x)P_n(x) + r(x)
-$$
-with $\deg q \le n-1$ and $\deg r \le n-1$ always exists and is unique.</p>
-<h2 id="5.1">5.1<a class="anchor-link" href="#5.1">¶</a></h2><p>Show that $\int_{-1}^{1} q(x)P_n(x)\,dx = 0$.</p>
-<h2 id="5.2">5.2<a class="anchor-link" href="#5.2">¶</a></h2><p>Let $x_1, \ldots, x_n$ be the roots of $P_n(x)$ (the Gauss-Legendre nodes), and let $Q_n(f) = \sum_{k=1}^n w_k f(x_k)$ be the Gauss-Legendre quadrature rule.</p>
-<p>Show that $Q_n(p) = Q_n(r)$.</p>
-<h2 id="5.3">5.3<a class="anchor-link" href="#5.3">¶</a></h2><p>Using Steps 1 and 2, and assuming the weights are chosen so that the quadrature rule is exact for polynomials of degree at most $n-1$, show that
-$$
-Q_n(p) = \int_{-1}^1 p(x)\,dx
-$$
-for all polynomials $p(x)$ of degree at most $2n-1$. This shows that Gauss-Legendre quadrature with $n$ nodes is exact for all polynomials of degree up to $2n-1$ (which is optimal).</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="ADD-YOUR-ANSWER-TO-QUESTION-5-HERE">ADD YOUR ANSWER TO QUESTION 5 HERE<a class="anchor-link" href="#ADD-YOUR-ANSWER-TO-QUESTION-5-HERE">¶</a></h2>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Extra credit:</p>
+<p>contained in $[-1,1]$, where $P_n(x)$ changes sign.</p>
 <ul>
-<li>Solvers based on ADI <a href="https://epubs.siam.org/doi/abs/10.1137/S0895479801384937?casa_token=cgiATo_coWUAAAAA:em_wZAuZaOjspAHNIfbOESbWXNWCHBBdtg7y1RhkAYxtnB3au-MVbqEFQuuTv_7UZEi40bop">this paper</a>, <a href="https://academic.oup.com/imajna/article/40/3/1994/5621364">this paper</a></li>
-<li>Non-uniform fast Fourier transform <a href="https://epubs.siam.org/doi/abs/10.1137/17M1134822">this paper</a>, <a href="https://epubs.siam.org/doi/pdf/10.1137/S003614450343200X?casa_token=pzicy9jvJNQAAAAA:7c9yf7aQcbvepvMRoEOvdIZ4Lcko9MAVKm22Nd8Z1A3fr6Rbu_fhOoSxLbwtT_nwe8cb98uM">this one</a></li>
-<li>Using orthogonal polynomials <a href="https://www.cambridge.org/core/journals/acta-numerica/article/abs/fast-algorithms-using-orthogonal-polynomials/4FAD8C7C28EC20EE7583465C1A89AA3D">this paper</a>, <a href="https://epubs.siam.org/doi/abs/10.1137/120865458">this paper</a></li>
+<li>Finally, use the bisection</li>
 </ul>
+<p>method to determine the roots to close to machine precision.</p>
+<p><a name="cite_note-1"></a>1. <a href="#cite_ref-1">^</a> These points are important enough to have their own name: <em>Gauss-Legendre nodes</em>. We will come back to them in the second half of the semester. To read more about their history and computation (entirely optional), see this <a href="https://pi.math.cornell.edu/~ajt/papers/QuadratureEssay.pdf">essay</a>.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [40]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># First implement P_n(x) using the recursion formula</span>
+<span class="k">def</span> <span class="nf">P</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">:</span>
+    <span class="c1"># Returns the value of n-th Legendre polynomial at x, for x in [-1, 1]</span>
+    <span class="c1"># TODO: Implement this helper function first. Replace this with your code</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+
+<span class="c1">### Tests provided for you. No need to change the code below.</span>
+
+<span class="c1">## Test 1: Check P_n(x) is correct</span>
+<span class="n">tolerance</span> <span class="o">=</span> <span class="mf">1e-14</span>
+<span class="n">passed</span><span class="o">=</span> <span class="kc">True</span>
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">[</span> <span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.7</span><span class="p">,</span> <span class="mi">30</span><span class="p">)]:</span>
+    <span class="n">coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span> <span class="n">coefs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span><span class="mi">1</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">legendre</span><span class="o">.</span><span class="n">legval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">coefs</span><span class="p">)</span> <span class="o">-</span> <span class="n">P</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">tolerance</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Test failed for x=</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">, n=</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">! Check your P(x,n) function. P(x,n) = </span><span class="si">{</span><span class="w"> </span><span class="n">P</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="si">}</span><span class="s2">, where it should be = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">legendre</span><span class="o">.</span><span class="n">legval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">coefs</span><span class="p">)</span><span class="si">}</span><span class="s2"> "</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Test passed!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Test failed for x=0.3, n=1! Check your P(x,n) function. P(x,n) = 0, where it should be = 0.3 
+Test failed for x=0.5, n=2! Check your P(x,n) function. P(x,n) = 0, where it should be = -0.125 
+Test failed for x=-0.7, n=30! Check your P(x,n) function. P(x,n) = 0, where it should be = -0.015651656208053255 
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [39]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">legroots</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="c1"># Returns the n roots of the n-th degree polynomial</span>
+    <span class="n">roots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="c1"># TODO: Find $n$ disjoint intervals</span>
+    <span class="c1"># contained in $[-1,1]$, where $P_n(x)$ changes sign. </span>
+    <span class="c1"># TODO: Then use bisection to find the roots</span>
+
+    <span class="k">return</span> <span class="n">roots</span>
+
+<span class="c1">### Tests provided for you. No need to change the code below.</span>
+
+<span class="c1">## Test 2: check the roots are correct</span>
+<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">ns</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ns</span><span class="p">):</span>
+    <span class="n">sol</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">legendre</span><span class="o">.</span><span class="n">leggauss</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="n">err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">legroots</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="o">-</span> <span class="n">sol</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">err</span> <span class="o">&lt;</span> <span class="n">tolerance</span><span class="p">:</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Passed test </span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2"> for n=</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Failed test </span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2"> for n=</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Passed </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> out of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ns</span><span class="p">)</span><span class="si">}</span><span class="s2"> tests"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Failed test 0 for n=3
+Failed test 1 for n=12
+Failed test 2 for n=17
+Failed test 3 for n=20
+Passed 0 out of 4 tests
+</pre>
+</div>
 </div>
 </div>
 </div>

@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>hw5</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>precept10</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7516,180 +7516,23 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="MAT-321---PS5">MAT 321 - PS5<a class="anchor-link" href="#MAT-321---PS5">¶</a></h2><ul>
-<li>You can (and probably should) discuss assignments with each other and the course staff, but you must write and understand any solutions/code that you submit. You can consult any resource you want for this homework, but you should cite sources you used.</li>
-<li>You must upload the assignment to Gradescope before the deadline in <em>.ipynb</em> format (and optionally pdf if you choose, but a .ipynb is mandatory).</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Q1.-The-Fast-Fourier-Transform"><strong>Q1. The Fast Fourier Transform</strong><a class="anchor-link" href="#Q1.-The-Fast-Fourier-Transform">¶</a></h1><p>In this exercise, we derive the "most important numerical algorithm of our lifetime" (G. Strang): the Fast Fourier Transform (FFT).  The FFT is a fast algorithm to compute the Discrete Fourier Transform (DFT). The DFT of a vector $x \in \mathbb{C}^n$ is the vector $y\in \mathbb{C}^n$ defined by:</p>
+<h1 id="Barycentric-interpolation,-Runge's-phenomenon-and-Gibb's-phenomenon">Barycentric interpolation, Runge's phenomenon and Gibb's phenomenon<a class="anchor-link" href="#Barycentric-interpolation,-Runge's-phenomenon-and-Gibb's-phenomenon">¶</a></h1><p>We experiment with polynomial interpolants.</p>
+<p>One can rewrite the Lagrange interpolating formula in an astonishing form:</p>
 $$
-y_k = \sum_{j=0}^{n-1} x_j \exp(-i2\pi k j / n ) \ .
-$$<p>(Here, vectors are 0-indexed). We restrict our attention to the case where the size $n$ is a power of $2$, although the ideas extend to the general case.
-The DFT is the result of the matrix-vector multiply $Fx$ with the matrix</p>
+p_n(x) = \frac{\sum_{k=0}^n \frac{w_k y_k}{(x-x_k)}}{\sum_{k=0}^{n} \frac{w_k}{(x - x_k)}} 
+$$<p>for $x \neq x_i$,
+where $\{x_i, y_i\}_{i=0}^{n}$ interpolation of points and</p>
 $$
-F =  \begin{bmatrix}
-1 &amp; 1 &amp; 1 &amp; 1 &amp; \cdots &amp; 1    \\
-1 &amp; \omega &amp; \omega^2 &amp;  \omega^3 &amp; \cdots &amp; \omega^{n-1}    \\
-1 &amp; \omega^2 &amp; \omega^4 &amp;  \omega^6 &amp; \cdots &amp; \omega^{2(n-1)}    \\
-1 &amp; \omega^3 &amp; \omega^6 &amp;  \omega^9 &amp; \cdots &amp; \omega^{2(n-1)}    \\
-\vdots &amp; \vdots &amp; \vdots &amp; \vdots  &amp; \ddots &amp; \ddots   \\
-1 &amp; \omega^{n-1} &amp; \omega^{2(n-1)} &amp; \omega^{3(n-1)}  &amp; \cdots &amp; \omega^{(n-1)(n-1)}    \\
-\end{bmatrix}
-$$<p>where $\omega = \exp(-i 2 \pi /n) $ (note that $\omega$ is a function of n).</p>
-<p>To illustrate the FFT, we take $n = 8$.</p>
+w_k = \frac{1}{\prod_{i=0 \dots n, i\neq k} (x_k - x_i)}
+$$<p>are called the interpolating weights. (Yes, $p_n(x)$ is a polynomial! and it exactly equal to formula you derived in HW2).</p>
+<p>The uniform and Chebysev points on $[-1, 1]$ are defined as :</p>
 $$
-F_8 =  \begin{bmatrix}
-1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1  \\
-1 &amp; \omega &amp; \omega^2 &amp;  \omega^3 &amp; \omega^4 &amp; \omega^5 &amp;  \omega^6  &amp;  \omega^7     \\
-1 &amp; \omega^2 &amp; \omega^4 &amp;  \omega^6 &amp; \omega^1 &amp; \omega^2 &amp;  \omega^4  &amp;  \omega^6     \\
-1 &amp; \omega^3 &amp; \omega^6 &amp;  \omega &amp; \omega^4 &amp; \omega^7 &amp;  \omega^2  &amp;  \omega^5     \\
-1 &amp; \omega^4 &amp; 1 &amp;  \omega^4 &amp; 1 &amp; \omega^4 &amp;  1  &amp;  \omega^4     \\
-1 &amp; \omega^5 &amp; \omega^2 &amp;  \omega^7 &amp; \omega^4 &amp; \omega &amp;  \omega^6  &amp;  \omega^3     \\
-1 &amp; \omega^6 &amp; \omega^4 &amp;  \omega^2 &amp; 1 &amp; \omega^6 &amp;  \omega^4  &amp;  \omega^2     \\
-1 &amp; \omega^7 &amp; \omega^6 &amp;  \omega^5 &amp; \omega^4 &amp; \omega^3 &amp;  \omega^2  &amp;  \omega     \\
-\end{bmatrix}
-$$<p>where we have used the fact that $$\omega^{n+k} = \omega^{n}\omega^{k} = \exp(-i 2 \pi /  n)^{n} \omega^k =  \exp(-i 2 \pi n/n)\omega^k = 1 \omega^k  $$</p>
-<p>Next, we reorder the columns so that the odd-indexed columns come first (they are now ordered as [1,3,5,7,2,4,6,8]), which is equivalent to multiplying $F_8$ by the permutation matrix on the right:</p>
-$$
-P_8 = \begin{bmatrix}
-1 &amp;  &amp;  &amp;  &amp;  &amp;  &amp;  &amp; \\
-  &amp;  &amp;  &amp;  &amp;1 &amp;  &amp;  &amp; \\
-  &amp; 1&amp;  &amp;  &amp;  &amp;  &amp;  &amp; \\
-  &amp;  &amp;  &amp;  &amp;  &amp;1  &amp;  &amp; \\
-  &amp;  &amp;1 &amp;  &amp;  &amp;  &amp;  &amp; \\
-  &amp;  &amp;  &amp;  &amp;  &amp;  &amp; 1 &amp; \\
-  &amp;  &amp;  &amp;1 &amp;  &amp;  &amp;  &amp; \\
-  &amp;  &amp;  &amp;  &amp;  &amp;  &amp;  &amp;1 \\
-\end{bmatrix}
-$$<p>Thus, the matrix  $F_8P_8$ is:</p>
-$$F_8P_8 = 
-\left[
-\begin{array}{cccc|cccc}
-1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1  \\
-1 &amp; \omega^2 &amp; \omega^4 &amp;  \omega^6 &amp; \omega &amp; \omega^3 &amp;  \omega^5  &amp;  \omega^7     \\
-1 &amp; \omega^4 &amp; 1 &amp;  \omega^4 &amp; \omega^2 &amp; \omega^6 &amp;  \omega^2  &amp;  \omega^6     \\
-1 &amp; \omega^6 &amp; \omega^4 &amp;  \omega^2 &amp; \omega^4 &amp; \omega^7 &amp;  \omega^2  &amp;  \omega^5     \\
-  \hline
-1 &amp; 1 &amp; 1 &amp; 1 &amp; -1 &amp; -1 &amp; -1 &amp; -1  \\
-1 &amp; \omega^2 &amp; \omega^4 &amp;  \omega^6 &amp; -\omega &amp; -\omega^3 &amp;  -\omega^5  &amp;  -\omega^7     \\
-1 &amp; \omega^4 &amp; 1 &amp;  \omega^4 &amp; \omega^2 &amp; -\omega^6 &amp;  -\omega^2  &amp;  -\omega^6     \\
-1 &amp; \omega^6 &amp; \omega^4 &amp;  \omega^2 &amp; -\omega^4 &amp; -\omega^7 &amp;  -\omega^2  &amp;  -\omega^5     \\
-\end{array} 
-\right] 
- = 
- \left[
-\begin{array}{c|c}
-F_4 &amp; D_4 F_4 \\
-\hline
-F_4 &amp; - D_4 F_4 \\
-\end{array}
-\right] 
-$$<p>where $D_4$ is a diagonal matrix with entries $\text{diag}(D_4) = [1, \omega_8, \omega_8^2, \omega_8^3] $ (the subscript on $\omega_8$ is to emphasize that it is $\omega_8 =  \exp(-i 2 \pi /8) $) and $F_4$ is the DFT matrix with $n= 4$:</p>
-$$
-F_{4} = 
-\left[
-\begin{array}{cccc}
-1 &amp; 1 &amp; 1 &amp; 1  \\
-1 &amp; \omega^2 &amp; \omega^4 &amp;  \omega^6 \\
-1 &amp; \omega^4 &amp; 1 &amp;  \omega^4    \\
-1 &amp; \omega^6 &amp; \omega^4 &amp;  \omega^2    \\
-\end{array}
-\right]
-$$<p>That is, up to a re-ordering of columns and a scaling matrix $D_4$, $F_8$ is made out of four copies of $F_4$. 
- The matrix can be further factorized as:</p>
-<p>$$ F_8P_8 = 
- \left[
-\begin{array}{c|c}
-F_4 &amp; D_4 F_4 \\
-\hline
-F_4 &amp; - D_4 F_4 \\
-\end{array}
-\right] = 
-  \left[ \begin{array}{c|c}
-I &amp; D_4  \\
-\hline
-I &amp; - D_4 \\
-\end{array}
- \right]
- \begin{bmatrix}
-F_4 &amp; 0 \\
-0 &amp; F_4
- \end{bmatrix}
- $$</p>
-<p>It follows that:</p>
-$$F_8 x = F_8P_8 P_8^{-1} x =
- \left[
-\begin{array}{c|c}
-F_4 &amp; D_4 F_4 \\
-\hline
-F_4 &amp; - D_4 F_4 \\
-\end{array}
-\right]
-P_8^{T}
-x  = 
- \left[ \begin{array}{c|c}
-F_4 &amp; D_4 F_4 \\
-\hline
-F_4 &amp; - D_4 F_4 \\
-\end{array}
- \right]
-\begin{bmatrix}
-x_{0:2:7} \\
-x_{1:2:7}
-\end{bmatrix}
-$$<p>where $x_{0:2:7} = [x_0, x_2, x_4, x_6]^T$, $ x_{1:2:7} = [x_1, x_3, x_5, x_7]^T$. Thus</p>
-$$
-F_8 x=
- \left[ \begin{array}{c|c}
-F_4 &amp; D_4 F_4 \\
-\hline
-F_4 &amp; - D_4 F_4 \\
-\end{array}
- \right]
-\begin{bmatrix}
-x_{1:2:8} \\
-x_{2:2:8}
-\end{bmatrix}
- = 
-\left[ \begin{array}{c}
-(F_4 x_{0:2:7})  +  D_4 ( F_4   x_{1:2:7} ) \\
-(F_4 x_{0:2:7})  -  D_4 ( F_4  x_{1:2:7} ) 
-\end{array}
- \right]
-$$<p>The argument generalizes to any n (divisible by 2), and thus we have:</p>
-$$
-F_n P_n = 
-  \left[ \begin{array}{c|c}
-I &amp; D_{n/2}  \\
-\hline
-I &amp; - D_{n/2} \\
-\end{array}
- \right]
- \begin{bmatrix}
-F_{n/2} &amp; 0 \\
-0 &amp; F_{n/2}
- \end{bmatrix}
-$$<p>where the diagonal entries of $D_n$ are : $[ 1, \omega_n, \omega_n^2, \omega_n^3 \dots \omega_n^{n/2-1}]$.
-The idea of the FFT is to use this formula recursively to divide-and-conquer the computation.</p>
-<p>At the top of the tree, we seek a DFT of size $n$ which we "divide-and-conquer" into two DFTs of size $n/2$, we then scale and add those vectors which takes $8n$ operations.
-At next level, where we compute two $F_{n/2}$, we do $8(n/2)$ work to scale/add vectors,  thus $8 (n/2) \times 2 = 8n$ total work. Recursively, we see that we do $8n$ work at each level of the tree.
-After $\log_2(n) = d$  rounds of divide and conquer, we hit the base case of $n =1$, for which $F_1x = x$. Summing up the work of each level, we thus do $ ~ 8n d = 8n \log_2 n$ work.</p>
-<figure>
-<p align="center">
-<img alt="No description has been provided for this image" height="280" src="fft_tree.png"/>
-<figcaption> Figure: Illustration of computational complexity of the FFT</figcaption>
-<p>
-</p></p></figure>
-<p>Write a recursive algorithm for the DFT assuming $n = 2^d$.</p>
+x_i = -1 + 2 \frac{i}{n}
+$$$$
+x_i = \cos(\frac{i\pi}{n})
+$$<p>for $i = 0, \dots n$</p>
+<p>Implement a polynomial interpolant of the following functions using Barycentric interpolation.  Check that the point to evaluate is not one of the nodes $x_i$, or (that the distance to one is less than $10^{-15}$). If it is, return the corresponding value $y_i$.</p>
+<p>Test it on uniform points and the function $f_1(x) = \sin(2\pi x)$ below.</p>
 </div>
 </div>
 </div>
@@ -7702,303 +7545,47 @@ After $\log_2(n) = d$  rounds of divide and conquer, we hit the base case of $n 
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="k">def</span> <span class="nf">my_fft</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> 
-    <span class="n">n</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span>
-    <span class="c1">## ADD YOUR CODE HERE</span>
-    <span class="k">return</span> <span class="n">x</span><span class="o">*</span><span class="mi">0</span>
-
-<span class="c1">## Code below is provided for you. No need to change it.</span>
-<span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">10</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="c1"># Should be close to machine epsilon. ~1e14 is fine</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"error: "</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">my_fft</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Q2.-Chebyshev-polynomials"><strong>Q2. Chebyshev polynomials</strong><a class="anchor-link" href="#Q2.-Chebyshev-polynomials">¶</a></h1><p>The Chebyshev polynomials are defined from the three-term recurrence relation:</p>
-$$T_0(x) =1, \quad T_1(x) = x, \quad T_{n+1}(x) = 2xT_n(x) - T_{n-1}(x) $$<p>The Chebyshev polynomials are the numerical analyst's favorite polynomials because of all of their wonderful properties. For example, we showed in class they have astonishing closed form: $T_n(x)= \cos(n\arccos(x))$.
-Using this property, it is straight-forward to see that the roots of the Chebyshev polynomial $T_n(x)$ are:</p>
-$$
-x_i =  \cos \left( \frac{2i -1 }{2n}\pi \right), \quad i = 1, \dots n
-$$<p>These points are known as the Chebyshev nodes (of the first kind).</p>
-<h2 id="2.1-Clenshaw's-algorithm">2.1 Clenshaw's algorithm<a class="anchor-link" href="#2.1-Clenshaw's-algorithm">¶</a></h2><p>Using the three-term recurence, implement an algorithm to evaluate the sum $p_n(x) = \sum_{k=0}^{n} c_k T_k(x) $ in $\mathcal{O}(n)$ operations. This method is called Clenshaw's algorithm and is applicable to any polynomials with a three-term recurrence.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
-
-<span class="k">def</span> <span class="nf">clenshaw</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-    <span class="c1"># Computes \sum_{i=0}_{n} c_i T_i(x)</span>
-    <span class="c1"># where c is a (n+1) sized vector and T_i(x) is the i-th Chebyshev polynomial</span>
-    <span class="c1"># x is a scalar</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span>
-    <span class="nb">sum</span> <span class="o">=</span><span class="mi">0</span>
-    <span class="c1">## ADD YOUR CODE HERE</span>
-    <span class="k">return</span> <span class="nb">sum</span>
-
-<span class="c1">## Code below is provided for you. No need to change it.</span>
-
-<span class="c1"># Test</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="c1"># Compare to built in method. Should be close to machine epsilon ~1e-15</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'error :'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">chebyshev</span><span class="o">.</span><span class="n">chebval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="n">clenshaw</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">)))</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Q2.2:-Interpolant">Q2.2: Interpolant<a class="anchor-link" href="#Q2.2:-Interpolant">¶</a></h2><p>Write a function that computes the chebyshev expansion of the Chebyshev interpolant of a function $f(x)$. That is, given an input vector $b\in \mathbb{R}^{n+1}$
-with $b_i = f(x_i)$ where $x_i = \cos(\frac{2i -1 }{2(n+1)}\pi)$ for $i = 1, \dots (n+1)$ , compute the output vector $c \in \mathbb{R}^{n+1} $ so that the polynomial $p_n(x) = \sum_{i=0}^n c_i T_i(x) $ satisfies $p_n(x_i) = f(x_i)$.</p>
-<p>Write this problem as the solution of a linear system, similar to the Vandermonde matrix approach discussed in class. Use the three term recurrence to fill the entries of the matrix (not the cosine formula!).</p>
-<p>(Optional) This implementation is  $\mathcal{O}(n^3)$, but there is an $\mathcal{O}(n \log n)$ algorithm to perform this computation using the FFT through the Discrete Cosine Transform (DCT), you can read about it here <a href="https://en.wikipedia.org/wiki/Discrete_Chebyshev_transform">https://en.wikipedia.org/wiki/Discrete_Chebyshev_transform</a> and implement it using <code>scipy.fftpack.dct</code>.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">fit_chebyshev_pol</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-    <span class="c1"># f is a vector of size (n+1)</span>
-    <span class="c1"># returns the (n+1) coefficients of the n degree interpolant in the chebyshev basis </span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">size</span><span class="o">-</span><span class="mi">1</span>
-
-    <span class="c1">## ADD YOUR CODE HERE</span>
-
-    <span class="k">return</span> <span class="n">f</span><span class="o">*</span><span class="mi">0</span>
-
-<span class="c1">## Code below is provided for you. No need to change it.</span>
-
-<span class="c1"># A Helper function to get n roots of the T_n(x)</span>
-<span class="k">def</span> <span class="nf">get_cheb_nodes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span> <span class="mi">2</span><span class="o">*</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="p">)</span>
-
-<span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">f_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">get_cheb_nodes</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">f_fn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">fit_chebyshev_pol</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-
-<span class="c1"># Evaluate the interpolant. Should get the values back! Up to ~ 1e-14 is fine</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">chebyshev</span><span class="o">.</span><span class="n">chebval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">)</span> <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Q2.3.-Clenshaw-Curtis-quadrature">Q2.3. Clenshaw-Curtis quadrature<a class="anchor-link" href="#Q2.3.-Clenshaw-Curtis-quadrature">¶</a></h2><p>In class, we defined the Newton-cotes quadrature as the integral of the equispaced interpolant. Similarly, Clenshaw-curtis quadrature is the integral of the Chebyshev interpolant.</p>
-$$
-\int_{-1}^1 f(x) dx \approx \int_{-1}^1 p_n(x) dx  = \sum_{i=0}^n w_i f(x_i)
-$$<p>Using a similar idea as 2, and the following identity:</p>
-$$
-\int_{-1}^1 T_n(x)\, \mathrm{d}x =
-\begin{cases}
-\frac{(-1)^n + 1}{1 - n^2} &amp; \text{ if }~ n \ne 1 \\
-0                          &amp; \text{ if }~ n = 1.
-\end{cases}
-$$<p>write a function that computes the Quadrature weights. That is, find a vector $w\in \mathbb{R}^{n+1}$ so that</p>
-$$
-\int_{-1}^1 p_n(x) dx  = \sum_{i=0}^n w_i f(x_i) = w^T b
-$$<p>where $x_i$ are the Chebyshev nodes of degree $(n+1)$. Note that these weights, like the Newton-Cotes weights, do not depend on the function $f$.</p>
-<p>Optional: compute the weights in $\mathcal{O}(n \log n) $.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_Clenshaw_Curtis_weights</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="c1"># returns a vector of (n+1) weights of the n-th order Clenshaw-curtis quadrature:</span>
-
-    <span class="c1"># ADD YOUR CODE HERE</span>
-
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1">## Code below is provided for you. No need to change it.</span>
-
-<span class="n">n</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">w</span> <span class="o">=</span> <span class="n">get_Clenshaw_Curtis_weights</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-<span class="n">cc_w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.16778123</span><span class="p">,</span> <span class="mf">0.5255521</span> <span class="p">,</span> <span class="mf">0.61333333</span><span class="p">,</span> <span class="mf">0.5255521</span> <span class="p">,</span> <span class="mf">0.16778123</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'error (should be ~1e-8):'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span> <span class="n">w</span> <span class="o">-</span> <span class="n">cc_w</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Q2.4.-Spectral-convergence-of-Clenshaw-curtis">Q2.4. Spectral convergence of Clenshaw-curtis<a class="anchor-link" href="#Q2.4.-Spectral-convergence-of-Clenshaw-curtis">¶</a></h2><p>Use your quadrature rule to estimate the integral of the smooth function:</p>
-$$ \int_{-1}^1 \cos(3  \pi x) \exp(x) dx $$<p>Make a plot displaying the spectral convergence of the method. The analytical value of the integral is given below so that you may compute the error.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">f_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-<span class="c1"># The analytical value of the integral </span>
-<span class="n">analytical_integral</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span><span class="o">/</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">9</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="n">nns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nns</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">n_idx</span><span class="p">,</span><span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nns</span><span class="p">):</span>
-    <span class="c1"># ADD YOUR CODE HERE</span>
-    <span class="n">errors</span><span class="p">[</span><span class="n">n_idx</span><span class="p">]</span> 
-
-<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">nns</span><span class="p">,</span><span class="n">errors</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Q3.-Solving-PDEs:-beyond-Poisson's-equation"><strong>Q3. Solving PDEs: beyond Poisson's equation</strong><a class="anchor-link" href="#Q3.-Solving-PDEs:-beyond-Poisson's-equation">¶</a></h1><p>In this exercise, we approximate solutions to elliptic PDEs of the form:</p>
-$$
-- \frac{d^2}{dx^2} u(x,y) - \frac{d^2}{dy^2}u(x,y)  + c(x,y)u(x,y)  = f(x,y)\\
-\qquad u(x,0) = u(x,1) =0\\
-\qquad u(0,y) =  u(1,y) = 0
-$$<p>where $c(x,y) \geq 0$. Last HW, we solved Poisson's equation on the square with homogeneous Dirichlet conditions:</p>
-$$
-- \frac{d^2}{dx^2} u(x,y) - \frac{d^2}{dy^2}u(x,y)   = f(x,y)\\
-\qquad u(x,0) = u(x,1) =0\\
-\qquad u(0,y) =  u(1,y) = 0
-$$<p>This is equivalent to the above equation with $c(x,y) = 0$.  We saw that using finite differences, the Poisson PDE may be discretized as:</p>
-$$
-TU + UT = F
-$$<p>where $T$ is the tridiagonal second-order finite difference matrix, and $F_{i,j} = h^2 f(x_i, y_j)$ with $x_i = i h $,  $y_j = jh$,  and $h = \frac{1}{n+1}$.
-To discretize the modified equation, we only need to account for the additional operator $u \to c u$. Since both $c(x,y)$ and $u(x,y)$ are discretized on a grid and $(cu)(x_i, y_j) = c(x_i, y_j)u(x_i, y_j)$, this operator is represented as:</p>
-$$
-C \cdot U
-$$<p>where $\cdot$ is a pointwise multiplication between the two matrices (also called the Hadamard product), and C is the matrix $C_{i,j} = h^2 c(x_i, y_j)$.</p>
-<p>Thus, the discretized system becomes:</p>
-$$
-TU + UT + C\cdot U = F
-$$<p>In the previous homework, we solved Poisson's equation in only $\mathcal{O}(n^2 \log n)$ time by recognizing it as a Sylvester equation and using the Bartels-Stewart algorithm, leveraging the diagonalization of $T$. However, this new equation is not a Sylvester equation, so those methods no longer apply.</p>
-<p>We turn instead to the Kronecker product formalism introduced in Homework 3. The pointwise multiplication $C \cdot U$ can be equivalently expressed in vectorized form as $\text{vec}(C) \cdot \text{vec}(U)$, or equivalently as $D \text{vec}(U)$, where $D = \text{diag}(\text{vec}(C))$ is the diagonal matrix of size $\mathbb{R}^{n^2 \times n^2}$ with $\text{vec}(C)$ on its diagonal.</p>
-<p>This reformulation gives:</p>
-$$
-TU + UT + C \cdot U = F  \Leftrightarrow \left( (I \otimes T) + (T \otimes I ) + D \right) \text{vec}(U) = \text{vec}(F)
-$$<p>One way to solve this system is by explicitly forming the matrix $A = \left((I \otimes T) + (T \otimes I) + D\right)$ and performing a dense linear solve. However, this approach requires $\mathcal{O}(n^6)$ operations, which is computationally prohibitive. Instead, we leverage fast matrix-vector products with $A$, making this system ideal for Krylov subspace methods. Since $T$ is symmetric positive definite (SPD), $A$ is also SPD, allowing us to use the conjugate gradient (CG) method.</p>
-<h2 id="Q3.1">Q3.1<a class="anchor-link" href="#Q3.1">¶</a></h2><p>Implement a function that computes the matrix-vector product with a vectorized version of $Ax$ in $\mathcal{O(n^2)}$ operations. Note that A is of size $n^2 \times n^2$, so this is a linear-time matvec in the size of a vector.
-Then, using the built-in CG iteration, run CG for 20 iterations, asking to stop if tolerance <code>tol</code> drops below $10^{-8}$. You can run CG using the following command
-<code>xk,info = scipy.sparse.linalg.cg(A_op, b, maxiter=maxiter, tol = tol, callback=callback)</code>, the callback functions will allow you to store the residual at each step (which CG does not do by default).</p>
-<p>Note that we take $n = 1000$, so A has <strong>one million rows and columns</strong>: no way we could do a dense solve (a back of the envelope calculation estimates it would take <strong>two years</strong> of compute time!).</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">scipy</span>
-<span class="kn">import</span> <span class="nn">scipy.sparse</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">scipy.sparse.linalg</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="k">def</span> <span class="nf">compute_barycentric_weights</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="c1"># Compute barycenter weights </span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">diff_eq_mat_vec</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-    <span class="c1"># Implement the Ax in O(n^2) where x in an n^2 vector and </span>
-    <span class="c1"># A is the matricized version of the operator</span>
-    <span class="c1"># X -&gt; TX + XT + C dot X</span>
-
-    <span class="c1"># ADD YOUR CODE HERE</span>
-
-    <span class="k">return</span> <span class="mi">0</span><span class="o">*</span><span class="n">x</span>
-
-<span class="c1"># Helper functions for you to use - READ THEM!</span>
-
-<span class="c1"># returns the T matrix in sparse format.</span>
-<span class="c1"># T@x where x is a vector is an O(nnz) operations where nnz is the number of non zeros in T </span>
-<span class="c1"># Since T has ~3n non zeros, T@x is an O(n) operation </span>
-<span class="k">def</span> <span class="nf">get_sparse_T</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="n">T</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">diags</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">],</span> <span class="n">offsets</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">T</span>
-
-<span class="c1"># Vectorization of matrix</span>
-<span class="k">def</span> <span class="nf">vec</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1">## Inverse of vec function.</span>
-<span class="k">def</span> <span class="nf">unvec</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">return</span> <span class="n">w</span>
 
 
-<span class="c1">### A test for the MATVEC.</span>
+<span class="k">def</span> <span class="nf">eval_polynomial_at_one_z</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">z</span>
+
+
+<span class="k">def</span> <span class="nf">eval_polynomial_at_many_z</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">):</span>
+    <span class="c1"># Evaluate polynomial interpolant p_n(x) at many points</span>
+    <span class="n">pnz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pnz</span>
+
+<span class="k">def</span> <span class="nf">estimate_max_error</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">):</span>
+    <span class="c1"># Approximate the l_infty difference using 1e4 points.</span>
+    <span class="n">dense_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">10000</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">f1</span><span class="p">(</span><span class="n">dense_grid</span><span class="p">)</span> <span class="o">-</span> <span class="n">f2</span><span class="p">(</span><span class="n">dense_grid</span><span class="p">)))</span>
+
+
 <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
-<span class="n">T</span> <span class="o">=</span> <span class="n">get_sparse_T</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">A</span>
-<span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-<span class="c1"># Write down the big kron matrix</span>
-<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">vec</span><span class="p">(</span><span class="n">C</span><span class="p">))</span>
+<span class="n">f1</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span>  <span class="n">x</span><span class="p">)</span>
+<span class="n">uniform_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+<span class="n">f1x</span> <span class="o">=</span> <span class="n">f1</span><span class="p">(</span><span class="n">uniform_grid</span><span class="p">)</span>
 
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">diff_eq_mat_vec</span><span class="p">(</span><span class="n">C</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'error in mat_vec (n=10): (should be ~1e-14)'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">A</span><span class="nd">@x</span><span class="p">))</span>
+<span class="c1"># Plot the function and its interpolant on the fine grid</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">compute_barycentric_weights</span><span class="p">(</span><span class="n">uniform_grid</span><span class="p">)</span>
+<span class="n">dense_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">10000</span><span class="p">)</span>
+<span class="n">pn1x</span> <span class="o">=</span> <span class="n">eval_polynomial_at_many_z</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">uniform_grid</span><span class="p">,</span><span class="n">f1x</span><span class="p">,</span><span class="n">dense_grid</span><span class="p">)</span>
+
+<span class="c1"># Plot the function and its interpolant</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dense_grid</span><span class="p">,</span><span class="n">pn1x</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dense_grid</span><span class="p">,</span><span class="n">f1</span><span class="p">(</span><span class="n">dense_grid</span><span class="p">))</span>
+
+<span class="n">pn_x</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">dense_grid</span><span class="p">:</span> <span class="n">eval_polynomial_at_many_z</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">uniform_grid</span><span class="p">,</span><span class="n">f1x</span><span class="p">,</span> <span class="n">dense_grid</span><span class="p">)</span>
+<span class="n">max_error</span> <span class="o">=</span> <span class="n">estimate_max_error</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span><span class="n">pn_x</span><span class="p">)</span>
+<span class="c1"># Should be around 0.08 for n = 10</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"max error:"</span><span class="p">,</span> <span class="n">max_error</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8011,7 +7598,17 @@ Then, using the built-in CG iteration, run CG for 20 iterations, asking to stop 
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>We define the coefficients below. Use your fast-matvec to attempt solving the linear system by calling CG below. What do you observe about the convergence of CG? How big is the residual after 20 iterations?</p>
+<p>Test your code on:</p>
+<ul>
+<li>$ f_1(x) = \cos( 10  \pi x) $</li>
+<li>Runge's function $ f_2(x) = \frac{1}{ 1 + 25 x^2 } $</li>
+</ul>
+<p>At uniform, Chebyshev and random point. You can get random points on $[-1,1]$ by running <code>np.random.rand(n)*2 -1</code>.</p>
+<p>Visualize the functions are their interpolant for n =  5, 10, 30.</p>
+<p>Then, make a convergence plot of the max error as n increases from n = 1 to n = 50.
+To do this, approximate and plot the error between the interpolant and the function $\max_x |f(x) - p_n(x)| $. You can approximate the max by taking the max over a fine uniform grid with $n = 10^4$ points (see code above).</p>
+<p>Do the interpolant converge for $f_1(x)$ ? What about $f_2(x)$?</p>
+<p>Dos the interpolant at random points behave like the uniform interpolant or like the Chebyshev interpolant?</p>
 </div>
 </div>
 </div>
@@ -8023,109 +7620,32 @@ Then, using the built-in CG iteration, run CG for 20 iterations, asking to stop 
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Defining the coefficients of a PDE</span>
-<span class="n">c_fun</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span>  <span class="o">*</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">y</span>
-<span class="n">f_fun</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span> <span class="o">-</span><span class="p">(</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>  <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span>  <span class="o">+</span>  <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="c1"># TODO: Change the function, , see how result changes</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span>  <span class="n">x</span><span class="p">)</span>
+<span class="c1"># f = lambda x: 1 / ( 1 + 25 * x**2)</span>
 
-<span class="c1"># Discretization size</span>
-<span class="n">n</span> <span class="o">=</span> <span class="mi">1000</span> <span class="c1"># If your computer struggles with n = 300, if not, try n =3000!</span>
-
-<span class="c1"># Generate the grid</span>
-<span class="n">xgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">xgrid</span><span class="p">)</span>
-<span class="c1">#Evaluate c_fun and f_fun on grid.</span>
-<span class="n">C</span> <span class="o">=</span> <span class="n">c_fun</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">F</span> <span class="o">=</span>  <span class="n">f_fun</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="n">F</span><span class="p">)</span>
-
-<span class="c1"># To run CG, we need to pass to scipy a blackbox A_mv(x) that implements A @ x fast</span>
-<span class="c1"># Below the required syntax. You can look up the documentation,</span>
-<span class="c1"># but it isn't important, nothing very interesting is happening</span>
-<span class="n">A_matvec</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">diff_eq_mat_vec</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-<span class="c1"># Wraps the matvec into a format expected by scipy</span>
-<span class="n">A_op</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinearOperator</span><span class="p">((</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="n">A_matvec</span><span class="p">)</span>
-
-<span class="c1"># To record residuals at each iteration, we need to give this callback function as an input</span>
-<span class="n">residuals</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="c1"># Define callback function to store residual at each iteration</span>
-<span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">xk</span><span class="p">):</span>
-    <span class="n">residual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A_op</span> <span class="o">@</span> <span class="n">xk</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-    <span class="n">residuals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">residual</span><span class="p">)</span>
+<span class="c1"># TODO: Change the grid, see how result changes</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
 
 
-<span class="c1">### ADD YOUR CODE HERE !!! CALL CG</span>
-<span class="c1">## add callback=callback as an argument to compute and store the residual at each iteration</span>
-<span class="n">xk</span><span class="p">,</span><span class="n">info</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cg</span><span class="p">(</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span><span class="p">)</span>
+<span class="n">fx</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">residuals</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">'log'</span><span class="p">)</span>  <span class="c1"># Log scale for better visualization of convergence</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Iteration'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Relative Residual'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Convergence of CG Solver'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># Plot the function and its interpolant on the fine grid</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">compute_barycentric_weights</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+<span class="n">dense_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">10000</span><span class="p">)</span>
+<span class="n">pn1x</span> <span class="o">=</span> <span class="n">eval_polynomial_at_many_z</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">grid</span><span class="p">,</span><span class="n">fx</span><span class="p">,</span><span class="n">dense_grid</span><span class="p">)</span>
 
-<span class="c1"># Plots approximate solution</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">unvec</span><span class="p">(</span><span class="n">xk</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'computed approximate solution of PDE'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<span class="c1"># Plot the function and its interpolant</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dense_grid</span><span class="p">,</span><span class="n">pn1x</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dense_grid</span><span class="p">,</span><span class="n">f</span><span class="p">(</span><span class="n">dense_grid</span><span class="p">))</span>
+
+<span class="n">pn_x</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">dense_grid</span><span class="p">:</span> <span class="n">eval_polynomial_at_many_z</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">grid</span><span class="p">,</span><span class="n">fx</span><span class="p">,</span> <span class="n">dense_grid</span><span class="p">)</span>
+<span class="n">max_error</span> <span class="o">=</span> <span class="n">estimate_max_error</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span><span class="n">pn_x</span><span class="p">)</span>
+<span class="c1"># Should be around 0.08 for n = 10</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"max error:"</span><span class="p">,</span> <span class="n">max_error</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The slow convergence behavior above is typical when solving linear systems obtained by discretizing differential equations. Recall the CG convergence bounds that</p>
-$$ \frac{\|e_k\|_A}{\|e_0\|_A} \leq 2 \left( \frac{ \sqrt{\kappa(\mathbf{A})}-1 }{ \sqrt{\kappa(\mathbf{A})}+1 } \right)^k  \approx 2 \left( 1 - \frac{2}{\sqrt{\kappa(\mathbf{A})}} \right)^k \, $$<p>where $K_2(A)$ is the condition number of A, thus when $K_2(A)$ is large, the convergence may be very slow. Also recall that when A is SPD: $$K_2(A) = \|A\|_2 \|A^{-1}\|_2  = \frac{ \sigma_{max}(A)}{\sigma_{min}(A)} = \frac{ \lambda_{max}(A)}{\lambda_{min}(A)} $$</p>
-<p>The discretization by finite difference of second-order differential operator (such as the ones here) have condition number that grows proportionally to $n^2$: $K_2(A) = \mathcal{O}(n^2)$ so we expect very poor convergence for even moderately large $n$.</p>
-<p>We are missing one last ingredient in our PDE solver: a <em>preconditioner</em>. 
-Preconditioning is the idea of replacing a linear system $Ax=b$ with a different, but equivalent linear system $M^{-1}Ax = M^{-1}b$. The matrix $M$ is called the preconditioner. A good preconditioner should have two properties:</p>
-<ul>
-<li>$K_2(M^{-1}A)&lt;&lt; K_2(A)$, so the iterative method applied to this new system converges fast.</li>
-<li>$M^{-1}$ is easy to compute so that each iteration is fast.</li>
-</ul>
-<p>Running preconditioned CG on the matrix $A$ with preconditioner $M$ is mathematically equivalent to running the original CG on $L^{-1}A(L^{-1})^T$ where $LL^T = M$, so to bound the condition number of $L^{-1}A(L^{-1})^T$, it is sufficient to bound the eigenvalues of $M^{-1}A$ or $L^{-1}A(L^{-1})^T$ as these are similar matrices. See notes for lecture 18 if this is unclear!</p>
-<p>Preconditioners are highly problem specific. They are often the special sauce that, together with a Krylov method, makes a modern numerical method blazingly fast. As such, they are the basis for much research interest.
-Often, the trick to finding a good preconditioner is to find a "nearby" but easier problem.
-In our case, we can pick $M$ to be the discretization of Poisson's equation: $M = T \otimes I + I \otimes T$. In this case, we have that $A = M + D$, where $D=\text{diag}(\text{vec}(C))$, and one can show that $L^{-1}A(L^{-1})^T$ is well conditioned.</p>
-<h2 id="Q3.2">Q3.2<a class="anchor-link" href="#Q3.2">¶</a></h2><p>Proving that the preconditioned system is well conditioned is your next ask.
-Since we know the exact eigenvalue decomposition of $T$ (see previous HW) it is easy to bound eigenvalues of $M = T \otimes I + I \otimes T$.</p>
-$$
-\lambda_{\text{min}}(M) \approx \frac{2 \pi^2}{(n+1)^2}, \quad \lambda_{\text{max}}(M) = 8
-$$<p>Using these estimates show that $L^{-1}A(L^{-1})^T$ is well conditioned, specifically, show that:</p>
-$$ K_2( L^{-1}A(L^{-1})^T ) \leq 1 + \frac{1}{2\pi^2}\max_{x,y}{c(x,y)} \ .$$<p>(You may use the $\approx$ in $\lambda_{\text{min}}(M)$ as equality). Note that the bound is independent of $n$ and small if $c(x,y)$ doesn't get too large, so we expect CG to converge very quickly. In our case, $c(x,y) \leq 1 $ so we expect very fast convergence.</p>
-<p>Hint: You can (but do not have to) use the following characterization of the eigenvalues of <strong>symmetric</strong> matrices based on the Rayleigh quotient:</p>
-$$ \lambda_{max}(B) = \max_{x \in \mathbb{R}^n} \frac{x^TBx}{x^Tx} \ , \\
- \lambda_{min}(B) = \min_{x \in \mathbb{R}^n} \frac{x^TBx}{x^Tx} \ , $$<p>also recall that $c(x,y) \geq 0$, $C_{i,j} = h^2 c(x_i,y_j) $.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Q3.2-ADD-YOUR-ANSWER-HERE">Q3.2 ADD YOUR ANSWER HERE<a class="anchor-link" href="#Q3.2-ADD-YOUR-ANSWER-HERE">¶</a></h2>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Q3.3">Q3.3<a class="anchor-link" href="#Q3.3">¶</a></h2><p>Implement your preconditioner in <code>my_poisson_preconditioner</code> (based on HW4). Then pass it as an input to CG using the <code>M</code> option:
-<code>scipy.sparse.linalg.cg(A_op, b, M= M_op, maxiter =20, tol = 1e-8, callback=callback )</code> . Compute the residual once more. What do you observe?</p>
 </div>
 </div>
 </div>
@@ -8137,47 +7657,14 @@ $$ \lambda_{max}(B) = \max_{x \in \mathbb{R}^n} \frac{x^TBx}{x^Tx} \ , \\
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">my_poisson_preconditioner</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
-    <span class="c1">## Should compute M^{-1} b</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">ns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span>  <span class="n">x</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">ns</span><span class="p">:</span>
+    <span class="c1"># Make convergence plot</span>
 
-    <span class="c1">## ADD YOUR CODE HERE. NOTE YOU SHOULD ALSO ADD YOUR CODE BELOW!</span>
-    <span class="k">return</span> <span class="n">b</span><span class="o">*</span><span class="mi">0</span>
 
-<span class="c1"># A helper function you can use if you want</span>
-<span class="k">def</span> <span class="nf">dst</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">axis</span> <span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">scipy</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">dst</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="nb">type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">norm</span> <span class="o">=</span> <span class="s2">"ortho"</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span><span class="n">axis</span><span class="p">)</span>
-
-<span class="c1"># Computes eigenvalues of the Tridiagonal matrix from known analytical formula</span>
-<span class="k">def</span> <span class="nf">get_eigenvalues_of_T</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="k">return</span> <span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="c1"># Wraps M_op(x) =  M^{-1} @ x in a format scipy expects</span>
-<span class="n">M_op</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinearOperator</span><span class="p">((</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="n">my_poisson_preconditioner</span><span class="p">)</span>
-
-<span class="c1"># To record residuals at each iteration</span>
-<span class="n">residuals</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="c1"># Define callback function to store residual at each iteration</span>
-<span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">xk</span><span class="p">):</span>
-    <span class="n">residual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A_op</span> <span class="o">@</span> <span class="n">xk</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-    <span class="n">residuals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">residual</span><span class="p">)</span>
-
-<span class="c1">## ADD YOUR CODE HERE!!</span>
-<span class="c1">## ADD YOUR CODE HERE!!</span>
-<span class="c1">## ADD YOUR CODE HERE!!</span>
-
-<span class="c1"># Call CG to solve the system A * x = b with callback</span>
-<span class="c1">## add callback=callback as an argument to compute the residual at each iteration</span>
-<span class="n">xk</span><span class="p">,</span><span class="n">info</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cg</span><span class="p">(</span><span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="c1"># Should converge very fast ! only 4-5 iterations and we are done</span>
-<span class="c1"># Plot convergence of the residual</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">residuals</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">'log'</span><span class="p">)</span>  <span class="c1"># Log scale for better visualization of convergence</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Iteration'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Relative Residual'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Convergence of CG Solver'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span><span class="n">errors</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8190,137 +7677,48 @@ $$ \lambda_{max}(B) = \max_{x \in \mathbb{R}^n} \frac{x^TBx}{x^Tx} \ , \\
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Much better convergence! Note that our first approximate solution looks visually nothing like our correct one.</p>
-<p>There is a lot more to be said about numerical solvers for PDEs such as handling more complicated domains, handling coupled PDEs and dealing with nonlinearities, but we have now seen the entire lifespan of a typical linear PDE solver:</p>
+<p>Test it on:</p>
 <ul>
-<li>A discretization scheme is used to turn a continuous problem into a linear system.</li>
-<li>An iterative method is chosen, often CG or GMRES, to solve the linear system.</li>
-<li>A preconditioner is devised to speed up convergence.</li>
+<li>$ f_3(x) = \begin{cases} 1 &amp; \text{ if }x &lt; 1 \\ 1 &amp; \text{ else} \end{cases} $</li>
 </ul>
+<p>Plot the the Chebyshev interpolant of $f_3$ for different values of n.
+How does the oscillation near $0$ change with $n$?
+Make a convergence plot for n = 5 to 500 in increment of 10.</p>
+<p>This tendency of polynomial interpolant to oscillate near discontinuities is called Gibb's phenomenon.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Q4-Alternating-direction-implicit"><strong>Q4 Alternating direction implicit</strong><a class="anchor-link" href="#Q4-Alternating-direction-implicit">¶</a></h1><p>In class, we proved the convergence of Krylov subspace methods through a connection with a polynomial approximation problem. This link between numerical linear algebra and approximation theory is pervasive, and we see another example here with a different iterative solver: the Alternating Direction Implicit (ADI) method.
-ADI is an iterative solver for Sylvester equations:</p>
-$$
-AX - XB = F
-$$<p>It is defined as the following iteration:</p>
-<blockquote>
-<p>$X^{(0)} = 0$</p>
-<p>for $j=0,1,2,3,\dots$</p>
-<blockquote>
-<p>Solve for $X^{(j + 1/2)}$, where $\left( A - \beta_{j +1} I\right) X^{(j+1/2)} = X^{(j)}\left( B - \beta_{j + 1} I \right) + F$</p>
-<p>Solve for $  X^{(j + 1)}$,  where  $ X^{(j+1)}\left( B - \alpha_{j + 1} I \right) = \left( A - \alpha_{j+1} I\right) X^{(j+1/2)} - F$</p>
-</blockquote>
-</blockquote>
-<p>The scalars $\alpha_j$ and $\beta_j$ are hyperparameters that must be chosen a priori.</p>
-<ol>
-<li>Show the following identity:</li>
-</ol>
-$${\displaystyle X-X^{(K)}=\left(\prod _{j=1}^{K}{ {(A-\alpha _{j}I)(A-\beta _{j}I)^{-1}} } \right) \left(X-X^{(0)}\right) \left( \prod _{j=1}^{K}{ {(B-\beta _{j}I)(B-\alpha _{j}I)^{-1} }} \right) }$$<p>where $X$ is the solution to the Sylvester equation.</p>
-<p>Hint:
-Note that $F  =  AX - XB + (- \beta_{j+1} X + \beta_{j+1} X) = (A - \beta_{j +1} I)X - X\left( B - \beta_{j + 1} I \right) $.</p>
-<p>Let $E^{(j)} = X - X^{(j)}$. 
-First show that</p>
-$$E^{(j + 1/2)} = \left( A - \beta_{j +1} I\right)^{-1} E^{(j)}\left( B - \beta_{j + 1} I \right) \ ,  $$<p>then derive a similar relation between $E^{(j + 1)}$ and $E^{(j + 1/2)}$ and combine them to show the identity.</p>
-<ol start="2">
-<li></li>
-</ol>
-<p>Use 1 to show:</p>
-$$
-\frac{\| \displaystyle X-X^{(K)}\|_2}{ \|X\|_2 } \leq \|r_K(A)\|_2 \| r_K(B)^{-1}\|_2
-$$<p>where $r_K(x)$ is the rational function: 
-$$r_K(x) = \prod_{j=1}^K \frac{x -  \alpha _{j}}{x -  \beta _{j}} \ . $$
-The function applied to the matrix is defined as:
-$r_K(M) = \prod_{j=1}^{K}{ {(M-\alpha _{j}I)(M-\beta _{j}I)^{-1}} }$.</p>
-<p>Hint: you may use the fact that all matrices of the form $(M - \alpha I)$ for any $\alpha \in \mathbb{C}$ (and their inverses) commute with each other, for example: $(M-\alpha I)(M-\beta I)^{-1} =(M-\beta I)^{-1}(M-\alpha I)$ (you should convince yourself this is true!).</p>
-<ol start="3">
-<li></li>
-</ol>
-<p>Assume that $A$ and $-B$ are SPD. Show that:</p>
-$$
-\frac{\| \displaystyle X-X^{(K)}\|_2}{ \|X\|_2 } \leq  \frac{ \sup_{\lambda \in [ a ,b ]}  |r_K(\lambda )|}{ \inf_{\lambda \in [ -d, -c]}  |r_K(\lambda )| } $$<p>where $a = \lambda_{\text{min}}(A) $, $b = \lambda_{\text{max}}(A) $, $c = \lambda_{\text{min}}(-B) $, $d = \lambda_{\text{max}}(-B) $</p>
-<ol start="4">
-<li></li>
-</ol>
-<p>Thus, one should pick the shifts $ \alpha_j$ and $\beta_j$ such that the
-right-hand side is as small as possible. In other words, $r_K(x)$ must solve the following rational function approximation problem:</p>
-$$ \gamma(K, a, b,c,d) = \inf_{\lambda_j, \alpha_j}  \frac{ \sup_{\lambda \in [ a ,b ]}  |r_K(\lambda )|}{ \inf_{\lambda \in [ -d, -c]}  |r_K(\lambda )| } $$<p>The approximation problem is known as <em>Zolotarev's third problem</em>.
-A solution is known in the case that $a = d$, and $c = b$, which corresponds to the case when $B = -A$. The optimal $\alpha_j,\beta_j$ are not easy to write down, but for our purposes, it is sufficient to know they exist, and that</p>
-$$\gamma(K, a, b,a,b) =4 \left[\exp\left( \frac{\pi^2}{2 \log (4b/a)} \right) \right]^{-2K} \ .$$<p>Use this result to prove that the error in ADI satisfies $\|E^{(K)}\| = \mathcal{O}(\rho^K)$ for some $\rho &lt;1$ (that is, it converges at least linearly in $K$) when $B = -A$, $A$ is SPD, and the optimal shifts are used.</p>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="c1"># TODO: Change the function, , see how result changes</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="ADD-YOUR-ANSWER-TO-QUESTION-4-HERE">ADD YOUR ANSWER TO QUESTION 4 HERE<a class="anchor-link" href="#ADD-YOUR-ANSWER-TO-QUESTION-4-HERE">¶</a></h2>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># scaling plot</span>
+<span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">ns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">500</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span><span class="n">errors</span><span class="p">)</span>
+</pre></div>
 </div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Q5:-Gauss-Legendre-Quadrature"><strong>Q5: Gauss-Legendre Quadrature</strong><a class="anchor-link" href="#Q5:-Gauss-Legendre-Quadrature">¶</a></h1><p>In class, we showed that, given a fixed set of distinct quadrature nodes $\{x_k\}_{k=1}^n$, we can always find quadrature weights so that the quadrature rule integrates all polynomials of degree $n-1$ exactly, that is:</p>
-$$
-\int_a^b p(x)\,dx = \sum_{k=1}^n w_k p(x_k)
-$$<p>for all polynomials $p(x)$ of degree at most $n-1$.</p>
-<p>In this question, we show that by choosing the nodes $\{x_k\}_{k=1}^{n}$ as the roots of the $n$-th Legendre polynomial $P_n(x)$ (with weights chosen as above), we can integrate polynomials of degree $2n-1$. This is called Gauss-Legendre quadrature and is the default choice for integrating smooth functions.</p>
-<p>The key step uses polynomial division (see <a href="https://en.wikipedia.org/wiki/Polynomial_long_division">polynomial long division</a> if needed). For any polynomial $p(x)$ with $\deg p \le 2n-1$, the decomposition
-$$
-p(x) = q(x)P_n(x) + r(x)
-$$
-with $\deg q \le n-1$ and $\deg r \le n-1$ always exists and is unique.</p>
-<h2 id="5.1">5.1<a class="anchor-link" href="#5.1">¶</a></h2><p>Show that $\int_{-1}^{1} q(x)P_n(x)\,dx = 0$.</p>
-<h2 id="5.2">5.2<a class="anchor-link" href="#5.2">¶</a></h2><p>Let $x_1, \ldots, x_n$ be the roots of $P_n(x)$ (the Gauss-Legendre nodes), and let $Q_n(f) = \sum_{k=1}^n w_k f(x_k)$ be the Gauss-Legendre quadrature rule.</p>
-<p>Show that $Q_n(p) = Q_n(r)$.</p>
-<h2 id="5.3">5.3<a class="anchor-link" href="#5.3">¶</a></h2><p>Using Steps 1 and 2, and assuming the weights are chosen so that the quadrature rule is exact for polynomials of degree at most $n-1$, show that
-$$
-Q_n(p) = \int_{-1}^1 p(x)\,dx
-$$
-for all polynomials $p(x)$ of degree at most $2n-1$. This shows that Gauss-Legendre quadrature with $n$ nodes is exact for all polynomials of degree up to $2n-1$ (which is optimal).</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="ADD-YOUR-ANSWER-TO-QUESTION-5-HERE">ADD YOUR ANSWER TO QUESTION 5 HERE<a class="anchor-link" href="#ADD-YOUR-ANSWER-TO-QUESTION-5-HERE">¶</a></h2>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Extra credit:</p>
-<ul>
-<li>Solvers based on ADI <a href="https://epubs.siam.org/doi/abs/10.1137/S0895479801384937?casa_token=cgiATo_coWUAAAAA:em_wZAuZaOjspAHNIfbOESbWXNWCHBBdtg7y1RhkAYxtnB3au-MVbqEFQuuTv_7UZEi40bop">this paper</a>, <a href="https://academic.oup.com/imajna/article/40/3/1994/5621364">this paper</a></li>
-<li>Non-uniform fast Fourier transform <a href="https://epubs.siam.org/doi/abs/10.1137/17M1134822">this paper</a>, <a href="https://epubs.siam.org/doi/pdf/10.1137/S003614450343200X?casa_token=pzicy9jvJNQAAAAA:7c9yf7aQcbvepvMRoEOvdIZ4Lcko9MAVKm22Nd8Z1A3fr6Rbu_fhOoSxLbwtT_nwe8cb98uM">this one</a></li>
-<li>Using orthogonal polynomials <a href="https://www.cambridge.org/core/journals/acta-numerica/article/abs/fast-algorithms-using-orthogonal-polynomials/4FAD8C7C28EC20EE7583465C1A89AA3D">this paper</a>, <a href="https://epubs.siam.org/doi/abs/10.1137/120865458">this paper</a></li>
-</ul>
 </div>
 </div>
 </div>

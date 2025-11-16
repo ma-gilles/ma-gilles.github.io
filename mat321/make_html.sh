@@ -1,19 +1,27 @@
-
 #!/bin/bash
-for i in {2..5}
-do
-   jupyter nbconvert --to html problem_sets/hw$i/hw$i.ipynb
+
+# Convert problem sets
+echo "Converting problem sets..."
+for i in {1..5}; do
+    notebook="problem_sets/hw$i/hw$i.ipynb"
+    if [ -f "$notebook" ]; then
+        echo "  Converting $notebook"
+        jupyter nbconvert --to html "$notebook"
+    else
+        echo "  Warning: $notebook not found, skipping"
+    fi
 done
 
-
-for i in {3..9}
-do
-   jupyter nbconvert --to html precepts/precept0$i/precept$i.ipynb
+# Convert precepts
+echo "Converting precepts..."
+for i in {1..12}; do
+    notebook="precepts/$i/precept$i.ipynb"
+    if [ -f "$notebook" ]; then
+        echo "  Converting $notebook"
+        jupyter nbconvert --to html "$notebook"
+    else
+        echo "  Warning: $notebook not found, skipping"
+    fi
 done
 
-for i in {10..11}
-do
-   jupyter nbconvert --to html precepts/precept$i/precept$i.ipynb
-done
-
-
+echo "Done!"
