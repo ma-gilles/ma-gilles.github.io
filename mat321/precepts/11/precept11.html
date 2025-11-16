@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7518,8 +7519,10 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p>Precept 11: Numerical integration</p>
 <p>We experiment with numerical quadrature to estimate:</p>
-$$ \int_{-1}^1 f(x) dx $$<p>Implement the Trapezoidal rule:</p>
-$$ T(h) = - \frac{h}{2} ( f(x_0) + f(x_n))  + h\sum_{i=0}^{n} f(x_i) $$<p>where $x_i = -1 + \frac{2i}{n}$ , $h = \frac{2}{n}$, $i = 0, \dots n$.</p>
+<p>$$ \int_{-1}^1 f(x) dx $$</p>
+<p>Implement the Trapezoidal rule:</p>
+<p>$$ T(h) = - \frac{h}{2} ( f(x_0) + f(x_n))  + h\sum_{i=0}^{n} f(x_i) $$
+where $x_i = -1 + \frac{2i}{n}$ , $h = \frac{2}{n}$, $i = 0, \dots n$.</p>
 </div>
 </div>
 </div>
@@ -7528,11 +7531,11 @@ $$ T(h) = - \frac{h}{2} ( f(x_0) + f(x_n))  + h\sum_{i=0}^{n} f(x_i) $$<p>where 
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="k">def</span> <span class="nf">trapezoidal_rule</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">trapezoidal_rule</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
     <span class="k">return</span> <span class="mi">0</span>
 </pre></div>
 </div>
@@ -7549,19 +7552,20 @@ $$ T(h) = - \frac{h}{2} ( f(x_0) + f(x_n))  + h\sum_{i=0}^{n} f(x_i) $$<p>where 
 <ol start="2">
 <li>Test your rule on a smooth function:</li>
 </ol>
-$$g(x) = 1/ (1 + 25 x^2) $$<p>Make a log-log plot displaying the $O(h^2)$ convergence</p>
+<p>$$g(x) = 1/ (1 + 25 x^2) $$</p>
+<p>Make a log-log plot displaying the $O(h^2)$ convergence</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="n">g</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">25</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="n">analytical_value</span> <span class="o">=</span> <span class="mi">2</span><span class="o">/</span><span class="mi">5</span> <span class="o">*</span>  <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
@@ -7576,24 +7580,6 @@ $$g(x) = 1/ (1 + 25 x^2) $$<p>Make a log-log plot displaying the $O(h^2)$ conver
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[2]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>[]</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">
-<img alt="No description has been provided for this image" class="jp-needs-light-background" src="data:image/png;base64,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"/>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7604,19 +7590,20 @@ $$g(x) = 1/ (1 + 25 x^2) $$<p>Make a log-log plot displaying the $O(h^2)$ conver
 <ol start="3">
 <li>Test it on a smooth and periodic function:</li>
 </ol>
-$$ g(x) = \exp( \sin(2 \pi x )) $$<p>Make a semilog plot illustrating the spectral accuracy.</p>
+<p>$$ g(x) = \exp( \sin(2 \pi x )) $$</p>
+<p>Make a semilog plot illustrating the spectral accuracy.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="n">g2</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">x</span><span class="p">))</span>
 <span class="n">analytical_value</span> <span class="o">=</span> <span class="mf">2.5321317555040166711964892504294350752153406227099244136162706624</span>
 <span class="n">nns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">40</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
@@ -7626,24 +7613,6 @@ $$ g(x) = \exp( \sin(2 \pi x )) $$<p>Make a semilog plot illustrating the spectr
 
 <span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">()</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>[]</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">
-<img alt="No description has been provided for this image" class="jp-needs-light-background" src="data:image/png;base64,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"/>
 </div>
 </div>
 </div>
@@ -7658,20 +7627,22 @@ $$ g(x) = \exp( \sin(2 \pi x )) $$<p>Make a semilog plot illustrating the spectr
 <ol start="4">
 <li>Use the Richardson extrapolation to get a $O(h^4)$ quadrature scheme based on the Trapezoidal rule:</li>
 </ol>
-$$T_2(h) = \frac{4 T(h/2) - T(h)}{3}$$<p>Illustrate the convergence rate on the function</p>
-$$g(x) = 1/ (1 + 25 x^2) $$<p>a log-log plot.</p>
+<p>$$T_2(h) = \frac{4 T(h/2) - T(h)}{3}$$</p>
+<p>Illustrate the convergence rate on the function</p>
+<p>$$g(x) = 1/ (1 + 25 x^2) $$</p>
+<p>a log-log plot.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="n">g</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">25</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">analytical_value</span> <span class="o">=</span> <span class="mi">2</span><span class="o">/</span><span class="mi">5</span> <span class="o">*</span>  <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">nns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
@@ -7681,24 +7652,6 @@ $$g(x) = 1/ (1 + 25 x^2) $$<p>a log-log plot.</p>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">()</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>[]</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">
-<img alt="No description has been provided for this image" class="jp-needs-light-background" src="data:image/png;base64,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"/>
 </div>
 </div>
 </div>
@@ -7732,15 +7685,15 @@ $$</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="n">g</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">25</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">analytical_value</span> <span class="o">=</span> <span class="mi">2</span><span class="o">/</span><span class="mi">5</span> <span class="o">*</span>  <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">nns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
@@ -7750,24 +7703,6 @@ $$</p>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">()</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>[]</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">
-<img alt="No description has been provided for this image" class="jp-needs-light-background" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAAD4CAYAAAAXUaZHAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjMuNCwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy8QVMy6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAKdklEQVR4nO3dX6ik913H8c+3CYlWYZM021qT6iZSChsvLCwV7+rfJkKaknqR3FhqdBHtjVIwJV7UPxc2IopYLYuW9kKTxqiQYKCkxVAvinZTKybUmG1iaWI120YOtMWG6teLMyUny57sZGfOzjnffb1g2DnPPGf2+9sD7x2eZ8481d0BYJZXbXoAANZP3AEGEneAgcQdYCBxBxjo0k0PkCRXX311HzlyZNNjABwojz766Fe6+/DZHtsXcT9y5EhOnjy56TEADpSq+uJujzksAzCQuAMMJO4AA4k7wEDiDjDQ2uNeVddX1Z9V1f3rfm4AlrNU3Kvqw1X1XFU9dsb2G6vqiao6VVV3Jkl3P9Xdd+zFsAAsZ9lX7h9JcuPODVV1SZIPJrkpydEkt1fV0bVOB8B5WSru3f2pJM+fsfktSU4tXqm/kOTeJLcs+xdX1fGqOllVJ0+fPr30wACc2yrH3K9J8qUdXz+T5Jqqek1VfSjJm6vqfbt9c3ef6O5j3X3s8OGz/vYsAOdp7R8/0N1fTfKL635eAJa3yiv3Z5O8YcfX1y62AbBhq8T9M0neWFXXVdVlSW5L8sB6xgJgFcu+FfKeJJ9O8qaqeqaq7ujubyV5T5KPJ/l8kvu6+/G9GxWAZS11zL27b99l+0NJHlrrRACszMcPAAwk7gADbTTuVXVzVZ3Y2tra5BgA42w07t39YHcfP3To0CbHABjHYRmAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEG8huqAAP5DVWAgRyWARhI3AEGEneAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEG8tkyAAP5bBmAgRyWARhI3AEGEneAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEGEneAgXxwGMBAPjgMYCCHZQAGEneAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEGEneAgXyeO8BAPs8dYCCHZQAGEneAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEGcpk9gIFcZg9gIIdlAAYSd4CBxB1gIHEHGEjcAQYSd4CBxB1gIHEHGEjcAQYSd4CBxB1gIHEHGEjcAQYSd4CBxB1gIHEHGEjcAQYSd4CBxB1gIHEHGEjcAQYSd4CBxB1goI3GvapurqoTW1tbmxwDYJyNxr27H+zu44cOHdrkGADjOCwDMJC4Awwk7gADiTvAQOIOMJC4Awwk7gADiTvAQOIOMJC4Awwk7gADiTvAQOIOMJC4Awwk7gADiTvAQOIOMJC4Awwk7gADiTvAQOIOMJC4Awwk7gADiTvAQOIOMJC4Awwk7gADiTvAQOIOMJC4Awwk7gADiTvAQBuNe1XdXFUntra2NjkGwDgbjXt3P9jdxw8dOrTJMQDGcVgGYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEGEneAgcQdYCBxBxhI3AEGunTdT1hV35Xkj5O8kOSR7v7zdf8dALy8pV65V9WHq+q5qnrsjO03VtUTVXWqqu5cbL41yf3d/QtJ3r7meQFYwrKHZT6S5MadG6rqkiQfTHJTkqNJbq+qo0muTfKlxW7/u54xAXgllop7d38qyfNnbH5LklPd/VR3v5Dk3iS3JHkm24F/2eevquNVdbKqTp4+ffqVTw7ArlY5oXpNXnyFnmxH/Zokf53knVX1J0ke3O2bu/tEdx/r7mOHDx9eYQwAzrT2E6rd/fUk71738wKwvFVeuT+b5A07vr52sQ2ADVsl7p9J8saquq6qLktyW5IH1jMWAKtY9q2Q9yT5dJI3VdUzVXVHd38ryXuSfDzJ55Pc192P792oACxrqWPu3X37LtsfSvLQWicCYGU+fgBgIHEHGGijca+qm6vqxNbW1ibHABinunvTM6SqTif54qbnOA9XJ/nKpoe4wC62NV9s602s+SD5/u4+62+B7ou4H1RVdbK7j216jgvpYlvzxbbexJqncMwdYCBxBxhI3FdzYtMDbMDFtuaLbb2JNY/gmDvAQF65Awwk7gADifs5VNVVVfVwVT25+PPKXfZ712KfJ6vqXWd5/IEzr0G7H62y3qp6dVX9bVX9a1U9XlW/c2Gnf2V2uQbwzscvr6qPLR7/h6o6suOx9y22P1FVb7ugg6/gfNdcVT9ZVY9W1b8s/vyxCz78eVrl57x4/Puq6mtV9d4LNvQ6dLfby9yS3J3kzsX9O5N84Cz7XJXkqcWfVy7uX7nj8VuT/EWSxza9nr1cb5JXJ/nRxT6XJfn7JDdtek27rPOSJF9Icv1i1n9OcvSMfX4pyYcW929L8rHF/aOL/S9Pct3ieS7Z9Jr2eM1vTvK9i/s/mOTZTa9nr9e84/H7k/xlkvduej2v5OaV+7ndkuSji/sfTfKOs+zztiQPd/fz3f3fSR7O4oLiVfXdSX41yW/v/ahrcd7r7e5vdPffJUlvX1f3s3nxerr7zW7XAN5p57/F/Ul+vKpqsf3e7v5mdz+d5NTi+fa7815zd/9Td//HYvvjSb6zqi6/IFOvZpWfc6rqHUmezvaaDxRxP7fXdfeXF/f/M8nrzrLPbteTTZLfSvJ7Sb6xZxOu16rrTZJU1RVJbk7yyT2YcR3OuYad+/T29Qu2krxmye/dj1ZZ807vTPLZ7v7mHs25Tue95sULs19L8hsXYM61W/s1VA+iqvpEku85y0N37fyiu7uqln7vaFX9UJIf6O5fOfM43ibt1Xp3PP+lSe5J8ofd/dT5Tcl+VFU3JPlAkp/a9CwXwPuT/H53f23xQv5AEfck3f0Tuz1WVf9VVa/v7i9X1euTPHeW3Z5N8tYdX1+b5JEkP5LkWFX9e7b/rV9bVY9091uzQXu43m87keTJ7v6D1afdM8tcA/jb+zyz+A/rUJKvLvm9+9Eqa05VXZvkb5L8bHd/Ye/HXYtV1vzDSX6mqu5OckWS/6uq/+nuP9rzqddh0wf99/stye/mpScY7z7LPldl+7jclYvb00muOmOfIzkYJ1RXWm+2zy38VZJXbXot51jnpdk+EXxdXjzRdsMZ+/xyXnqi7b7F/Rvy0hOqT+VgnFBdZc1XLPa/ddPruFBrPmOf9+eAnVDd+AD7/Zbt442fTPJkkk/siNixJH+6Y7+fy/aJtVNJ3n2W5zkocT/v9Wb7VVFn+5q6n1vcfn7Ta3qZtf50kn/L9rsp7lps+80kb1/c/45sv0viVJJ/THL9ju+9a/F9T2SfviNonWtO8utJvr7j5/q5JK/d9Hr2+ue84zkOXNx9/ADAQN4tAzCQuAMMJO4AA4k7wEDiDjCQuAMMJO4AA/0/6h9Q+xuJiV0AAAAASUVORK5CYII="/>
 </div>
 </div>
 </div>
@@ -7782,20 +7717,20 @@ $$</p>
 <ol start="6">
 <li>The degree-n Gauss-Legendre quadrature is exact for polynomials of degree $2n-1$.</li>
 </ol>
-<p>Check that your function  exactly integrates 
+<p>Check that your function  exactly integrates
 $ f(x) = (x^2+1)(x-3)(x-1)^2$ on $[-1,1]$ when $n=3$.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="n">g</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="n">analytical_value</span> <span class="o">=</span> <span class="o">-</span> <span class="mi">40</span><span class="o">/</span><span class="mi">3</span>
@@ -7804,19 +7739,6 @@ $ f(x) = (x^2+1)(x-3)(x-1)^2$ on $[-1,1]$ when $n=3$.</p>
 <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">analytical_value</span> <span class="o">-</span> <span class="n">gl_quad</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>13.333333333333334
-</pre>
 </div>
 </div>
 </div>

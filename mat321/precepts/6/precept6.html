@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7528,23 +7529,23 @@ a.anchor-link {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="Q1:-Rank-1-perturbations">Q1: Rank-1 perturbations<a class="anchor-link" href="#Q1:-Rank-1-perturbations">¶</a></h2><p>The Woodbury matrix identity is:</p>
-$$(A + uv^T)^{-1} = A^{-1} - \frac{1}{1 + v^T A^{-1} u  }A^{-1}u v^T A^{-1}$$<p>where $A \in \mathbb{R}^{n \times n} $ , $u, v \in \mathbb{R}^n$, and both $A$ and $A + uv^T$ are invertible. (Note that $v^T A^{-1} u $ is a scalar). The Woodbury identity is commonly used in situations where the inverse of $A$ is easy to compute, and we wish to invert a rank-1 perturbation of A.</p>
+<p>$$(A + uv^T)^{-1} = A^{-1} - \frac{1}{1 + v^T A^{-1} u  }A^{-1}u v^T A^{-1}$$
+where $A \in \mathbb{R}^{n \times n} $ , $u, v \in \mathbb{R}^n$, and both $A$ and $A + uv^T$ are invertible. (Note that $v^T A^{-1} u $ is a scalar). The Woodbury identity is commonly used in situations where the inverse of $A$ is easy to compute, and we wish to invert a rank-1 perturbation of A.</p>
 <ol>
-<li></li>
+<li><p>Prove the Woodbury matrix identity. Hint: $C = B^{-1} \Leftrightarrow BC = I$.</p>
+</li>
+<li><p>Consider a matrix $B \in \mathbb{R}^{n\times n}$ that is circulant except in the last column. For example, a $5 \times 5$ matrix of this form is:</p>
+</li>
 </ol>
-<p>Prove the Woodbury matrix identity. Hint: $C = B^{-1} \Leftrightarrow BC = I$.</p>
-<ol start="2">
-<li></li>
-</ol>
-<p>Consider a matrix $B \in \mathbb{R}^{n\times n}$ that is circulant except in the last column. For example, a $5 \times 5$ matrix of this form is:</p>
-$$B = \begin{bmatrix}
+<p>$$B = \begin{bmatrix}
 c_0 &amp; c_4 &amp; c_3 &amp; c_2 &amp; l_0 \\
 c_1 &amp; c_0 &amp; c_4 &amp; c_3 &amp; l_1 \\
 c_2 &amp; c_1 &amp; c_0 &amp; c_4 &amp; l_2 \\
 c_3 &amp; c_2 &amp; c_1 &amp; c_0 &amp; l_3 \\
 c_4 &amp; c_3 &amp; c_2 &amp; c_1 &amp; l_4
 \end{bmatrix}
-$$<p>Use the Woodbury matrix identity to write a solver that computes the solution $x$ of $Bx =d$ in $\mathcal{O}(n \log n)$ operations.</p>
+$$</p>
+<p>Use the Woodbury matrix identity to write a solver that computes the solution $x$ of $Bx =d$ in $\mathcal{O}(n \log n)$ operations.</p>
 </div>
 </div>
 </div>
@@ -7556,10 +7557,10 @@ $$<p>Use the Woodbury matrix identity to write a solver that computes the soluti
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy.linalg</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.linalg</span>
 
-<span class="k">def</span> <span class="nf">almost_circulant_solve</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">d</span> <span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">almost_circulant_solve</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">d</span> <span class="p">):</span>
     <span class="c1"># c is a vector of size n, it is the first column of B. </span>
     <span class="c1"># v is a vector of size n, it is the last column of B. </span>
     <span class="c1"># d is a vector of size n, it is the right hand side vector Bx = d</span>
@@ -7615,7 +7616,7 @@ $250 \times 250$ matrices $A$ with condition numbers
 $$
 \kappa(A) = 10,10^6
 $$
-. Check the relative error in the Frobenius norm 
+. Check the relative error in the Frobenius norm
 $$
 \text{relerr} = \|LU - A \|_F / \|A\|_F
 $$
@@ -7649,10 +7650,10 @@ Repeat each of these tests several times.</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">lu</span> <span class="k">as</span> <span class="n">lu</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.linalg</span><span class="w"> </span><span class="kn">import</span> <span class="n">lu</span> <span class="k">as</span> <span class="n">lu</span>
 
-<span class="k">def</span> <span class="nf">lu_nopivot</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">lu_nopivot</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
     <span class="n">m</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
     <span class="n">U</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -7660,10 +7661,10 @@ Repeat each of these tests several times.</p>
     <span class="k">return</span> <span class="n">L</span><span class="p">,</span> <span class="n">U</span>
 
 
-<span class="k">def</span> <span class="nf">rel_err_LU</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="n">U</span><span class="p">,</span><span class="n">A</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rel_err_LU</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="n">U</span><span class="p">,</span><span class="n">A</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span> <span class="n">L</span> <span class="o">@</span> <span class="n">U</span> <span class="o">-</span> <span class="n">A</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">rel_err_pivoted_LU</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="n">U</span><span class="p">,</span><span class="n">P</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rel_err_pivoted_LU</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="n">U</span><span class="p">,</span><span class="n">P</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span> <span class="n">P</span><span class="o">@</span> <span class="n">L</span> <span class="o">@</span> <span class="n">U</span> <span class="o">-</span> <span class="n">A</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 
 <span class="c1"># Change n </span>
@@ -7737,8 +7738,8 @@ using imxhow if they are too big to print on the screen (say bigger than $6
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="k">def</span> <span class="nf">make_pathological_A</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_pathological_A</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="n">A</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
     <span class="c1"># Get the lower triangular part of A (zero are 0s)</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tril</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
@@ -7783,18 +7784,18 @@ system with condition number $10^6$.</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">back_sub</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">back_sub</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="c1"># Solve Ux = b</span>
     <span class="k">return</span> <span class="n">x</span>
 
 
-<span class="k">def</span> <span class="nf">forward_sub</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">forward_sub</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="c1"># Solve Lx = y</span>
     <span class="k">return</span> <span class="n">x</span>
 
 
 
-<span class="k">def</span> <span class="nf">solve_by_LU</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">solve_by_LU</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="c1"># Compute A = LU, then solve the linear system Ax = b by forward sub and back sub</span>
     <span class="k">return</span> <span class="n">x</span>
 

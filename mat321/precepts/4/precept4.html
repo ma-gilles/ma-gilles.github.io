@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7530,15 +7531,17 @@ a.anchor-link {
 <h1 id="Problem-1-:--Weighted-Least-Squares">Problem 1 :  Weighted Least Squares<a class="anchor-link" href="#Problem-1-:--Weighted-Least-Squares">¶</a></h1><p>Recall $W\in\mathbb{R}^{m\times m}$ is <strong>symmetric positive definite (SPD)</strong> if $W=W^\top$ and $x^\top W x&gt;0$ for all $x\neq 0$.</p>
 <p>If $W$ is SPD, it defines the weighted norm $\|y\|_{W}:=\sqrt{y^\top W y}$. Moreover, $W$ admits a unique SPD square root $W^{1/2}$ with $W=(W^{1/2})^2$.</p>
 <p>For $A\in\mathbb{R}^{m\times n}$ and $b\in\mathbb{R}^m$, consider the weighted least-squares problem:</p>
-$$
+<p>$$
 \min_{x\in\mathbb{R}^n}\ \|Ax-b\|_{W}^{2}.
-$$<p>Show that the normal equations are</p>
-$$
+$$</p>
+<p>Show that the normal equations are</p>
+<p>$$
 A^\top W A\,x \;=\; A^\top W b,
-$$<p>and hence, when $A$ has full column rank,</p>
-$$
+$$</p>
+<p>and hence, when $A$ has full column rank,</p>
+<p>$$
 x^\star \;=\; (A^\top W A)^{-1}A^\top W b.
-$$
+$$</p>
 </div>
 </div>
 </div>
@@ -7550,9 +7553,10 @@ $$
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="Problem-2-:-Householder-reflector">Problem 2 : Householder reflector<a class="anchor-link" href="#Problem-2-:-Householder-reflector">¶</a></h1><p>Let $v\in\mathbb{R}^{m}\setminus\{0\}$ and define</p>
-$$
+<p>$$
 H \;:=\; I \;-\; 2\,\frac{v v^{\top}}{v^{\top}v}.
-$$<p>Show that $H$ is symmetric, orthogonal and involutory ($H^2 = I$)</p>
+$$</p>
+<p>Show that $H$ is symmetric, orthogonal and involutory ($H^2 = I$)</p>
 </div>
 </div>
 </div>
@@ -7565,15 +7569,17 @@ $$<p>Show that $H$ is symmetric, orthogonal and involutory ($H^2 = I$)</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="Problem-3-:-Block-Householder">Problem 3 : Block Householder<a class="anchor-link" href="#Problem-3-:-Block-Householder">¶</a></h1><p>Let $X,Y\in\mathbb{R}^{m\times k}$ have orthonormal columns ($X^\top X=Y^\top Y=I_k$).
 Set $D:=X-Y\in\mathbb{R}^{m\times k}$. Consider block Householder reflectors</p>
-$$
+<p>$$
 H \;=\; I-2UU^\top,\qquad U\in\mathbb{R}^{m\times r},\ \ U^\top U=I_r,
-$$<p>and the requirement $HX=Y$.</p>
+$$</p>
+<p>and the requirement $HX=Y$.</p>
 <h3 id="(A)-Necessary-condition-on-$U$.">(A) Necessary condition on $U$.<a class="anchor-link" href="#(A)-Necessary-condition-on-$U$.">¶</a></h3><p>Show that if $HX=Y$, then $\operatorname{range}(D)\subseteq \operatorname{range}(U)$.</p>
 <h3 id="(B)-Checks.">(B) Checks.<a class="anchor-link" href="#(B)-Checks.">¶</a></h3><p>Verify $H$ is symmetric and orthogonal</p>
 <h3 id="(C)-QR-connection">(C) QR connection<a class="anchor-link" href="#(C)-QR-connection">¶</a></h3><p>Take a thin QR of $D$ with rank $r\le k$:</p>
-$$
+<p>$$
 D \;=\; Q R,\qquad Q\in\mathbb{R}^{m\times r},\ Q^\top Q=I_r,\ R\in\mathbb{R}^{r\times k},
-$$<p>and define $H:=I-2QQ^\top$.</p>
+$$</p>
+<p>and define $H:=I-2QQ^\top$.</p>
 <p>Assume $Q^\top(X+Y)=0$ (this is <strong>equivalent</strong> to $X^\top Y$ being symmetric).
 Show that $HX=Y$.</p>
 </div>
@@ -7600,37 +7606,36 @@ Consider the following excerpt from the text:</p>
 <p>Task 1: Implement an economy QR factorization by classical Gram-Schmidt (Alg. 7.1 in Trefethen) and modified Gram-Schmidt (Alg 8.1 in Trefethen) in the functions below.</p>
 <p>Test your code on several examples (provided below in code)</p>
 <ul>
-<li>A matrix $A$ with random normal entries of dimension</li>
-</ul>
+<li>A matrix $A$ with random normal entries of dimension
 $$
 \text{size}(A) = 300 \times 200
-$$<ul>
-<li>A matrix $A$ with condition number $10^6$ of dimension</li>
-</ul>
+$$</li>
+<li>A matrix $A$ with condition number $10^6$ of dimension
 $$
 \text{size}(A) = 300 \times 200
-$$<ul>
-<li>An artificial example from J.R. Rice's paper: (Don't worry about MGS-Pivot)</li>
+$$</li>
+<li>An artificial example from J.R. Rice's paper: (Don't worry about MGS-Pivot)
+<img alt="gs3" src="gs3.png"/></li>
 </ul>
-<p><img alt="gs3" src="gs3.png"/></p>
 <p>We will test for the stability of both methods by looking at two error metrics (both are implemented for you below):</p>
 <ul>
-<li>error 1: The error in the orthogonality of the vectors by computing</li>
-</ul>
+<li>error 1: The error in the orthogonality of the vectors by computing
 $$
 \text{max\_err} = \max_{i \not = j} |\langle q_i, q_j \rangle|
-$$<ul>
-<li>error 2: The error in how well $A$ is preserved by the projection onto the</li>
+$$</li>
+<li>error 2: The error in how well $A$ is preserved by the projection onto the
+subspace defined by $Q$.</li>
 </ul>
-<p>subspace defined by $Q$.</p>
-$$
+<p>$$
 \text{err} = \frac{\|Q Q^\top A - A\|_F}{\|A\|_F}
-$$<p>where $\|\cdot\|_F$ is the Frobenius norm, which is equal to the square root of
+$$
+where $\|\cdot\|_F$ is the Frobenius norm, which is equal to the square root of
 the sum of squares of the entries of the given matrix $ \|A\|_F =
 \sqrt{\sum_{i=1}^n \sum_{j=1}^m |a_{i,j}|^2} $. Note that, in exact arithmetic, if $A\in \mathbb{R}^{m\times n}$ with  $A = QR$ and $Q\in \mathbb{R}^{m\times n}$ has orthonormal columns:</p>
-$$
+<p>$$
 Q Q^TA  = QQ^T (QR) = Q (Q^TQ) R = QI_{n,n}R = QR = A
-$$<p>where $I_{n,n}$ is the $n \times n$ identity matrix.</p>
+$$
+where $I_{n,n}$ is the $n \times n$ identity matrix.</p>
 </div>
 </div>
 </div>
@@ -7639,28 +7644,28 @@ $$<p>where $I_{n,n}$ is the $n \times n$ identity matrix.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="k">def</span> <span class="nf">classical_gram_schmidt</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">classical_gram_schmidt</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
     <span class="c1"># Implement this function</span>
     <span class="k">return</span> <span class="n">Q</span><span class="p">,</span><span class="n">R</span>
 
 
-<span class="k">def</span> <span class="nf">modified_gram_schmidt</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">modified_gram_schmidt</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
     <span class="c1"># Implement this function</span>
     <span class="k">return</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span>
 
 
 <span class="c1"># These are done for you.</span>
-<span class="k">def</span> <span class="nf">error1</span><span class="p">(</span><span class="n">Q</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">error1</span><span class="p">(</span><span class="n">Q</span><span class="p">):</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Q</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span>
     <span class="k">return</span> <span class="n">err</span>
 
-<span class="k">def</span> <span class="nf">error2</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span><span class="n">A</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">error2</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span><span class="n">A</span><span class="p">):</span>
     <span class="n">err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">Q</span> <span class="nd">@Q</span><span class="o">.</span><span class="n">T</span><span class="nd">@A</span> <span class="o">-</span> <span class="n">A</span><span class="p">,</span> <span class="s1">'fro'</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">err</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="s1">'fro'</span><span class="p">)</span>
 </pre></div>
@@ -7777,18 +7782,18 @@ $$<p>where $I_{n,n}$ is the $n \times n$ identity matrix.</p>
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Time permitting</span>
 <span class="c1"># Implement QR by Householder</span>
-<span class="k">def</span> <span class="nf">householder_triangularization</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">householder_triangularization</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
     <span class="n">_</span><span class="p">,</span><span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="c1"># Store temporary vectors into Q.</span>
     <span class="n">V</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Store v's into this list (or some other structure if you like)</span>
     <span class="c1"># Implement Housholder here</span>
     <span class="k">return</span> <span class="n">V</span><span class="p">,</span> <span class="n">R</span>
 
-<span class="k">def</span> <span class="nf">apply_Q_to_vector</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">apply_Q_to_vector</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
     <span class="c1"># Computes b = Q @ x, where Q is defined implicitely by the Householder reflectors in V</span>
     <span class="k">return</span> <span class="n">b</span>
 
-<span class="k">def</span> <span class="nf">form_Q_matrix</span><span class="p">(</span><span class="n">V</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">form_Q_matrix</span><span class="p">(</span><span class="n">V</span><span class="p">):</span>
     <span class="n">m</span> <span class="o">=</span> <span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
     <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
     <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span><span class="n">m</span><span class="p">))</span>

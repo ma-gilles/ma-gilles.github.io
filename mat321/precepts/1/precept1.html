@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7531,9 +7532,10 @@ a.anchor-link {
 <ol>
 <li>Show that there exists constant $\alpha$, $\beta$ such that the fixed point iteration:</li>
 </ol>
-$$
+<p>$$
 x_{k+1} = \alpha g(x_k) + \beta h( x_k) 
-$$<p>converges quadratically for initial points $x_0$ close enough to $x^*$. That is, show that it converges to $x^*$ locally, and that the convergence is quadratic.</p>
+$$
+converges quadratically for initial points $x_0$ close enough to $x^*$. That is, show that it converges to $x^*$ locally, and that the convergence is quadratic.</p>
 <ol start="2">
 <li>Do the fixed points iterations $x_{k+1} = g(x_k)$ and $x_{k+1} = h(x_{k+1})$  need to converge for the iteration above to converge?</li>
 </ol>
@@ -7562,7 +7564,7 @@ $$<p>converges quadratically for initial points $x_0$ close enough to $x^*$. Tha
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=699c7f47">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=699c7f47">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7570,8 +7572,8 @@ $$<p>converges quadratically for initial points $x_0$ close enough to $x^*$. Tha
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="k">def</span> <span class="nf">my_bisection</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">tol</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">my_bisection</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">tol</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">a</span>
 
 <span class="c1"># Test case for bisection method</span>
@@ -7580,19 +7582,6 @@ $$<p>converges quadratically for initial points $x_0$ close enough to $x^*$. Tha
 <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">root</span> <span class="o">-</span> <span class="mf">2.3</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-14</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"Bisection method failed, got </span><span class="si">{</span><span class="n">root</span><span class="si">}</span><span class="s2">"</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Bisection method test passed."</span><span class="p">)</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Bisection method test passed.
-</pre>
 </div>
 </div>
 </div>
@@ -7608,7 +7597,7 @@ $$<p>converges quadratically for initial points $x_0$ close enough to $x^*$. Tha
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=4d447303">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=4d447303">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7616,7 +7605,7 @@ $$<p>converges quadratically for initial points $x_0$ close enough to $x^*$. Tha
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">compute_sqrt</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_sqrt</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">a</span>
 
 <span class="c1"># Test case for sqrt computation using bisection</span>
@@ -7629,19 +7618,6 @@ $$<p>converges quadratically for initial points $x_0$ close enough to $x^*$. Tha
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Sqrt computation test passed.
-</pre>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5b3fa046">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7650,9 +7626,10 @@ $$<p>converges quadratically for initial points $x_0$ close enough to $x^*$. Tha
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="Task-3:-Implement-Newton's-Method">Task 3: Implement Newton's Method<a class="anchor-link" href="#Task-3:-Implement-Newton's-Method">¶</a></h2><h3 id="Problem-Description">Problem Description<a class="anchor-link" href="#Problem-Description">¶</a></h3><p>Newton's method is a way to find (x) such that (f(x) = 0). It is defined as simple iteration on the function:</p>
-$$
+<p>$$
 x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}
-$$<h3 id="Instructions:">Instructions:<a class="anchor-link" href="#Instructions:">¶</a></h3><ul>
+$$</p>
+<h3 id="Instructions:">Instructions:<a class="anchor-link" href="#Instructions:">¶</a></h3><ul>
 <li>Implement Newton's method as a Python function <code>newton_method(f, df, x0, tol, n)</code>.</li>
 <li>Apply Newton's method to the function $ f(x) = x^2 - a $ to compute $\sqrt{a}$.</li>
 <li>Plot the error on each iteration of Newton’s method until the error is around (10^{-16}).</li>
@@ -7660,7 +7637,7 @@ $$<h3 id="Instructions:">Instructions:<a class="anchor-link" href="#Instructions
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=cb4d4bc3">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=cb4d4bc3">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7668,7 +7645,7 @@ $$<h3 id="Instructions:">Instructions:<a class="anchor-link" href="#Instructions
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="c1"># Test case for Newton's method</span>
 <span class="n">a</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">a</span>  <span class="c1"># Root at x = 2</span>
@@ -7676,7 +7653,7 @@ $$<h3 id="Instructions:">Instructions:<a class="anchor-link" href="#Instructions
 <span class="c1"># root_newton = newton_method(f, df, 3, 1e-6, 100)</span>
 
 
-<span class="k">def</span> <span class="nf">newton_method</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">tol</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">newton_method</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">tol</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">x0</span>
 
 <span class="n">root_newton</span> <span class="o">=</span> <span class="n">newton_method</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">1e-14</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
@@ -7690,19 +7667,6 @@ $$<h3 id="Instructions:">Instructions:<a class="anchor-link" href="#Instructions
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Computed sqrt(4) = 2.0, Test passed.
-</pre>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c351a81e">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7711,9 +7675,10 @@ $$<h3 id="Instructions:">Instructions:<a class="anchor-link" href="#Instructions
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="Task-4:-Chebyshev-Polynomials">Task 4: Chebyshev Polynomials<a class="anchor-link" href="#Task-4:-Chebyshev-Polynomials">¶</a></h2><h3 id="Problem-Description">Problem Description<a class="anchor-link" href="#Problem-Description">¶</a></h3><p>The Chebyshev polynomials of the first kind are defined by the recurrence relation:</p>
-$$
+<p>$$
 T_0(x) = 1, \quad T_1(x) = x, \quad T_{n+1}(x) = 2xT_n(x) - T_{n-1}(x)
-$$<h3 id="Instructions:">Instructions:<a class="anchor-link" href="#Instructions:">¶</a></h3><ul>
+$$</p>
+<h3 id="Instructions:">Instructions:<a class="anchor-link" href="#Instructions:">¶</a></h3><ul>
 <li>Write a function <code>mycheb(n, x)</code> that computes the (n)-th Chebyshev polynomial at a value $x \in [-1, 1] $ using the above recurrence relation.</li>
 </ul>
 </div>
@@ -7727,9 +7692,9 @@ $$<h3 id="Instructions:">Instructions:<a class="anchor-link" href="#Instructions
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">numpy.polynomial.chebyshev</span> <span class="kn">import</span> <span class="n">Chebyshev</span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">numpy.polynomial.chebyshev</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chebyshev</span> 
 
-<span class="k">def</span> <span class="nf">mycheb</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mycheb</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
     <span class="n">Tn</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">Tn</span>
 

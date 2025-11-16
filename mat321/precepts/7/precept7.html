@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7551,8 +7552,8 @@ $$</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Task 1</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span> 
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="c1"># n random vectors on the sphere</span>
 <span class="n">n</span> <span class="o">=</span> <span class="mi">1000</span>
@@ -7585,11 +7586,11 @@ $$</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h3 id="Task-2">Task 2<a class="anchor-link" href="#Task-2">¶</a></h3><p>Using the built in numpy command compute the
 built in eigenvalues and eigenvectors of $A$. Sort the eigenvalues is descending
-order and sort the columns of $V$ in a corresponding way. Check 
+order and sort the columns of $V$ in a corresponding way. Check
 $$
 \text{norm}(A - V D V^\top )/\text{norm}(A)
 $$
-and 
+and
 $$
 \text{norm}(I - V^\top V)
 $$
@@ -7626,7 +7627,7 @@ decomposition guaranteed by the spectral theorem.</p>
 eigenvectors $V[:,j]$ are vectors in $\mathbb{R}^n$. Make a scatter plot of $X$
 and color the scatter plot using $V_2$, the second eigenvector (equal to $V[:,1]$ in numpy), the eigenvector associated with the
 second largest eigenvalue
-These eigenvectors are very rough approximations of spherical harmonics 
+These eigenvectors are very rough approximations of spherical harmonics
 <a href="https://en.wikipedia.org/wiki/Spherical_harmonics">https://en.wikipedia.org/wiki/Spherical_harmonics</a></p>
 </div>
 </div>
@@ -7675,7 +7676,7 @@ length $1$ there is still a sign ambiguity.</p>
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Task 4 implement power method</span>
 
-<span class="k">def</span> <span class="nf">distance_to_eigenvector</span><span class="p">(</span><span class="n">vk</span><span class="p">,</span> <span class="n">eigenvec</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">distance_to_eigenvector</span><span class="p">(</span><span class="n">vk</span><span class="p">,</span> <span class="n">eigenvec</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vk</span> <span class="o">-</span> <span class="n">eigenvec</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vk</span> <span class="o">+</span> <span class="n">eigenvec</span><span class="p">)])</span>
 
 
@@ -7700,7 +7701,7 @@ following trick: at each iteration, before multiplying by $A$, project the
 vector $v$ to the space orthogonal to $V_1$. Theoretically, it would suffice
 to just project $v$ orthogonal to the space $V_1$ initially, but to avoid any
 numerical issues perform the projection each iteration. Recall that the project
-orthogonal to a vector $u$ which is normalized to have unit length is 
+orthogonal to a vector $u$ which is normalized to have unit length is
 $$
 w = v - u(u^\top v)
 $$
@@ -7718,7 +7719,7 @@ Check that you are able to get $V(:,2)$.</p>
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Task 5 implement power method for v2</span>
 
-<span class="k">def</span> <span class="nf">distance_to_eigenvector</span><span class="p">(</span><span class="n">vk</span><span class="p">,</span> <span class="n">eigenvec</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">distance_to_eigenvector</span><span class="p">(</span><span class="n">vk</span><span class="p">,</span> <span class="n">eigenvec</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vk</span> <span class="o">-</span> <span class="n">eigenvec</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vk</span> <span class="o">+</span> <span class="n">eigenvec</span><span class="p">)])</span>
 
 

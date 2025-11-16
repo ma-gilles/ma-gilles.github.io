@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7516,8 +7517,8 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Task-1:-Reduction-to-Hessenberg">Task 1: Reduction to Hessenberg<a class="anchor-link" href="#Task-1:-Reduction-to-Hessenberg">¶</a></h1><p>Recall that in precept 4, we wrote the code for QR decomposition by Housholder using the 
-following algorithm (10.1 in the book): 
+<h1 id="Task-1:-Reduction-to-Hessenberg">Task 1: Reduction to Hessenberg<a class="anchor-link" href="#Task-1:-Reduction-to-Hessenberg">¶</a></h1><p>Recall that in precept 4, we wrote the code for QR decomposition by Housholder using the
+following algorithm (10.1 in the book):
 <img alt="gs1" src="QR.png"/></p>
 <p>And the algorithm to form Q given the householder reflectors (10.3 the book):
 <img alt="gs1" src="Q_times_b.png"/></p>
@@ -7530,15 +7531,15 @@ following algorithm (10.1 in the book):
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1">## YOU WANT TO ADAPT THIS FOR REDUCTION TO UPPER HESSENBERG</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># Implements algorithm 10.1</span>
-<span class="k">def</span> <span class="nf">householder_triangularization</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">householder_triangularization</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
     <span class="n">_</span><span class="p">,</span><span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="c1"># Store temporary vectors into R.</span>
     <span class="n">V</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Store v's into this list</span>
@@ -7559,7 +7560,7 @@ following algorithm (10.1 in the book):
     <span class="k">return</span> <span class="n">V</span><span class="p">,</span> <span class="n">R</span>
 
 <span class="c1"># Implements algorithm 10.3</span>
-<span class="k">def</span> <span class="nf">apply_Q_to_vector</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">apply_Q_to_vector</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
     <span class="c1"># Computes b = Q @ x, where Q is defined implicitely by the Householder reflectors in V</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
     <span class="n">b</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -7569,7 +7570,7 @@ following algorithm (10.1 in the book):
 
 
 <span class="c1"># Uses algorithm 10.3 to compute Q, by doing Q= Q@I, column by column</span>
-<span class="k">def</span> <span class="nf">form_Q_matrix</span><span class="p">(</span><span class="n">V</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">form_Q_matrix</span><span class="p">(</span><span class="n">V</span><span class="p">):</span>
     <span class="n">m</span> <span class="o">=</span> <span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
     <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
     <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span><span class="n">m</span><span class="p">))</span>
@@ -7593,17 +7594,17 @@ following algorithm (10.1 in the book):
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># REDUCTION TO UPPER HESSENBERG</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="k">def</span> <span class="nf">householder_hessenberg</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">householder_hessenberg</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
     <span class="n">_</span><span class="p">,</span><span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="c1"># Store temporary vectors into Q.</span>
     <span class="n">V</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Store v's into this list</span>
@@ -7614,7 +7615,7 @@ following algorithm (10.1 in the book):
 
 
 <span class="c1">## THIS CODE IS WRITTE FOR YOU. NO NEED TO CHANGE IT</span>
-<span class="k">def</span> <span class="nf">hessenberg_apply_Q_to_vector</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hessenberg_apply_Q_to_vector</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
     <span class="c1"># Computes b = Q @ x, where Q is defined implicitely by the Householder reflectors in V</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span>
     <span class="n">b</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -7624,7 +7625,7 @@ following algorithm (10.1 in the book):
         <span class="n">v_counter</span> <span class="o">-=</span><span class="mi">1</span>
     <span class="k">return</span> <span class="n">b</span>
 
-<span class="k">def</span> <span class="nf">hessenberg_form_Q_matrix</span><span class="p">(</span><span class="n">V</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hessenberg_form_Q_matrix</span><span class="p">(</span><span class="n">V</span><span class="p">):</span>
     <span class="n">m</span> <span class="o">=</span> <span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
     <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span><span class="n">m</span><span class="p">))</span>
@@ -7636,7 +7637,7 @@ following algorithm (10.1 in the book):
 <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
 
 <span class="n">V</span><span class="p">,</span> <span class="n">H</span> <span class="o">=</span> <span class="n">householder_hessenberg</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">H</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-14</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'structure of H'</span><span class="p">)</span>
 
@@ -7646,40 +7647,6 @@ following algorithm (10.1 in the book):
 <span class="c1"># Error, should be ~1e-16</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">'error: '</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A_recomp</span> <span class="o">-</span> <span class="n">A</span><span class="p">)</span><span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">IndexError</span>                                Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[2], line 40</span>
-<span class="ansi-green-intense-fg ansi-bold">     37</span> plt<span style="color: rgb(98,98,98)">.</span>imshow(np<span style="color: rgb(98,98,98)">.</span>abs(H) <span style="color: rgb(98,98,98)">&gt;</span> <span style="color: rgb(98,98,98)">1e-14</span>)
-<span class="ansi-green-intense-fg ansi-bold">     38</span> plt<span style="color: rgb(98,98,98)">.</span>title(<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">structure of H</span><span style="color: rgb(175,0,0)">'</span>)
-<span class="ansi-green-fg">---&gt; 40</span> Q <span style="color: rgb(98,98,98)">=</span> hessenberg_form_Q_matrix(V)
-<span class="ansi-green-intense-fg ansi-bold">     41</span> <span style="color: rgb(95,135,135)"># Recompose A using its decomposition</span>
-<span class="ansi-green-intense-fg ansi-bold">     42</span> A_recomp <span style="color: rgb(98,98,98)">=</span> Q<span style="color: rgb(175,0,255)">@H</span><span style="color: rgb(175,0,255)">@Q</span><span style="color: rgb(98,98,98)">.</span>T
-
-Cell <span class="ansi-green-fg">In[2], line 25</span>, in <span class="ansi-cyan-fg">hessenberg_form_Q_matrix</span><span class="ansi-blue-fg">(V)</span>
-<span class="ansi-green-intense-fg ansi-bold">     24</span> <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">hessenberg_form_Q_matrix</span>(V):
-<span class="ansi-green-fg">---&gt; 25</span>     m <span style="color: rgb(98,98,98)">=</span> V[<span style="color: rgb(98,98,98)">0</span>]<span style="color: rgb(98,98,98)">.</span>size <span style="color: rgb(98,98,98)">+</span> <span style="color: rgb(98,98,98)">1</span>
-<span class="ansi-green-intense-fg ansi-bold">     26</span>     I <span style="color: rgb(98,98,98)">=</span> np<span style="color: rgb(98,98,98)">.</span>eye(m)
-<span class="ansi-green-intense-fg ansi-bold">     27</span>     Q <span style="color: rgb(98,98,98)">=</span> np<span style="color: rgb(98,98,98)">.</span>zeros((m,m))
-
-<span class="ansi-red-fg">IndexError</span>: list index out of range</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">
-<img alt="No description has been provided for this image" class="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZgAAAGxCAYAAABfmKCrAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjkuMiwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy8hTgPZAAAACXBIWXMAAA9hAAAPYQGoP6dpAAAas0lEQVR4nO3de3BU9d3H8c8SYHMhCQgkwhAwMCJIuGhCVUCRIplBoN5QUUGLRaQGCDJaoF5QCuygyDAVEyYUgZYJMtNKiQVpqeWWAiUkiNp2YBSRKFJA7AaxXU3ye/54HvYxQmI25Jvdje/XzPkjJ+fs+XIc855zzibrcc45AQDQyFqEewAAQPNEYAAAJggMAMAEgQEAmCAwAAATBAYAYILAAABMEBgAgAkCAwAwQWAQkQoLC7V06dKwzrB582Y999xzYZ2hMbz11lvKyspSQkKCPB6Pfv/73190u6NHj8rj8Wjx4sUX/f7ixYvl8Xh09OhRu2HRrBAYRKRICczzzz8f1hkulXNO99xzj1q1aqWioiLt2bNHQ4cODfdY+J5oGe4BgEtVVVWlyspKeb3ecI9SL19++aXi4+Ob5FjHjx/XmTNndMcdd2j48OFNckzgPK5g0OROnTqlyZMnKy0tTV6vVx07dtTgwYP15z//WZJ08803a9OmTfroo4/k8XiCi/T/t3FeeOEFzZ8/X+np6fJ6vdq2bZtWr1590Vs427dvl8fj0fbt22us37Jli4YPH67k5GTFx8erd+/e8vl8kqQf//jHeuWVVySpxgxHjx4NzrB69eoL/m0ej6fGbbXnnntOHo9HZWVlGjt2rNq1a6cePXpI+t+ri7y8PA0YMEBxcXFq166dxo4dqyNHjtTrPBYXF2v48OFKTExUfHy8Bg0apE2bNtU4dpcuXSRJs2bNksfj0RVXXFGv1wYaA1cwaHITJkxQWVmZFixYoJ49e+rf//63ysrK9Nlnn0mS8vLyNHnyZH3wwQfasGHDRV/jl7/8pXr27KnFixcrKSlJV155pU6cOFHvGVauXKlHHnlEQ4cO1fLly5WSkqLDhw/rvffekyQ988wzOnfunH77299qz549wf06deqkTz/9NOR/85133qlx48ZpypQpOnfunCTp0Ucf1erVqzV9+nQtWrRIZ86c0bx58zRo0CAdPHhQqamptb7ejh07NGLECPXr108rV66U1+tVXl6exowZo3Xr1unee+/VpEmT1L9/f915552aNm2a7r///npd5VVXV6uysvKi64GQOKCJtWnTxs2YMaPObUaNGuW6det2wfoPP/zQSXI9evRwX331VY3vrVq1yklyH374YY3127Ztc5Lctm3bnHPOnT171iUlJbkhQ4a46urqWmfIyclxF/tf5PwMq1atuuB7ktzcuXODX8+dO9dJcs8++2yN7fbs2eMkuZdeeqnG+vLychcXF+d+9rOf1TqXc85df/31LiUlxZ09eza4rrKy0mVkZLguXboE/13nZ33xxRfrfL1vbvtdy7fPL1AbbpGhyf3gBz/Q6tWrNX/+fO3du1dff/11yK/xox/9SK1atWrQ8Xfv3q2Kigo99thjwVtv1u66664aX//hD3+Qx+PR+PHjVVlZGVwuv/xy9e/f/4Lbed907tw5/e1vf9PYsWPVpk2b4PqYmBhNmDBBH3/8sQ4dOtTgWXNzc1VSUnLBkpub2+DXxPcTt8jQ5NavX6/58+frV7/6lZ555hm1adNGd9xxh1544QVdfvnl9XqNTp06Nfj4p06dkqTg84mm8O15//Wvf8k5V+ttsO7du9f6Wp9//rmccxc9B507d5ak4O3GhujSpYuysrIuWF9X9ICLITBoch06dNDSpUu1dOlSHTt2TEVFRZo9e7ZOnjypLVu21Os1LnblERsbK0kKBAI11p8+fbrG1x07dpQkffzxxw0Zv9bj1PVD/dvzdujQQR6PR7t27broc5G6npW0a9dOLVq0uOizoOPHjwdfHwg3bpEhrLp27aqpU6dqxIgRKisrC673er36z3/+E9JrnX+H1DvvvFNjfVFRUY2vBw0apOTkZC1fvlyujk8MP/9D/ttzpKamKjY29oLjbNy4sd6zjh49Ws45ffLJJ8rKyrpg6du3b637JiQk6LrrrtPrr79eY7bq6mqtXbtWXbp0Uc+ePes9C2CFKxg0Kb/fr2HDhun+++9Xr169lJiYqJKSEm3ZskV33nlncLu+ffvq9ddfV35+vjIzM9WiRYuL3rb5poEDB+qqq67SE088ocrKSrVr104bNmxQcXFxje3atGmjl156SZMmTdItt9yiRx55RKmpqXr//fd18OBBLVu2LDiDJC1atEgjR45UTEyM+vXrp9atW2v8+PF69dVX1aNHD/Xv31/79u1TYWFhvc/D4MGD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A1NSUqKCggL169evMecBADQTDQrMF198oQceeEArVqxQu3btGnsmAEAz0KDA5OTkaNSoUbrlllu+c9tAIKCKiooaCwCg+WsZ6g6vvfaaysrKVFJSUq/tfT6fnn/++ZAHAwBEt5CuYMrLy5Wbm6u1a9cqNja2XvvMmTNHfr8/uJSXlzdoUABAdAnpCqa0tFQnT55UZmZmcF1VVZV27typZcuWKRAIKCYmpsY+Xq9XXq+3caYFAESNkAIzfPhwvfvuuzXWTZw4Ub169dKsWbMuiAsA4PsrpMAkJiYqIyOjxrqEhAS1b9/+gvUAgO83fpMfAGAi5HeRfdv27dsbYQwAQHPDFQwAwASBAQCYIDAAABMEBgBggsAAAEwQGACACQIDADBBYAAAJggMAMAEgQEAmCAwAAATBAYAYILAAABMEBgAgAkCAwAwQWAAACYIDADABIEBAJggMAAAEwQGAGCCwAAATBAYAIAJAgMAMEFgAAAmCAwAwASBAQCYIDAAABMEBgBggsAAAEwQGACACQIDADBBYAAAJggMAMAEgQEAmCAwAAATBAYAYILAAABMEBgAgAkCAwAwQWAAACYIDADABIEBAJggMAAAEwQGAGCCwAAATBAYAIAJAgMAMEFgAAAmCAwAwASBAQCYIDAAABMEBgBggsAAAEwQGACACQIDADBBYAAAJggMAMAEgQEAmCAwAAATBAYAYILAAABMEBgAgAkCAwAwEXJgPvnkE40fP17t27dXfHy8BgwYoNLSUovZAABRrGUoG3/++ecaPHiwhg0bpjfffFMpKSn64IMP1LZtW6PxAADRKqTALFq0SGlpaVq1alVw3RVXXNHYMwEAmoGQbpEVFRUpKytLd999t1JSUnTNNddoxYoVde4TCARUUVFRYwEANH8hBebIkSPKz8/XlVdeqT/+8Y+aMmWKpk+frl//+te17uPz+ZScnBxc0tLSLnloAEDk8zjnXH03bt26tbKysrR79+7guunTp6ukpER79uy56D6BQECBQCD4dUVFhdLS0nSzblNLT6tLGB0A0NQq3dfaro3y+/1KSkqqc9uQrmA6deqkq6++usa63r1769ixY7Xu4/V6lZSUVGMBADR/IQVm8ODBOnToUI11hw8fVrdu3Rp1KABA9AspMI8//rj27t2rhQsX6v3331dhYaEKCgqUk5NjNR8AIEqFFJiB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"/>
 </div>
 </div>
 </div>
@@ -7702,26 +7669,27 @@ is:</p>
 <p>
 </p></p></figure>
 Given a polynomial, form its companion matrix and find the roots of the polynomial using the funciton `np.linalg.linalg.eigvals(A)` which computes the eigenvalue decomposition.
+
 <p>Try it for $m =5,50$ and $500$. What do you notice?</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">rootfinding_by_eigenalue_decomposition</span><span class="p">(</span><span class="n">coeffs</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">rootfinding_by_eigenalue_decomposition</span><span class="p">(</span><span class="n">coeffs</span><span class="p">):</span>
     <span class="c1">## ADD YOUR CODE HERE</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">coeffs</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
 <span class="c1">## this code is written for you. no need to change it.</span>
 
 <span class="c1"># very naive function to evaluate a monic polynomial at z</span>
-<span class="k">def</span> <span class="nf">eval_p</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">coeffs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">eval_p</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">coeffs</span><span class="p">):</span>
     <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">coeffs</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
         <span class="n">val</span> <span class="o">+=</span> <span class="n">coeffs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span><span class="o">**</span><span class="n">k</span><span class="p">)</span>
@@ -7737,24 +7705,6 @@ Given a polynomial, form its companion matrix and find the roots of the polynomi
     <span class="c1"># They all should be close to 0, ~1e-14 is fine</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">'p(lambda) = '</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">eval_p</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">coeffs</span><span class="p">)))</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>p(lambda) =  2.2017857622558563
-p(lambda) =  2.2017857622558563
-p(lambda) =  2.2017857622558563
-p(lambda) =  2.2017857622558563
-p(lambda) =  2.2017857622558563
-p(lambda) =  2.2017857622558563
-</pre>
 </div>
 </div>
 </div>

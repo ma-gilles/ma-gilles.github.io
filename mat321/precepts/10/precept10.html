@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7518,19 +7519,23 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="Barycentric-interpolation,-Runge's-phenomenon-and-Gibb's-phenomenon">Barycentric interpolation, Runge's phenomenon and Gibb's phenomenon<a class="anchor-link" href="#Barycentric-interpolation,-Runge's-phenomenon-and-Gibb's-phenomenon">¶</a></h1><p>We experiment with polynomial interpolants.</p>
 <p>One can rewrite the Lagrange interpolating formula in an astonishing form:</p>
-$$
+<p>$$
 p_n(x) = \frac{\sum_{k=0}^n \frac{w_k y_k}{(x-x_k)}}{\sum_{k=0}^{n} \frac{w_k}{(x - x_k)}} 
-$$<p>for $x \neq x_i$,
+$$
+for $x \neq x_i$,
 where $\{x_i, y_i\}_{i=0}^{n}$ interpolation of points and</p>
-$$
+<p>$$
 w_k = \frac{1}{\prod_{i=0 \dots n, i\neq k} (x_k - x_i)}
-$$<p>are called the interpolating weights. (Yes, $p_n(x)$ is a polynomial! and it exactly equal to formula you derived in HW2).</p>
+$$</p>
+<p>are called the interpolating weights. (Yes, $p_n(x)$ is a polynomial! and it exactly equal to formula you derived in HW2).</p>
 <p>The uniform and Chebysev points on $[-1, 1]$ are defined as :</p>
-$$
+<p>$$
 x_i = -1 + 2 \frac{i}{n}
-$$$$
+$$</p>
+<p>$$
 x_i = \cos(\frac{i\pi}{n})
-$$<p>for $i = 0, \dots n$</p>
+$$</p>
+<p>for $i = 0, \dots n$</p>
 <p>Implement a polynomial interpolant of the following functions using Barycentric interpolation.  Check that the point to evaluate is not one of the nodes $x_i$, or (that the distance to one is less than $10^{-15}$). If it is, return the corresponding value $y_i$.</p>
 <p>Test it on uniform points and the function $f_1(x) = \sin(2\pi x)$ below.</p>
 </div>
@@ -7544,25 +7549,25 @@ $$<p>for $i = 0, \dots n$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="k">def</span> <span class="nf">compute_barycentric_weights</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_barycentric_weights</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="c1"># Compute barycenter weights </span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">w</span>
 
 
-<span class="k">def</span> <span class="nf">eval_polynomial_at_one_z</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">eval_polynomial_at_one_z</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">z</span>
 
 
-<span class="k">def</span> <span class="nf">eval_polynomial_at_many_z</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">eval_polynomial_at_many_z</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">):</span>
     <span class="c1"># Evaluate polynomial interpolant p_n(x) at many points</span>
     <span class="n">pnz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">pnz</span>
 
-<span class="k">def</span> <span class="nf">estimate_max_error</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">estimate_max_error</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">):</span>
     <span class="c1"># Approximate the l_infty difference using 1e4 points.</span>
     <span class="n">dense_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">10000</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">f1</span><span class="p">(</span><span class="n">dense_grid</span><span class="p">)</span> <span class="o">-</span> <span class="n">f2</span><span class="p">(</span><span class="n">dense_grid</span><span class="p">)))</span>
@@ -7603,7 +7608,7 @@ $$<p>for $i = 0, \dots n$</p>
 <li>$ f_1(x) = \cos( 10  \pi x) $</li>
 <li>Runge's function $ f_2(x) = \frac{1}{ 1 + 25 x^2 } $</li>
 </ul>
-<p>At uniform, Chebyshev and random point. You can get random points on $[-1,1]$ by running <code>np.random.rand(n)*2 -1</code>.</p>
+<p>At uniform, Chebyshev and random point. You can get random points on $[-1,1]$ by running <code>np.random.rand(n)*2 -1 </code>.</p>
 <p>Visualize the functions are their interpolant for n =  5, 10, 30.</p>
 <p>Then, make a convergence plot of the max error as n increases from n = 1 to n = 50.
 To do this, approximate and plot the error between the interpolant and the function $\max_x |f(x) - p_n(x)| $. You can approximate the max by taking the max over a fine uniform grid with $n = 10^4$ points (see code above).</p>

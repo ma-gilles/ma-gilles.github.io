@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7518,10 +7519,10 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="Task-1:--Finite-Difference">Task 1:  Finite Difference<a class="anchor-link" href="#Task-1:--Finite-Difference">¶</a></h2><p>Assume $f\in C^{5}([x-2h,x+2h])$.
 Find constants $a,b,c$ (independent of $f,x,h$) such that the following finite difference scheme is $4$th order accurate:</p>
-$$
+<p>$$
 \frac{a\,f(x-2h)+b\,f(x-h)+c\,f(x)-b\,f(x+h)-a\,f(x+2h)}{h}
 \;=\; f'(x)+O(h^4).
-$$
+$$</p>
 </div>
 </div>
 </div>
@@ -7552,14 +7553,15 @@ $$</li>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="Task-3:-Characterize-the-induced-$%5Cell_1$-matrix-norm">Task 3: Characterize the induced $\ell_1$ matrix norm<a class="anchor-link" href="#Task-3:-Characterize-the-induced-$%5Cell_1$-matrix-norm">¶</a></h2><p>Let $A\in\mathbb{R}^{m\times n}$ and</p>
-$$
+<p>$$
 \|A\|_1 := \sup_{x\neq 0}\frac{\|Ax\|_1}{\|x\|_1}
 = \sup_{\|x\|_1=1}\|Ax\|_1.
-$$<p>Show that</p>
-$$
+$$</p>
+<p>Show that</p>
+<p>$$
 \boxed{\ \|A\|_1 \;=\; \max_{1\le j\le n}\sum_{i=1}^m |a_{ij}|\ }
 \quad\text{(maximum absolute column sum).}
-$$
+$$</p>
 </div>
 </div>
 </div>
@@ -7574,40 +7576,40 @@ $$
 Rewrite each of the following Python functions to compute the same result but with the indicated asymptotic complexity.</p>
 <p>Confirm the improved complexity by timing the two implementations for $n = 2000$.</p>
 <ul>
-<li>Compute $Aw$</li>
+<li><p>Compute $Aw$
+where $A = D + u v^T$ where $D$ is a diagonal matrix and $uv^T$ is an outer product in $\mathcal{O}(n)$.</p>
+</li>
+<li><p>Compute $(D + AB)x$ where $D$ is diagonal and $A$, $B$ are dense in $\mathcal{O}(n^2) $. The current implementation is $\mathcal{O}(n^3)$ as it involves a dense matrix-matrix multiply.</p>
+</li>
 </ul>
-<p>where $A = D + u v^T$ where $D$ is a diagonal matrix and $uv^T$ is an outer product in $\mathcal{O}(n)$.</p>
-<ul>
-<li>Compute $(D + AB)x$ where $D$ is diagonal and $A$, $B$ are dense in $\mathcal{O}(n^2) $. The current implementation is $\mathcal{O}(n^3)$ as it involves a dense matrix-matrix multiply.</li>
-</ul>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="k">def</span> <span class="nf">diag_plus_rank_one</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">diag_plus_rank_one</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
 	<span class="c1"># Note that adding two matrices is O(n^2)!</span>
 	<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
 	<span class="k">return</span> <span class="n">A</span> <span class="o">@</span> <span class="n">w</span>
 
-<span class="k">def</span> <span class="nf">diag_plus_rank_one_fast</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">diag_plus_rank_one_fast</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
     <span class="c1"># Write O(n) code to compute (diag(d) + u v^T) w</span>
     <span class="k">return</span> <span class="n">w</span>
 
 
 <span class="c1"># Rewrite to run in O(n^2)</span>
-<span class="k">def</span> <span class="nf">mat_mat_vec</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">w</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mat_mat_vec</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">w</span><span class="p">):</span>
 	<span class="c1"># Note: matrix-matrix multiply is O(n^3)!</span>
 	<span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="n">A</span><span class="nd">@B</span><span class="p">)</span><span class="nd">@w</span>
 
-<span class="k">def</span> <span class="nf">mat_mat_vec_fast</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">w</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mat_mat_vec_fast</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">w</span><span class="p">):</span>
     <span class="c1"># Write O(n^2) code to compute (np.diag(d) + A@B)x</span>
     <span class="k">return</span> <span class="n">w</span>
 
@@ -7621,20 +7623,6 @@ Rewrite each of the following Python functions to compute the same result but wi
 <span class="nb">print</span><span class="p">(</span><span class="s1">'error: diag_plus_rank_one'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">diag_plus_rank_one</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">w</span><span class="p">)</span> <span class="o">-</span> <span class="n">diag_plus_rank_one_fast</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">w</span><span class="p">)))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">'error: mat_mat_vec'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">mat_mat_vec</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">w</span><span class="p">)</span> <span class="o">-</span> <span class="n">mat_mat_vec_fast</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">w</span><span class="p">)))</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>error: diag_plus_rank_one 1.2851238020879048e-14
-error: mat_mat_vec 4.600172628609306e-13
-</pre>
 </div>
 </div>
 </div>
