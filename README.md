@@ -13,7 +13,8 @@ Some links:
 * [CV](ma_gilles_cv.pdf)
 
 ## Teaching
+* [Fall 2025 - MAT 321: Numerical Analysis and Scientific Computing](mat321/mat321.md)
 * Spring 2025 - MAT 204: Advanced Linear Algebra with Applications
 * Fall 2024 - MAT 321: Numerical Analysis and Scientific Computing
-* Fall 2024 - Mathematics Junior seminar: "The top 10 algorithms of the 20th century"
+* Fall 2024 - Mathematics junior seminar: "The top 10 algorithms of the 20th century"
 * [Spring 2023 - MAT 321: Numerical Methods](mat321/mat321.md).
