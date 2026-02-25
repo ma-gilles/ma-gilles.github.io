@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marc Aurèle Gilles</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Georgia", serif;
+      font-size: 16px;
+      line-height: 1.65;
+      color: #222;
+      background: #fafafa;
+    }
+
+    a { color: #b85c00; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Top bar ────────────────────────────────── */
+    header {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      height: 56px;
+      gap: 1.5rem;
+    }
+    header .site-name { font-size: 1rem; font-weight: bold; letter-spacing: .02em; }
+    header nav { margin-left: auto; display: flex; gap: 1.5rem; font-size: .9rem; }
+    header nav a { color: #ccc; }
+    header nav a:hover { color: #fff; text-decoration: none; }
+
+    /* ── Page wrapper ───────────────────────────── */
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    /* ── Hero card ──────────────────────────────── */
+    .hero {
+      display: flex;
+      gap: 2.5rem;
+      align-items: flex-start;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-photo {
+      flex-shrink: 0;
+    }
+    .hero-photo img {
+      width: 160px;
+      height: auto;
+      border-radius: 4px;
+      display: block;
+      box-shadow: 0 2px 10px rgba(0,0,0,.25);
+      filter: contrast(1.06) saturate(1.05);
+    }
+
+    .hero-info h1 {
+      font-size: 1.75rem;
+      font-weight: normal;
+      margin-bottom: .25rem;
+      letter-spacing: -.01em;
+    }
+    .hero-info .position {
+      font-size: .95rem;
+      color: #555;
+      margin-bottom: 1.1rem;
+    }
+    .hero-info .bio {
+      font-size: .95rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem .9rem;
+      font-size: .88rem;
+      margin-bottom: .8rem;
+    }
+    .links a {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      padding: .2rem .6rem;
+      color: #444;
+      background: #fff;
+      transition: border-color .15s, color .15s;
+    }
+    .links a:hover { border-color: #b85c00; color: #b85c00; text-decoration: none; }
+
+    .contact-line {
+      font-size: .88rem;
+      color: #555;
+    }
+    .contact-line a { color: #b85c00; }
+
+    /* ── Divider ────────────────────────────────── */
+    .divider {
+      border: none;
+      border-top: 1px solid #ddd;
+      margin: 2rem 0;
+    }
+
+    /* ── Sections ───────────────────────────────── */
+    section h2 {
+      font-size: 1.05rem;
+      font-weight: bold;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: #555;
+      margin-bottom: 1rem;
+    }
+
+    section p {
+      font-size: .95rem;
+      margin-bottom: .8rem;
+    }
+
+    /* ── Teaching list ──────────────────────────── */
+    .teaching-list {
+      list-style: none;
+      font-size: .93rem;
+    }
+    .teaching-list li {
+      display: flex;
+      align-items: baseline;
+      gap: .6rem;
+      padding: .4rem 0;
+      border-bottom: 1px solid #eee;
+    }
+    .teaching-list li:last-child { border-bottom: none; }
+    .teaching-list .term {
+      flex-shrink: 0;
+      min-width: 140px;
+      color: #777;
+      font-size: .85rem;
+    }
+
+    /* ── Responsive ─────────────────────────────── */
+    /* ── Papers list ────────────────────────────── */
+    .papers-list {
+      list-style: none;
+    }
+    .papers-list li {
+      padding: .75rem 0;
+      border-bottom: 1px solid #eee;
+      font-size: .93rem;
+    }
+    .papers-list li:last-child { border-bottom: none; }
+    .papers-list .paper-title {
+      font-style: italic;
+      margin-bottom: .2rem;
+    }
+    .papers-list .paper-meta {
+      font-size: .85rem;
+      color: #666;
+      margin-bottom: .3rem;
+    }
+    .papers-list .paper-summary {
+      font-size: .88rem;
+      color: #444;
+    }
+
+    /* ── Responsive ─────────────────────────────── */
+    @media (max-width: 580px) {
+      .hero { flex-direction: column; }
+      .hero-photo img { width: 130px; }
+      header nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="site-name">Marc Aurèle Gilles</span>
+  <nav>
+    <a href="#research">Research</a>
+    <a href="#teaching">Teaching</a>
+    <a href="ma_gilles_cv.pdf">CV</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- Hero ------------------------------------------------- -->
+  <div class="hero">
+    <div class="hero-photo">
+      <img src="ma_gilles.png" alt="Photo of Marc Aurèle Gilles">
+    </div>
+    <div class="hero-info">
+      <h1>Marc Aurèle Gilles</h1>
+      <p class="position">
+        Assistant Professor &middot; Department of Mathematics<br>
+        Princeton University
+      </p>
+      <p class="bio">
+        I work in applied mathematics, with a focus on numerical linear algebra.
+        My research spans numerical analysis, computational imaging, and applied
+        statistics, with applications to microscopy, radar sensing, path
+        planning, and augmented reality.
+      </p>
+      <p class="bio">
+        My recent work develops algorithms for cryogenic electron microscopy
+        (cryo-EM). I built and maintain
+        <a href="https://github.com/ma-gilles/recovar">RECOVAR</a>,
+        a software tool for reconstructing flexible proteins from large and
+        noisy cryo-EM datasets.
+      </p>
+      <div class="links">
+        <a href="https://scholar.google.com/citations?user=yAeZSxQAAAAJ&hl=en">Google Scholar</a>
+        <a href="https://github.com/ma-gilles/">GitHub</a>
+        <a href="ma_gilles_cv.pdf">Curriculum Vitae</a>
+      </div>
+      <p class="contact-line">
+        gilles [at] princeton.edu
+        &nbsp;&middot;&nbsp; Fine Hall 212, Princeton University
+      </p>
+    </div>
+  </div>
+
+  <hr class="divider" id="research">
+
+  <!-- Research --------------------------------------------- -->
+  <section>
+    <h2>Research</h2>
+    <p>My research is mostly on one of two things:</p>
+    <p>
+      <strong>Cryogenic electron microscopy (cryo-EM).</strong>
+      Cryo-EM produces millions of noisy 2D projections of a molecule in random
+      unknown orientations. I develop algorithms to reconstruct the 3D
+      conformational heterogeneity of flexible proteins from such data.
+      See <a href="https://www.pnas.org/doi/10.1073/pnas.2419140122">[RECOVAR, PNAS, 2025]</a>.
+    </p>
+    <p>
+      <strong>Numerical linear algebra.</strong>
+      Fast algorithms for linear algebra tasks such as low-rank approximation
+      and matrix factorization, particularly via randomized methods.
+      See <a href="https://arxiv.org/abs/2601.22344">[RPLU, arXiv, 2026]</a>.
+    </p>
+    <p>
+      I am always happy to learn about other mathematics or applications, feel free to reach out!
+    </p>
+  </section>
+
+  <hr class="divider" id="teaching">
+
+  <!-- Teaching --------------------------------------------- -->
+  <section>
+    <h2>Teaching</h2>
+    <ul class="teaching-list">
+      <li>
+        <span class="term">Spring 2026</span>
+        <span>Mathematics junior seminar: "Approximation Theory and Approximation Practice"</span>
+      </li>
+      <li>
+        <span class="term">Fall 2025</span>
+        <span><a href="mat321/mat321.md">MAT 321: Numerical Analysis and Scientific Computing</a></span>
+      </li>
+      <li>
+        <span class="term">Spring 2025</span>
+        <span>MAT 204: Advanced Linear Algebra with Applications</span>
+      </li>
+      <li>
+        <span class="term">Fall 2024</span>
+        <span>MAT 321: Numerical Analysis and Scientific Computing</span>
+      </li>
+      <li>
+        <span class="term">Fall 2024</span>
+        <span>Mathematics junior seminar: "The top 10 algorithms of the 20th century"</span>
+      </li>
+      <li>
+        <span class="term">Spring 2023</span>
+        <span><a href="mat321/mat321.md">MAT 321: Numerical Methods</a></span>
+      </li>
+    </ul>
+  </section>
+
+</main>
+
+</body>
+</html>
