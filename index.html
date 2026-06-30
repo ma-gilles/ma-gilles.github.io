@@ -124,6 +124,33 @@
       margin-bottom: .8rem;
     }
 
+    /* ── News list ─────────────────────────────── */
+    .news-list {
+      list-style: none;
+    }
+    .news-list li {
+      display: grid;
+      grid-template-columns: minmax(110px, 140px) 1fr;
+      gap: 1rem;
+      padding: .75rem 0;
+      border-bottom: 1px solid #eee;
+      font-size: .93rem;
+    }
+    .news-list li:last-child { border-bottom: none; }
+    .news-list .news-date {
+      color: #777;
+      font-size: .85rem;
+    }
+    .news-list .news-title {
+      font-weight: bold;
+      margin-bottom: .2rem;
+    }
+    .news-list p {
+      font-size: .9rem;
+      color: #444;
+      margin-bottom: 0;
+    }
+
     /* ── Teaching list ──────────────────────────── */
     .teaching-list {
       list-style: none;
@@ -174,6 +201,7 @@
       .hero { flex-direction: column; }
       .hero-photo img { width: 130px; }
       header nav { display: none; }
+      .news-list li { grid-template-columns: 1fr; gap: .25rem; }
     }
   </style>
 </head>
@@ -182,6 +210,7 @@
 <header>
   <span class="site-name">Marc Aurèle Gilles</span>
   <nav>
+    <a href="#news">News</a>
     <a href="#research">Research</a>
     <a href="#teaching">Teaching</a>
     <a href="ma_gilles_cv.pdf">CV</a>
@@ -225,6 +254,26 @@
       </p>
     </div>
   </div>
+
+  <hr class="divider" id="news">
+
+  <!-- News ------------------------------------------------- -->
+  <section>
+    <h2>News</h2>
+    <ul class="news-list">
+      <li>
+        <span class="news-date">June 2026</span>
+        <div>
+          <p class="news-title"><a href="notes/GRC_problems.pdf">Computational problems from 3DEM GRC</a></p>
+          <p>
+            Eric Verbeke and I attended a cryo-EM Gordon Research Conference and
+            wrote a short note advertising some computational problems we found
+            there.
+          </p>
+        </div>
+      </li>
+    </ul>
+  </section>
 
   <hr class="divider" id="research">
 
