@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PACM IDeAS Seminar &middot; Princeton</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Georgia", serif;
+      font-size: 16px;
+      line-height: 1.65;
+      color: #222;
+      background: #fafafa;
+    }
+
+    a { color: #b85c00; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Top bar ────────────────────────────────── */
+    header {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      height: 56px;
+      gap: 1.5rem;
+    }
+    header .site-name { font-size: 1rem; font-weight: bold; letter-spacing: .02em; }
+    header nav { margin-left: auto; display: flex; gap: 1.5rem; font-size: .9rem; }
+    header nav a { color: #ccc; }
+    header nav a:hover { color: #fff; text-decoration: none; }
+
+    /* ── Page wrapper ───────────────────────────── */
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    /* ── Masthead ───────────────────────────────── */
+    .masthead h1 {
+      font-size: 1.9rem;
+      font-weight: normal;
+      letter-spacing: -.01em;
+      margin-bottom: .3rem;
+    }
+    .masthead .sub {
+      font-size: .95rem;
+      color: #555;
+      margin-bottom: 1.2rem;
+    }
+    .meta-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem .5rem;
+      font-size: .85rem;
+      margin-bottom: 1rem;
+    }
+    .meta-grid span {
+      border: 1px solid #ddd;
+      background: #fff;
+      border-radius: 3px;
+      padding: .2rem .6rem;
+      color: #444;
+    }
+    .masthead p.blurb { font-size: .95rem; color: #333; }
+
+    /* ── Divider ────────────────────────────────── */
+    .divider {
+      border: none;
+      border-top: 1px solid #ddd;
+      margin: 2rem 0;
+    }
+
+    /* ── Term tabs ──────────────────────────────── */
+    .tabs {
+      display: flex;
+      gap: .4rem;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 1.5rem;
+    }
+    .tabs button {
+      font-family: inherit;
+      font-size: .9rem;
+      color: #777;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: .5rem .9rem;
+      margin-bottom: -1px;
+      cursor: pointer;
+      transition: color .15s, border-color .15s;
+    }
+    .tabs button:hover { color: #b85c00; }
+    .tabs button[aria-selected="true"] {
+      color: #1a1a1a;
+      border-bottom-color: #b85c00;
+      font-weight: bold;
+    }
+
+    .term-panel[hidden] { display: none; }
+    .term-note {
+      font-size: .9rem;
+      color: #666;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ── Talk list ──────────────────────────────── */
+    .talks { list-style: none; }
+    .talk {
+      display: grid;
+      grid-template-columns: 74px 1fr;
+      gap: 1.1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid #eee;
+    }
+    .talk:last-child { border-bottom: none; }
+
+    .talk-date {
+      text-align: center;
+      border: 1px solid #e2e2e2;
+      background: #fff;
+      border-radius: 3px;
+      padding: .35rem 0 .4rem;
+      align-self: start;
+    }
+    .talk-date .mon {
+      display: block;
+      font-size: .68rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #b85c00;
+    }
+    .talk-date .day {
+      display: block;
+      font-size: 1.25rem;
+      line-height: 1.15;
+      color: #222;
+    }
+    .talk-date .yr {
+      display: block;
+      font-size: .68rem;
+      color: #999;
+    }
+
+    .talk-title {
+      font-size: 1rem;
+      font-weight: bold;
+      line-height: 1.4;
+      margin-bottom: .2rem;
+    }
+    .talk-speaker {
+      font-size: .93rem;
+      margin-bottom: .3rem;
+    }
+    .talk-speaker .affil { color: #666; }
+    .talk-where {
+      font-size: .82rem;
+      color: #888;
+      margin-bottom: .45rem;
+    }
+
+    details.abstract summary {
+      display: inline-block;
+      font-size: .84rem;
+      color: #b85c00;
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+    }
+    details.abstract summary::-webkit-details-marker { display: none; }
+    details.abstract summary::before {
+      content: "▸ ";
+      font-size: .8em;
+    }
+    details.abstract[open] summary::before { content: "▾ "; }
+    details.abstract summary:hover { text-decoration: underline; }
+    details.abstract .body {
+      font-size: .9rem;
+      color: #333;
+      border-left: 2px solid #eee;
+      padding-left: .9rem;
+      margin-top: .5rem;
+    }
+    details.abstract .body p + p { margin-top: .6rem; }
+
+    .talk-links {
+      margin-top: .45rem;
+      font-size: .82rem;
+      color: #aaa;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .3rem .7rem;
+    }
+
+    .talk.tbd-row { padding: .7rem 0; align-items: center; }
+    .talk.tbd-row .talk-title {
+      font-weight: normal;
+      font-style: italic;
+      color: #999;
+      margin-bottom: 0;
+    }
+    .talk.tbd-row .talk-date { border-style: dashed; }
+    .talk.tbd-row .talk-date .mon { color: #aaa; }
+    .talk.tbd-row .talk-date .day { color: #777; }
+
+    footer.page-foot {
+      font-size: .85rem;
+      color: #888;
+      margin-top: 2.5rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid #ddd;
+    }
+
+    /* ── Responsive ─────────────────────────────── */
+    @media (max-width: 580px) {
+      header nav { display: none; }
+      .talk { grid-template-columns: 1fr; gap: .35rem; }
+      .talk-date {
+        display: inline-flex;
+        gap: .35rem;
+        align-items: baseline;
+        padding: .1rem .5rem;
+        justify-self: start;
+      }
+      .talk-date .mon, .talk-date .day, .talk-date .yr {
+        display: inline;
+        font-size: .8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="site-name">PACM IDeAS Seminar</span>
+  <nav>
+    <a href="#fall2026">Fall 2026</a>
+    <a href="#spring2026">Spring 2026</a>
+    <a href="https://www.math.princeton.edu/events/seminars/pacm-ideas">Dept. listing</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- Masthead --------------------------------------------- -->
+  <div class="masthead">
+    <h1>PACM IDeAS Seminar</h1>
+    <p class="sub">
+      Program in Applied and Computational Mathematics &middot;
+      Princeton University
+    </p>
+    <div class="meta-grid">
+      <span>Wednesdays, 12:00&ndash;1:00 PM</span>
+      <span>Fine Hall 224</span>
+    </div>
+    <p class="blurb">
+      IDeAS is the weekly seminar of Princeton's Program in Applied and Computational
+      Mathematics. Talks cover a broad range of topics in computational and applied
+      mathematics.
+    </p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Term tabs -------------------------------------------- -->
+  <div class="tabs" role="tablist">
+    <button role="tab" id="tab-fall2026" aria-controls="fall2026" aria-selected="true">Fall 2026</button>
+    <button role="tab" id="tab-spring2026" aria-controls="spring2026" aria-selected="false">Spring 2026</button>
+  </div>
+
+  <!-- Fall 2026 -------------------------------------------- -->
+  <section class="term-panel" id="fall2026" role="tabpanel" aria-labelledby="tab-fall2026">
+    <p class="term-note">
+      Wednesdays, 12:00&ndash;1:00 PM, Fine Hall 224, 9 September &ndash; 18 November 2026.
+      Speakers, titles, and abstracts will be posted here as they are confirmed.<br>
+      Organized by
+      <a href="https://ma-gilles.github.io/">Marc Aur&egrave;le Gilles</a> and
+      <a href="https://web.math.princeton.edu/~amits/">Amit Singer</a>.
+    </p>
+    <ul class="talks">
+      <li class="talk tbd-row">
+        <div class="talk-date"><span class="mon">Sep</span><span class="day">09</span><span class="yr">2026</span></div>
+        <div><p class="talk-title">Speaker to be announced</p></div>
+      </li>
+      <li class="talk tbd-row">
+        <div class="talk-date"><span class="mon">Sep</span><span class="day">16</span><span class="yr">2026</span></div>
+        <div><p class="talk-title">Speaker to be announced</p></div>
+      </li>
+      <li class="talk tbd-row">
+        <div class="talk-date"><span class="mon">Sep</span><span class="day">23</span><span class="yr">2026</span></div>
+        <div><p class="talk-title">Speaker to be announced</p></div>
+      </li>
+      <li class="talk tbd-row">
+        <div class="talk-date"><span class="mon">Sep</span><span class="day">30</span><span class="yr">2026</span></div>
+        <div><p class="talk-title">Speaker to be announced</p></div>
+      </li>
+      <li class="talk tbd-row">
+        <div class="talk-date"><span class="mon">Oct</span><span class="day">07</span><span class="yr">2026</span></div>
+        <div><p class="talk-title">Speaker to be announced</p></div>
+      </li>
+      <li class="talk tbd-row">
+        <div class="talk-date"><span class="mon">Oct</span><span class="day">14</span><span class="yr">2026</span></div>
+        <div><p class="talk-title">Speaker to be announced</p></div>
+      </li>
+      <li class="talk tbd-row">
+        <div class="talk-date"><span class="mon">Oct</span><span class="day">21</span><span class="yr">2026</span></div>
+        <div><p class="talk-title">Speaker to be announced</p></div>
+      </li>
+      <li class="talk tbd-row">
+        <div class="talk-date"><span class="mon">Oct</span><span class="day">28</span><span class="yr">2026</span></div>
+        <div><p class="talk-title">Speaker to be announced</p></div>
+      </li>
+      <li class="talk tbd-row">
+        <div class="talk-date"><span class="mon">Nov</span><span class="day">04</span><span class="yr">2026</span></div>
+        <div><p class="talk-title">Speaker to be announced</p></div>
+      </li>
+      <li class="talk tbd-row">
+        <div class="talk-date"><span class="mon">Nov</span><span class="day">11</span><span class="yr">2026</span></div>
+        <div><p class="talk-title">Speaker to be announced</p></div>
+      </li>
+      <li class="talk tbd-row">
+        <div class="talk-date"><span class="mon">Nov</span><span class="day">18</span><span class="yr">2026</span></div>
+        <div><p class="talk-title">Speaker to be announced</p></div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Spring 2026 ------------------------------------------ -->
+  <section class="term-panel" id="spring2026" role="tabpanel" aria-labelledby="tab-spring2026" hidden>
+    <p class="term-note">
+      Ten talks, 26 February &ndash; 7 May 2026. Click a talk to read its abstract.<br>
+      Organized by
+      <a href="https://web.math.princeton.edu/~jg8853/">Jorge Garza-Vargas</a>,
+      <a href="https://ma-gilles.github.io/">Marc Aur&egrave;le Gilles</a>,
+      <a href="https://erebrova.github.io/">Liza Rebrova</a>, and
+      <a href="https://web.math.princeton.edu/~amits/">Amit Singer</a>.
+    </p>
+    <ul class="talks">
+
+      <li class="talk">
+        <div class="talk-date"><span class="mon">Feb</span><span class="day">26</span><span class="yr">2026</span></div>
+        <div>
+          <p class="talk-title">Sparser, better, faster, stronger: Emerging approaches in the theory and practice of randomized dimensionality reduction</p>
+          <p class="talk-speaker">
+            <a href="https://www.ethanepperly.com/">Ethan N. Epperly</a>
+            <span class="affil">&middot; UC Berkeley</span>
+          </p>
+          <p class="talk-where">2:00 PM &middot; Jadwin Hall 111</p>
+          <details class="abstract">
+            <summary>Abstract</summary>
+            <div class="body">
+              <p>
+                For approaching thirty years, randomized dimensionality reduction techniques have been
+                a core tool in the theory and practice of computation. But despite this robust history,
+                basic questions remain hotly debated: Which dimensionality reduction map should be used?
+                How can the map be adapted to structure in the problem? What is the right theoretical
+                approach to analyzing randomized dimensionality reduction? This talk presents a new
+                approach to the theory of randomized dimensionality reduction under which the core
+                feature of a good dimensionality map is injectivity: It is fine if the map stretches
+                things out a bit as long as it does not annihilate any element of the data space. This
+                new approach yields new analysis of sparse and tensor-structured dimensionality
+                reduction maps that comes closer to describing how these maps behave in practice. This
+                talk is designed for a general audience and assumes no prior familiarity with
+                randomized dimensionality reduction.
+              </p>
+            </div>
+          </details>
+          <p class="talk-links">
+            <a href="https://www.math.princeton.edu/events/sparser-better-faster-stronger-emerging-approaches-theory-and-practice-randomized">Event page</a>
+          </p>
+        </div>
+      </li>
+
+      <li class="talk">
+        <div class="talk-date"><span class="mon">Mar</span><span class="day">05</span><span class="yr">2026</span></div>
+        <div>
+          <p class="talk-title">Randomized algorithms for linear algebraic computations</p>
+          <p class="talk-speaker">
+            <a href="https://users.oden.utexas.edu/~pgm/">Per-Gunnar Martinsson</a>
+            <span class="affil">&middot; The University of Texas at Austin</span>
+          </p>
+          <p class="talk-where">2:00 PM &middot; Jadwin Hall 111</p>
+          <details class="abstract">
+            <summary>Abstract</summary>
+            <div class="body">
+              <p>
+                The talk will describe how randomized algorithms can effectively, accurately, and
+                reliably solve linear algebraic problems that are omnipresent in scientific computing
+                and in data analysis. We will focus on techniques for low rank approximation, since
+                these methods are particularly simple and powerful, and are well understood
+                mathematically. The talk will also briefly survey how randomized techniques can be
+                applied to approximate global operators that arise in scientific computing such as
+                solution operators to elliptic PDEs, boundary-to-boundary operators such as the
+                Dirichlet-to-Neumann map, and time evolution operators of parabolic PDEs.
+              </p>
+            </div>
+          </details>
+          <p class="talk-links">
+            <a href="https://www.math.princeton.edu/events/randomized-algorithms-linear-algebraic-computations-2026-03-05t190000">Event page</a>
+          </p>
+        </div>
+      </li>
+
+      <li class="talk">
+        <div class="talk-date"><span class="mon">Mar</span><span class="day">19</span><span class="yr">2026</span></div>
+        <div>
+          <p class="talk-title">Operator learning without the adjoint</p>
+          <p class="talk-speaker">
+            <a href="https://dihalikias.github.io/">Diana Halikias</a>
+            <span class="affil">&middot; NYU</span>
+          </p>
+          <p class="talk-where">2:00 PM &middot; Fine Hall 224</p>
+          <details class="abstract">
+            <summary>Abstract</summary>
+            <div class="body">
+              <p>
+                There is a mystery at the heart of operator learning: how can one recover a
+                non-self-adjoint operator from data without probing the adjoint? Current practical
+                approaches suggest that one can accurately recover an operator while only using data
+                generated by the forward action of the operator without access to the adjoint. However,
+                naively, it seems essential to sample the action of the adjoint. We partially explain
+                this mystery by proving that without querying the adjoint, one can approximate a family
+                of non-self-adjoint infinite-dimensional compact operators via projection onto a
+                Fourier basis. We then apply the result to recovering Green's functions of elliptic
+                partial differential operators and derive an adjoint-free sample complexity bound.
+                While existing theory justifies low sample complexity in operator learning, ours is the
+                first adjoint-free analysis that attempts to close the gap between theory and practice.
+                We also explore a closely related question in numerical linear algebra: when is access
+                to both forward and transpose matrix-vector products essential? We discuss the role of
+                transpose access in sketching algorithms for low-rank approximation, least-squares
+                problems, and norm estimation.
+              </p>
+            </div>
+          </details>
+          <p class="talk-links">
+            <a href="https://www.math.princeton.edu/events/operator-learning-without-adjoint-2026-03-19t180000">Event page</a>
+          </p>
+        </div>
+      </li>
+
+      <li class="talk">
+        <div class="talk-date"><span class="mon">Mar</span><span class="day">26</span><span class="yr">2026</span></div>
+        <div>
+          <p class="talk-title">Leveraging latent mathematical structure in geometry processing</p>
+          <p class="talk-speaker">
+            <a href="https://lmattos.com/">Leticia Mattos Da Silva</a>
+            <span class="affil">&middot; MIT</span>
+          </p>
+          <p class="talk-where">2:00 PM &middot; Fine Hall 224</p>
+          <details class="abstract">
+            <summary>Abstract</summary>
+            <div class="body">
+              <p>
+                Myriad problems in geometry processing are readily formulated through continuous
+                mathematics, including variational energies, stochastic dynamics, geometric constraints,
+                and partial differential equations. Often, the challenge in solving these formulations
+                in practice is not the absence of a principled theoretical formulation, but that
+                standard computational approaches are limited by design constraints or technical
+                barriers, resulting in instability or poor scalability. Common numerical techniques
+                resort to fragile nonlinear solvers, repeated large optimizations, or forgo analytical
+                or physical properties of the continuous problem.
+              </p>
+              <p>
+                In this talk, I will present methods that tackle these limitations by recognizing and
+                exploiting latent problem structure, including convexity, variational reformulations,
+                and symmetry. After a prelude illustrating the value of this approach in two problems of
+                interest in geometry &mdash; simulating elastodynamics and solving PDEs on surfaces &mdash;
+                I will describe a new approach to resampling that leverages a time-symmetric variant of
+                the Schr&ouml;dinger bridge problem. In each of these works, we discuss how algorithmic
+                design, when carefully guided by underlying mathematical structure, can yield numerical
+                tools that offer practitioners greater control and flexibility.
+              </p>
+            </div>
+          </details>
+          <p class="talk-links">
+            <a href="https://www.math.princeton.edu/events/leveraging-latent-mathematical-structure-geometry-processing-2026-03-26t180000">Event page</a>
+          </p>
+        </div>
+      </li>
+
+      <li class="talk">
+        <div class="talk-date"><span class="mon">Apr</span><span class="day">02</span><span class="yr">2026</span></div>
+        <div>
+          <p class="talk-title">Toward information geometric mechanics</p>
+          <p class="talk-speaker">
+            <a href="https://f-t-s.github.io/">Florian Sch&auml;fer</a>
+            <span class="affil">&middot; NYU</span>
+          </p>
+          <p class="talk-where">2:00 PM &middot; Fine Hall 224</p>
+          <details class="abstract">
+            <summary>Abstract</summary>
+            <div class="body">
+              <p>
+                Shock waves in high-speed gas dynamics cause severe numerical difficulties for classical
+                solvers and scientific machine learning. They are fundamentally a multiscale problem:
+                While viscous effects ensure smoothness on microscopic scales, shocks manifest as
+                macroscopic discontinuities. This talk begins with the observation that shock formation
+                arises from the flow map reaching the boundary of the manifold of diffeomorphisms. We
+                modify its geometry such that geodesics approach but never reach the boundary. The
+                resulting information geometric regularization (IGR) has smooth solutions while
+                avoiding the excessive dissipation of viscous regularizations, accelerating and
+                simplifying the simulation of flows with shocks. We prove the existence of global strong
+                IGR solutions in the unidimensional pressureless case and illustrate its practical
+                utility on multidimensional examples with complex shock interactions. With S. Bryngelson
+                and other collaborators, we use IGR to conduct the first compressible flow simulation
+                exceeding a quadrillion degrees of freedom.
+              </p>
+              <p>
+                The modified geometry of the diffeomorphism manifold is the information geometry of the
+                mass density. The last part of the talk explains how this observation motivates
+                information geometric mechanics that views the solutions of continuum mechanical PDEs as
+                parameters of probability distributions originating from statistical physics. Replacing
+                the Euclidean geometry of individual particles with the information geometry of
+                statistical families promises performant numerical methods that preserve the positivity
+                of densities and energies and readily integrate with scientific machine learning.
+              </p>
+            </div>
+          </details>
+          <p class="talk-links">
+            <a href="https://www.math.princeton.edu/events/toward-information-geometric-mechanics-2026-04-02t180000">Event page</a>
+          </p>
+        </div>
+      </li>
+
+      <li class="talk">
+        <div class="talk-date"><span class="mon">Apr</span><span class="day">09</span><span class="yr">2026</span></div>
+        <div>
+          <p class="talk-title">Convergence of randomized and greedy block Gauss&ndash;Seidel methods, as well as asynchronous iterations</p>
+          <p class="talk-speaker">
+            <a href="https://sites.temple.edu/szyld/">Daniel B. Szyld</a>
+            <span class="affil">&middot; Temple University</span>
+          </p>
+          <p class="talk-where">2:00 PM &middot; Fine Hall 224</p>
+          <details class="abstract">
+            <summary>Abstract</summary>
+            <div class="body">
+              <p>
+                We extend results known for the randomized (point and block) Gauss-Seidel and the
+                Gauss-Southwell methods for the case of a Hermitian and positive definite matrix to
+                certain classes of non-Hermitian matrices. We consider cases with overlapping variables
+                (as in Domain Decomposition). We obtain convergence results for a whole range of
+                parameters describing the probabilities in the randomized method or the greedy choice
+                strategy in the Gauss-Southwell-type methods. We identify those choices which make our
+                convergence bounds best possible.
+              </p>
+              <p>
+                One result is that the best convergence bounds that we obtain for the expected values in
+                the randomized algorithm are as good as the best for the deterministic, but more costly
+                algorithms of Gauss-Southwell type. We use these new results to show a provable
+                convergence rate for asynchronous iterations. (Joint work with Andreas Frommer.)
+              </p>
+            </div>
+          </details>
+          <p class="talk-links">
+            <a href="https://www.math.princeton.edu/events/convergence-randomized-and-greedy-block-gauss-seidel-methods-well-asynchronous-iterations">Event page</a>
+          </p>
+        </div>
+      </li>
+
+      <li class="talk">
+        <div class="talk-date"><span class="mon">Apr</span><span class="day">16</span><span class="yr">2026</span></div>
+        <div>
+          <p class="talk-title">On principal component regression in high dimension</p>
+          <p class="talk-speaker">
+            <a href="https://sites.google.com/view/eladromanov/">Elad Romanov</a>
+            <span class="affil">&middot; Yale University</span>
+          </p>
+          <p class="talk-where">1:30 PM &middot; Fine Hall 224</p>
+          <details class="abstract">
+            <summary>Abstract</summary>
+            <div class="body">
+              <p>
+                Principal component regression (PCR) is a classical two-step approach to linear
+                regression, where one first reduces the data dimension by projecting onto its leading
+                principal components, and then performs ordinary least squares regression. We study PCR
+                in an asymptotic high-dimensional regression setting, where the number of data points is
+                proportional to the dimension. Our main deliverables are asymptotically exact limiting
+                formulas for the estimation and prediction risks, which depend in a nuanced way on the
+                eigenvalues of the population covariance, the alignment between the population principal
+                components and the true signal, and the number of selected components.
+              </p>
+              <p>
+                A key challenge in the high-dimensional regime is that the sample covariance matrix is
+                an inconsistent estimate of its population counterpart, and thus sample principal
+                components may fail to capture potential latent low-dimensional structure in the data.
+                We demonstrate this point through several case studies, including that of a spiked
+                covariance matrix. The analysis of (random design) linear regression in high dimension
+                typically builds on powerful results from random matrix theory, such as the
+                Marchenko&ndash;Pastur law and deterministic equivalents for the resolvent of a sample
+                covariance matrix. However, these standard tools alone are not sufficient for analyzing
+                the prediction risk of PCR. To that end, we leverage and develop somewhat less standard
+                techniques, which, to our knowledge, have not seen wide use in the statistics literature
+                to date: multi-resolvent traces and their associated eigenvector overlap measures.
+              </p>
+            </div>
+          </details>
+          <p class="talk-links">
+            <a href="https://www.math.princeton.edu/events/principal-component-regression-high-dimension-2026-04-16t173000">Event page</a>
+          </p>
+        </div>
+      </li>
+
+      <li class="talk">
+        <div class="talk-date"><span class="mon">Apr</span><span class="day">23</span><span class="yr">2026</span></div>
+        <div>
+          <p class="talk-title">Towards PCA without the SVD: Lanczos-based spike detection</p>
+          <p class="talk-speaker">
+            <a href="https://faculty.washington.edu/trogdon/">Tom Trogdon</a>
+            <span class="affil">&middot; University of Washington</span>
+          </p>
+          <p class="talk-where">1:30 PM &middot; Fine Hall 224</p>
+          <details class="abstract">
+            <summary>Abstract</summary>
+            <div class="body">
+              <p>
+                This talk will give an overview of the study of algorithms on random data, and in
+                particular, algorithms from numerical linear algebra (NLA) on random matrices. The
+                combination of ideas from numerical linear algebra and random matrices goes back, at
+                least, to the seminal work of Goldstine and von Neumann. The works of Trotter,
+                Silverstein, Edelman, Dumitriu &amp; Edelman, Pfrang, Deift &amp; Menon, and many
+                others, developed these ideas further. A core subset of NLA algorithms, the Krylov
+                subspace methods, play particularly well with existing random matrix theory. Through the
+                study of random orthogonal polynomials, as perturbations of deterministic orthogonal
+                polynomials, the concentration phenomenon in these methods can be explained using local
+                laws from random matrix theory. We will use these ideas, and methods, to efficiently and
+                robustly perform spike detection in the spiked sample covariance model, and move
+                towards PCA without the SVD.
+              </p>
+            </div>
+          </details>
+          <p class="talk-links">
+            <a href="https://www.math.princeton.edu/events/towards-pca-without-svd-lanczos-based-spike-detection-2026-04-23t173000">Event page</a>
+          </p>
+        </div>
+      </li>
+
+      <li class="talk">
+        <div class="talk-date"><span class="mon">Apr</span><span class="day">30</span><span class="yr">2026</span></div>
+        <div>
+          <p class="talk-title">Euclidean distance deflation under high-dimensional heteroskedastic noise</p>
+          <p class="talk-speaker">
+            <a href="https://sites.google.com/site/landaboris1">Boris Landa</a>
+            <span class="affil">&middot; Yale University</span>
+          </p>
+          <p class="talk-where">2:00 PM &middot; Fine Hall 224</p>
+          <details class="abstract">
+            <summary>Abstract</summary>
+            <div class="body">
+              <p>
+                Pairwise Euclidean distances are a basic ingredient in many machine learning and data
+                analysis methods. In many applications, however, these distances are distorted by
+                heteroskedastic noise, where different observations are corrupted at different noise
+                levels. This can substantially distort the geometry of the data and complicate
+                downstream tasks that rely on accurate distance information. In this talk, I will
+                discuss the problem of recovering meaningful pairwise distances under high-dimensional
+                heteroskedastic noise. I will describe a principled approach for estimating
+                observation-specific noise levels and correcting the distorted distances with
+                theoretical guarantees, without prior knowledge of the underlying clean data structure
+                or noise distribution. I will also highlight simulations and experiments with real
+                single-cell RNA sequencing data that illustrate the effectiveness of our approach. This
+                is joint work with Keyi Li and Yuval Kluger.
+              </p>
+            </div>
+          </details>
+          <p class="talk-links">
+            <a href="https://www.math.princeton.edu/events/euclidean-distance-deflation-under-high-dimensional-heteroskedastic-noise-2026-04-30t180000">Event page</a>
+          </p>
+        </div>
+      </li>
+
+      <li class="talk">
+        <div class="talk-date"><span class="mon">May</span><span class="day">07</span><span class="yr">2026</span></div>
+        <div>
+          <p class="talk-title">Manifold reconstruction and the bird vocalization problem</p>
+          <p class="talk-speaker">
+            <a href="https://wunan3.github.io/">Nan Wu</a>
+            <span class="affil">&middot; UT Dallas</span>
+          </p>
+          <p class="talk-where">2:00 PM &middot; Fine Hall 224</p>
+          <details class="abstract">
+            <summary>Abstract</summary>
+            <div class="body">
+              <p>
+                It is often of interest to infer lower-dimensional structures underlying complex data.
+                Riemannian manifolds are commonly used to model such nonlinear lower-dimensional
+                structures. However, most nonlinear dimension reduction algorithms focus on producing
+                lower-dimensional coordinates of the data, without explicitly estimating the underlying
+                manifold or using the manifold structure to denoise the original observations.
+              </p>
+              <p>
+                In this talk, I will introduce a manifold reconstruction methodology designed to address
+                these limitations. The approach operates under general assumptions on noisy data and
+                allows interpolation of the estimated manifold between observed data points. The key
+                idea is to transform a global manifold reconstruction problem into a collection of local
+                regression problems, enabling the use of Gaussian processes for probabilistic manifold
+                reconstruction. Applications of the method to studying bird species through their
+                vocalizations, as well as other problems in high-dimensional data analysis, will also be
+                discussed.
+              </p>
+            </div>
+          </details>
+          <p class="talk-links">
+            <a href="https://www.math.princeton.edu/events/manifold-reconstruction-and-bird-vocalization-problem-2026-05-07t180000">Event page</a>
+          </p>
+        </div>
+      </li>
+
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    Talk details are drawn from the
+    <a href="https://www.math.princeton.edu/events/seminars/pacm-ideas">Princeton Mathematics department listing</a>.
+    Questions about the seminar go to the organizer.
+  </footer>
+
+</main>
+
+<script>
+  (function () {
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('.tabs button'));
+
+    function show(id) {
+      tabs.forEach(function (t) {
+        var selected = t.getAttribute('aria-controls') === id;
+        t.setAttribute('aria-selected', selected ? 'true' : 'false');
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !selected;
+      });
+    }
+
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        var id = t.getAttribute('aria-controls');
+        show(id);
+        history.replaceState(null, '', '#' + id);
+      });
+    });
+
+    // Deep links: /ideas/#spring2026 and the top-bar nav.
+    function fromHash() {
+      var id = location.hash.replace('#', '');
+      if (id === 'fall2026' || id === 'spring2026') show(id);
+    }
+    window.addEventListener('hashchange', fromHash);
+    fromHash();
+  })();
+</script>
+
+</body>
+</html>
